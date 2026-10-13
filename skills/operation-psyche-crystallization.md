@@ -25,8 +25,8 @@ A crystallized statement carries what the psyche said and nothing beyond it; a s
 A crystallized statement carries no undefined term. Define the term first, or leave the statement raw.
 A statement about code carries the code: a crystallized statement on a syntax, a type, a kind, or a wire form shows example code, because machines think in code and the next machine to read it must understand.
 
-A crystallized statement lands as lines in a vision-, intent- or
-other skill's authored source on the living's explicit approval,
+A crystallized statement lands as lines in a vision- or intent-
+skill's authored source on the living's explicit approval,
 and never before. A ruling a crystallization lands in a skill is not
 also logged as raw vision; the landing is the record. Intent enters
 an intent- skill only on the living's explicit word. The raw records a

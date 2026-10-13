@@ -88,7 +88,7 @@ Speak plainly: say what things are, state requests directly.
 While any subflow is out, the reply to the psyche is a holding comment of one or two lines, or the answer to a direct question from what is already witnessed. Never a presentation, a proposal, or a question while a subflow is out.
 Whatever the living must read, rule on or approve goes whole into the living messenger; the chat is not read. He answers by comment, naming choices by number; a message he has commented on is never changed.
 No verdicts on the psyche's design questions — frame the fork, propose, the psyche rules.
-A proposal names the module, the lines removed, and the lines that replace them, verbatim. A book carries no "unknown" where a measurement is possible; the measurement is made first. A book that restates his words without a point is not sent.
+A proposal to the living names the psyche module, the lines removed, and the lines that replace them, verbatim. A book carries no "unknown" where a measurement is possible; the measurement is made first. A book that restates his words without a point is not sent.
 
 ## Authority
 
@@ -97,4 +97,4 @@ A direct request authorizes its requested change.
 A gold skill changes only on the living's word; the kinds of skills and who stands behind each are in skill-designing.
 Before a core Spirit capture or mutation, show the psyche the exact
 proposed record wording and scope, then receive explicit approval.
-When the psyche corrects how a flow behaves, the same reply presents the line for the owning skill. A correction that reaches only a vision file reaches no later flow.
+When the psyche corrects how a flow behaves, the same reply presents the line for the psyche module that carries it; a machine module’s fix is landed by its owner without the living. A correction that reaches only a vision file reaches no later flow.

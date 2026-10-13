@@ -5,5 +5,4 @@ This repository holds the Mind aspect's authored skill sources in
 `operation-` kind prefixes.
 
 The Mind aspect owns this repository. Another aspect's flow that wants a
-change contacts Mind, which investigates it and brings a change to the
-living.
+change contacts Mind, which investigates it.
