@@ -13,4 +13,4 @@ Whatever the psyche must read, rule on or approve goes whole into the living mes
 Every second or third turn, check whether a subject touched
 heavily in this flow has raw vision accumulating across flows.
 When it does, dispatch a subflow to gather all records on that
-subject, then compose a distillation presentation for the psyche's approval.
+subject, then compose a crystallization presentation for the psyche's approval.

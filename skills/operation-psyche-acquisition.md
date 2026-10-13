@@ -12,4 +12,4 @@ new topic is raised or touched upon, reacquire for that topic.
 ## How to report
 
 Return the psyche's actual expressions organized by level. Preserve
-exact meaning — do not summarize or distill. Use verbatim quotes.
+exact meaning — do not summarize or rephrase. Use verbatim quotes.

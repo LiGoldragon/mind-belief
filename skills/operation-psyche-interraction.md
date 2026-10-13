@@ -6,7 +6,7 @@ dependencies: [knowledge-psyche]
 ## Logging
 
 Log psyche in the flow's own `vision/<topic>.md`: what the psyche envisions, in the psyche's words. Never a ruling or an instruction.
-A statement enters a vision- skill only as a distillation the living
+A statement enters a vision- skill only as a crystallization the living
 has explicitly approved. Intent and spirit enter only on the
 living's explicit word. Never edit the spirit-core skill without explicit psyche approval of exact wording.
 
@@ -29,7 +29,7 @@ dispatch); a process event (a subflow finished, a
 commit landed, a file was read); session narrative; an acknowledgement
 that rules on nothing. A working instruction recorded as vision is a
 vision impurity. Supersede an entry by appending; never edit one.
-What the psyche says to help the flow understand vision is context, not vision: it is kept beside the quoted words, never logged or distilled as a statement of its own.
+What the psyche says to help the flow understand vision is context, not vision: it is kept beside the quoted words, never logged or crystallized as a statement of its own.
 
 A ruling — the psyche deciding what the flow does — is an instruction, not psyche.
 

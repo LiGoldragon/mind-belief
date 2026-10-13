@@ -1,6 +1,6 @@
 ---
 description: A presentation must be made available to the living messenger.
-dependencies: [operation-flashbook-illustration, vision-book, compensation-book-distillation]
+dependencies: [operation-flashbook-illustration, vision-book, compensation-book-crystallization]
 ---
 
 Make one new presentation for each message. A presentation is a new living-messenger user-interface item, never an update of a presentation that has comments.
@@ -20,5 +20,5 @@ with a very short voice answer to the question.
 Use the book subflow defined by subagents/book.md to publish the exact
 source. Check it with tools/book-check.mjs before rendering. A non-Claude
 caller sends its source to its Secondary; it
-does not hand-render a replacement page. If the source lacks distillation,
+does not hand-render a replacement page. If the source lacks crystallization,
 return the defect to its author rather than adding a proposal.
