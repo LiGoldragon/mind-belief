@@ -1,6 +1,6 @@
 ---
 description: Nix flake inputs are being upgraded across a layered repo structure.
-dependencies: [operation-nix-workflow]
+dependencies: [compensation-nix-workflow]
 ---
 
 Map the dependency chain before touching anything. Update bottom-up: eval-cache boundary repos (like CriomOS-pkgs) must be committed and pushed before their consumers update their locks.
