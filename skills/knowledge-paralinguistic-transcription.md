@@ -1,6 +1,6 @@
 ---
 description: Verified current facts about Android speech transcription, prosody-related output, providers, and IME insertion.
-dependencies: [knowledge-context-strata]
+dependencies: []
 ---
 
 Google's current Gemini audio documentation exposes transcription, translation,
