@@ -6,32 +6,46 @@ dependencies: [knowledge-context-strata]
 Google's current Gemini audio documentation exposes transcription, translation,
 speaker diarization, timestamps and emotion detection. Its structured example
 uses speaker, timestamp, content, language and an emotion enum. These are model
-judgments in a requested schema; they are not documented acoustic measurements
-of pitch, loudness, speaking rate, pause duration, prosody contours or
-calibrated confidence. [Evidence](../evidence/android-paralinguistic-transcription-sources.md)
+judgments in a requested schema, not calibrated acoustic measurements. The
+current pages do not name returned pitch, loudness, speaking rate, pause
+duration, prosody contours or calibrated confidence. That absence does not
+prove a model cannot infer such properties; timestamp gaps can support derived
+pause or pace proxies that still require validation. [Evidence](../evidence/android-paralinguistic-transcription-sources.md)
 
-The dedicated Gemini transcription documentation describes verbatim output,
-which preserves fillers, repetitions, false starts and pauses as text, and
-smart cleanup, which changes that representation. Its documented word and
-speaker timestamps do not establish prosody annotations. The Live
-transcription route documents interim and final input transcription, utterance
-timing, a ten-minute transcription session limit, and smart cleanup/custom
-vocabulary behavior; it documents no word timestamps or diarization for that
-route. General Live API capabilities and affective dialogue must not be
-substituted for these route-specific facts.
+The dedicated Gemini transcription route is stable `gemini-3.5-transcribe`
+through `interactions.create`. It describes verbatim output, which preserves
+fillers, repetitions, false starts and pauses as text, and smart cleanup, which
+changes that representation. Smart mode cannot combine with word timestamps or
+diarization; custom vocabulary accepts up to 1,000 terms but cannot combine
+with speaker diarization or word-level timestamps. Its documented word and
+speaker timestamps do not establish prosody annotations. The Live route is
+`gemini-3.5-transcribe-live`: it documents interim/final input transcription,
+utterance timing and a ten-minute session limit, but no word timestamps or
+diarization. General Live currently names `gemini-3.8-live`; general audio
+understanding and affective dialogue must not be substituted for these route-
+specific facts.
 
-Published Gemini token rates can estimate provider input/output cost under
-stated token assumptions. They do not establish an all-in per-minute cost or
-end-to-end latency for a keyboard, markup, model analysis, backend or network
-path. No matched accuracy or latency comparison with Wispr was found. Wispr's
+The official dedicated-transcript estimates are about $0.005/min batch and
+$0.009/min live under the published token assumptions. They do not establish
+an all-in per-minute cost for richer annotations, markup, model analysis,
+backend or network path. Paid rows state that prompts/responses are not used
+for product improvement, while limited abuse/safety logging still applies.
+Interactions default to 55-day paid or 1-day free storage; `store=false` opts
+out of Interaction storage but does not erase all abuse/safety logs and disables
+previous-interaction and background execution. EEA/UK/Switzerland paid-service
+exceptions require account/route review. These Google terms do not transfer to
+OpenRouter or vBoard. No matched accuracy or latency comparison with Wispr was
+found. Wispr's
 Android product is an accessibility/overlay flow whose listing describes
 removing fillers, stutters, false starts and self-corrections; that documents
 cleanup behavior rather than preserved prosody. Its dated Play and help pages
 currently conflict about free/unlimited use versus a 1,000-word mobile weekly
-limit, so the conflict remains explicit. vBoard documents Gemini through
-OpenRouter; this is not evidence of direct paid Gemini API routing. Loquela and
-Dictus document local-leaning alternatives, but their model catalogs and
-privacy claims are not device accuracy or latency measurements.
+soft limit and 1,500-word hard cap. Pro is listed as $15 monthly or $12/month
+when billed annually. vBoard documents Gemini through OpenRouter; this is not
+evidence of direct paid Gemini API routing. Loquela's Full unlock amount is not
+publicly established in the checked source, and Dictus makes a free-project
+claim. Their model catalogs and privacy claims are not device accuracy or
+latency measurements.
 
 Android's documented custom keyboard path is `InputMethodService` plus
 `InputConnection` composing and `commitText`. A custom tag can be committed as
