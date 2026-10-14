@@ -46,3 +46,11 @@ Remote compaction is an additional server request, with input/output and cache u
 Claude: installed bundled functions `fZt`, `rhe`, `dar`, `uar` and summary-format definitions; the first four `compact_boundary` records of the inspected Psyche Core Secondary Claude transcript, their restored attachments, preserved-message references, summaries, prompt snapshots and subsequent usage records.
 
 Codex: release tag `rust-v0.161.0-alpha.2`, `codex-rs/core/src/{tasks/compact.rs,compact.rs,compact_remote_v2.rs,compact_remote_v2_attempt.rs,compact_token_budget.rs}` and `codex-rs/protocol/src/openai_models.rs`; current-version session checkpoints. Exact source excerpts, transcript locations, measurements and the claim-by-claim verification are retained with this module's publication evidence.
+
+## Provider cache and quality boundaries
+
+Claude API prompt caching defaults to a 5-minute lifetime and offers a 1-hour TTL. The lifetime starts at request start and includes generation time; reuse refreshes it without a new write charge. OpenAI documents a 30-minute minimum TTL for newer supported models, with earlier `in_memory` and `24h` retention modes expressed as typical inactivity and maximum periods. Neither provider documents an advance expiry warning. A long tool wait can outlast the remaining cache lifetime, while the wait itself creates no token usage; the next request's usage fields determine its cost.
+
+Claude Code's documented compaction boundaries include 200K for Sonnet 4.6 and Opus 4.6 without extended context and about 967K for native 1M models. These are client defaults/configuration boundaries, not universal measured trigger counts. OpenAI Responses compaction is opt-in through `context_management.compact_threshold`, separate from cache retention. The source map, exact TTLs, accounting fields, and limitations are in [cache-compaction-research.md](../evidence/cache-compaction-research.md).
+
+Long-context quality is task-specific. NoLiMa reports GPT-4o falling from a 99.3% short-context baseline to 56.0% at 128K on its retrieval task, with an 8K effective-length criterion. LongCodeBench reports Claude 3.5 Sonnet LongSWE success of 29%, 19%, 15%, and 3% at 32K, 64K, 128K, and 256K buckets, and GPT-4o 11%, 6%, and 5% at 32K, 64K, and 128K. These do not define a universal handover threshold.
