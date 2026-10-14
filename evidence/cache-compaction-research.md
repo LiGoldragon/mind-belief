@@ -18,7 +18,7 @@ The Claude context-window documentation describes compaction as replacing histor
 
 Source: [Claude Code context window](https://code.claude.com/docs/en/context-window), read 2026-10-14; local `skills/knowledge-compaction.md`, four named transcript boundaries.
 
-Claude's prompt-caching documentation says compaction can read a warm prefix and documents an idle compaction shortly before expiry on a one-hour cache path. That is evidence for the documented path only; it does not establish that all automatic or manual compaction is TTL-scheduled.
+Claude's prompt-caching documentation says compaction can read a warm prefix and documents an optional idle compaction shortly before expiry on a one-hour cache path. Idle compaction can be disabled. This is evidence for that one-hour idle path only; ordinary automatic compaction is separate, and the documentation does not establish that all automatic or manual compaction is TTL-scheduled.
 
 Source: [Claude prompt caching](https://code.claude.com/docs/en/build-with-claude/prompt-caching), compaction section, read 2026-10-14.
 
@@ -36,7 +36,7 @@ No provider-documented advance-warning signal for cache expiry was found. A resp
 
 For newer supported models, OpenAI documents `prompt_cache_options.ttl` with the only supported value `30m` as the default. A cached prefix remains eligible for at least 30 minutes after its latest write or reuse, and may be retained longer. For earlier models, `in_memory` typically remains active for around 5-10 minutes of inactivity, up to one hour; `24h` typically remains available around 30 minutes and may remain up to 24 hours. For models supporting both, the default depends on the organization's data-retention policy: `24h` without Zero Data Retention and `in_memory` with it. These are retention guarantees and typicals, not a promise that every entry survives the maximum period.
 
-OpenAI's usage-cost example defines `ordinary_input_tokens = input_tokens - cached_tokens - cache_write_tokens`, then weights cached reads and writes by model-specific multipliers. It explicitly says to compare `cached_tokens`, `cache_write_tokens`, latency, and total cost. No advance expiry signal is documented. Cache location and routing matter: entries are machine-local and can miss if the request is routed elsewhere or the entry expired.
+For GPT-5.6 and later, OpenAI documents `cache_write_tokens`; writes cost 1.25x the uncached input rate, reads cost 0.1x on most of those models, and GPT-6.1 Sol reads cost 0.05x. Earlier generations have no additional cache-write charge, and cached-input rates are model-dependent. Therefore the 1.25x/0.1x pair must not be applied universally across OpenAI generations. OpenAI's usage-cost example defines `ordinary_input_tokens = input_tokens - cached_tokens - cache_write_tokens`, then weights cached reads and writes by model-specific multipliers. It explicitly says to compare `cached_tokens`, `cache_write_tokens`, latency, and total cost. No advance expiry signal is documented. Cache location and routing matter: entries are machine-local; prefix keys influence routing but do not guarantee a hit.
 
 Sources: [OpenAI prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching), lines 1381-1400, 1424, 1716-1733, 1807-1813, read 2026-10-14.
 
