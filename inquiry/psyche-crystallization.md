@@ -22,6 +22,7 @@ record — correction included — is proposed as a crystallization of
 its subject, never as an append to the raw file.
 
 A crystallized statement carries what the psyche said and nothing beyond it; a small ruling makes a small statement, never a theory grown around the words.
+A statement is composed from the living's quoted words alone; a record's heading and context, and another flow's brief or book, are machine readings and never its source.
 A crystallized statement carries no undefined term. Define the term first, or leave the statement raw.
 A statement about code carries the code: a crystallized statement on a syntax, a type, a kind, or a wire form shows example code, because machines think in code and the next machine to read it must understand.
 
