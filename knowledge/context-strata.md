@@ -9,7 +9,7 @@ stratum or above.
 
 The top stratum is the base context: the standing instructions the
 harness sends before any conversation, and any text authored into
-that seat. Universal invariants belong here.
+that flow. Universal invariants belong here.
 
 The middle stratum is the conversation's binding text: the typed
 prompt, the entry files and other injections the harness places

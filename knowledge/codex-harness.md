@@ -38,14 +38,14 @@ and unrecognised frontmatter keys change nothing.
 A withheld skill still reaches the machine when the client places it there.
 The turn request's input array takes a skill item carrying a name and a
 path, and that item expands into the turn as the file's text ahead of the
-prompt's own words. This is how a launcher seats a skill the catalog does
+prompt's own words. This is how a launcher supplies a skill the catalog does
 not offer.
 
 On 2026-10-09, `codex --version` returned
 `0.158.0-alpha.9`, and `codex-next --version` returned
 `0.161.0-alpha.2`. They identify installed commands. Herdr exposes a
-seat identity rather than an executable binding, so neither result
-establishes a per-seat active version.
+metaflow identity rather than an executable binding, so neither result
+establishes a per-flow active version.
 
 The native Codex launcher reads generated
 `.agents/skills/<name>/SKILL.md` files into the first prompt and verifies

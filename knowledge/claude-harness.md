@@ -41,7 +41,7 @@ returns `initialUserMessage` or `additionalContext`, or the launcher reads
 the skill file and writes its body into the first prompt.
 
 On 2026-10-09, `claude --version` returned `2.1.294 (Claude Code)`.
-This is an observation of the installed command, not a seat binding.
+This is an observation of the installed command, not a metaflow binding.
 
 The native Claude launcher reads generated
 `.claude/skills/<name>/SKILL.md` files, sends bounded leading slash
