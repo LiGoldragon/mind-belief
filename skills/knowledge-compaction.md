@@ -27,6 +27,8 @@ In the inspected session, each of the four boundaries restored the same 21 skill
 
 Request input here is `input_tokens + cache_creation_input_tokens + cache_read_input_tokens`, not a monetary charge. The recorded cumulative reduction after the fourth boundary was 1,144,246 tokens; this is not a count of deleted transcript tokens or a bill. The first three subsequent requests recorded zero cache-read input and substantial cache creation; the fourth reused 24,127 cached input tokens. Cache reuse therefore varies. Summarization itself consumes model requests and input/output tokens; the installed code records those usage categories, but these boundary records do not give a complete itemized compaction bill.
 
+**Core study, reported 2026-10-16.** Across repeated compactions the list of user messages is rewritten each time: measured on 15 sessions, 1 to 26 of 59 to 186 user messages per stretch survived whole, 30 to 95% of the listed ones were paraphrased, and none from before the previous compaction was quoted. The last 2 to 7 messages before a boundary stayed unchanged. These measurements are attributed to Core’s study, not independently reproduced by this module’s editor.
+
 ## Codex
 
 **Mechanism.** In the installed version, the provider's compaction capability selects remote compaction or a local model-summary path. A separate token-budget mode starts a new context window without model/server summarization. These are different implementations. The observed current-version corpus used remote compaction with an encrypted result. In remote V2, the client sends conversation input, base instructions, tool specifications and a compaction-trigger item through its Responses stream, receives a compaction item, installs replacement history and recomputes context usage. Retries and model fallback are implemented.
@@ -40,6 +42,14 @@ The local-summary implementation instead produces a readable text summary and re
 **Observable effect and cost.** A read-only scan of the current Codex home's session files found 338 compaction records, all tagged CLI version 0.161.0-alpha.2. Every replacement history contained an encrypted compaction item; the records' plaintext summary field was empty. Aggregate replacement item types were messages, agent messages and compaction items, with no raw reasoning or tool-call/result items. Earlier transcript records remained present before those checkpoints.
 
 Remote compaction is an additional server request, with input/output and cache usage recorded when supplied by the server. Compaction time and rebuilt context affect the continuation request. Token-budget compaction makes no summarization request. Automatic limits depend on model/configuration; this version's model limit is capped at 90% of its resolved context window. A particular observed trigger, retention percentage or next-request size is not a universal limit or price.
+
+**Core study, reported 2026-10-16.** Measured on 355 compactions, the retained user text held near 260,000 characters across repeated compactions, matching the 64,000-token budget. A message larger than the budget lost its middle with no marker of the cut. This sample is separate from the earlier 338-record scan above and is attributed to Core’s study, not independently reproduced here.
+
+## Other harnesses and providers
+
+OpenCode keeps the last two user turns within 2,000 to 8,000 tokens and summarises the rest. pi keeps about the last 20,000 tokens and rolls earlier ones into a summary of at most about 13,000. Anthropic's API compaction replaces everything before its compaction block with a summary and keeps no user message unless the caller keeps a tail. OpenAI's API compaction returns the user messages followed by one encrypted compaction item, with no stated cap.
+
+These source summaries and limits are attributed to Core’s study supplied on 2026-10-16; this edit does not independently verify provider behavior or extend those measurements to other versions.
 
 ## Evidence
 
