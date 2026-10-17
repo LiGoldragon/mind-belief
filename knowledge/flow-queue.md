@@ -48,16 +48,89 @@ so what is queued for an asleep Primary waits.
 ## The code
 
 The request kinds and which of them wake, in
-`crates/flow-ethos/ethos/library.ethos` and
+`crates/flow-ethos/ethos/library.ethos` (quoted whole at Flow `67b80b3`;
+`Request` and `QueuedRequest` are in it) and
 `crates/flow-nexus/src/waking.rs`:
 
 ```ethos
-Request.[ Order.String
-          Question.String
-          Psyche.Said
-          Psyches.Vector<Said>
-          Result.String
-          Notice.String ]
+; Flow's shared types live in this leaf package. Signal and Meta-Signal
+; import them here and re-export their original Rust paths. Aspect is one
+; nominal type shared by addresses, launch profiles and meta configuration.
+
+Library
+[]
+[ FlowId.String
+  ; ethos-zero 16 cannot express Topic:Name yet; check camelCase at input.
+  Topic.String
+  ; The design type is Blake3.Bytes<32>; 16.0 uses a 64-hex-character string.
+  Blake3.String
+  Layer.[ Primary Secondary Tertiary Quaternary ]
+  Subaspect.[ Vision Intent Knowledge Operation Trial Compensation ]
+  ; Define the component types once. Source refers to these declarations;
+  ; inlining Path.String inside Source would redeclare Path globally.
+  Repository.String
+  Hash.Blake3
+  Path.String
+  Reason.String
+  Source.{ Repository Hash Path }
+  Key.{ Subaspect Topic }
+  Said.{ Context.String Verbatim.String }
+  Request.[ Order.String
+            Question.String
+            Psyche.Said
+            Psyches.Vector<Said>
+            Result.String
+            Notice.String ]
+  Aspect.[ Psyche Mind Field ]
+  Address.{ Aspect Topic Layer }
+  Recipient.[ Address Up ]
+  ; Who a queued request is from: the Address Flow resolved for its sender
+  ; (the Lock's Sender of a Deliver, the thread's metaflow of a send-tool
+  ; call), or Unknown for a request queued before Flow kept senders.
+  SentBy.[ Sender Unknown ]
+  QueuedRequest.{ SentBy Request }
+  Metaflow.{ Address
+             State.[ Awake.FlowId Asleep Ended ]
+             Past.Vector<FlowId>
+             Queue.Vector<QueuedRequest> }
+  Lock.{ Sender Address Until.Integer }
+  Process.{ Pid.Integer Started.Integer }
+  Sender.Address
+  OrdinarySocketPath.String
+  MetaSocketPath.String
+  StorePath.String
+  Start.{ OrdinarySocketPath MetaSocketPath StorePath }
+  ; Startup refusal is distinct from the ordinary/meta socket Refusal.Store.String.
+  StoreRefusal.{ Path Reason }
+  StartRefusal.[ Store.StoreRefusal ]
+  SourceRoot.String
+  ClientPath.String
+  Home.String
+  ControlSocketPath.String
+  ModelName.String
+  CodexEndpoint.{ ClientPath Home ControlSocketPath Vector<ModelName> }
+  StableCodex.CodexEndpoint
+  NextCodex.CodexEndpoint
+  HarnessKind.[ Codex Claude ]
+  KeyName.String
+  CommandSigil.String
+  InterruptKeys.Vector<KeyName>
+  SubmitKeys.Vector<KeyName>
+  HarnessProfile.{ HarnessKind Vector<CommandSigil> InterruptKeys SubmitKeys }
+  HarnessProfiles.Vector<HarnessProfile>
+  MetaAspects.Vector<Aspect>
+  MessageNexusPath.String
+  MessageNexusBinary.String
+  Nexus.{ SourceRoot
+          StableCodex
+          NextCodex
+          HarnessProfiles
+          MetaAspects
+          MessageNexusPath
+          MessageNexusBinary
+          Lease.Integer } ] ; Lease seconds; 60 before any Nexus payload.
+[]
+[]
 ```
 
 ```rust

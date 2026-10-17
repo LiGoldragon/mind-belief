@@ -52,7 +52,7 @@ A presentation meant to become a book sits between two marker lines, and
 its first line inside is one datom naming the book (field-context
 `compensation/main-flow.md`, line 42):
 
-```
+```markdown
 <!-- to-the-living:start -->
 Presentation.{ «The last response as a datom object» }
 

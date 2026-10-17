@@ -65,14 +65,221 @@ running), meta-signal-flow `a918b7d` (the revision Flow pins), Primary
 
 ## The two numbers per layer
 
-The meta wire declares them in meta-signal-flow `ethos/signal.ethos`:
+The meta wire declares them in meta-signal-flow `ethos/signal.ethos`
+(`ConfigureThreshold` and `ConfigurationChange` are in it), quoted
+whole at `a918b7d`, the revision Flow `67b80b3` pins:
 
-```
-ConfigureThreshold.{ Layer Handover.Integer Refresh.Integer }
-ConfigurationChange.[ Models.Vector<ConfigureModel>
-                       Thresholds.Vector<ConfigureThreshold>
-                       LeaveOuts.Vector<ConfigureLeaveOut>
-                       Nexus.ConfigureNexus ]
+```ethos
+; Flow privileged Signal.
+;
+; Flow is the only pane writer. Deliver and Command are the only ways
+; anything is typed into a flow's pane, and both run under Flow's own
+; per-pane lease: an exclusive hold over the whole key sequence, never
+; handed out on the wire.
+;
+; Deliver carries a typed Message addressed by FlowId; Flow renders it,
+; so the pane text always begins with its Priority head (HardAbrupt.,
+; MiddleAbrupt. or Soft.). A Letter names its MessageId first: the id the
+; sender's Message Nexus minted, carried through untouched so the
+; recipient reading the pane can Acknowledge it. Flow never interprets it. The Content may hold no control character but
+; LF and TAB (ControlCharacter carries the byte offset in the rendered
+; pane text), and a first line that is a harness command (a sigil of the
+; recipient's HarnessProfile, then a command word) is refused as
+; HarnessCommand: harness commands go through Command. Vet answers what
+; Deliver would refuse and types nothing. Deliver is idempotent on its
+; DeliveryId: a repeat answers the stored Delivery and types nothing. A
+; delivery a crash left under the lease settles Uncertain and is never
+; retried.
+;
+; Soft needs the recipient Idle or Done; every tier refuses a Blocked
+; recipient and a composer that already holds text. Transported means
+; Herdr accepted the text for the exact binding; Presented means the
+; recipient was seen reacting on the exact pane. InterruptWitness says
+; whether a HardAbrupt interrupt was seen to leave Working.
+;
+; Every query on this socket answers MetaRefused unless the peer is the
+; configured Message Nexus executable, a process in no flow's pane (the
+; owner), or a flow whose aspect is in MetaAspects.
+;
+; MessageNexusBinary is the executable identity used by Bind as Message on
+; the ordinary socket. A payload PID does not establish that identity.
+;
+; ResolvePeer names the flow a process runs in, as ResolveCaller does for
+; an ordinary connection's own peer.
+;
+; ReadEvents answers the harness events Flow holds in its Memory for one
+; flow, in the order its Reports were recorded: EventsRead, or
+; ReadEventsRejected.UnknownFlow for a FlowId Flow does not hold.
+;
+; Configure declares one configuration family whole: Models, Thresholds,
+; LeaveOuts or Nexus. The declared value replaces that family's committed
+; value in one atomic commit, so the family's effective value is always its
+; last declaration; an entry absent from the declaration is removed. It
+; answers Configured.Replaced, or Configured.Unchanged when the committed
+; value already equals the declaration and nothing is written. Each family
+; holds one entry per key: Models and Thresholds one per Layer, LeaveOuts
+; one per Address (the default leave-outs of one metaflow, which a Start
+; naming its own replaces). ConfigureRejected changes nothing:
+; DuplicateEntry when a declaration names one key twice, CodexModelsOverlap
+; when a Nexus names one model under both Codex endpoints. Configuration
+; reads the committed Nexus and the committed model, threshold and leave-out
+; vectors; it never returns defaults, and answers Unconfigured while no
+; Nexus has been declared. A seat's context is named by its launch, never
+; configured here.
+; Configure.Nexus names the actual Message executable in MessageNexusBinary.
+; Lease is the lock duration in seconds; a fresh, unconfigured default is 60.
+; A running Nexus reads its Codex endpoints when it opens, so a replaced
+; endpoint is served from the next start.
+
+; Refresh names one metaflow whose next wake starts a fresh native session,
+; composed from the module identities and leave-outs its last launch
+; recorded, instead of resuming the last flow's session. It marks that one
+; metaflow only; no model or threshold changes, and the mark clears when
+; the metaflow is recorded Awoken. It answers Refreshed with the Address,
+; and a second Refresh while the metaflow is marked answers the same.
+; RefreshRejected: Unknown (no metaflow at the Address), Awake, Ended,
+; NoLaunchProfile (its last flow has no recorded launch profile to compose
+; from), StoreRefused. Only an Asleep metaflow is accepted.
+
+; MetaBindExisting verifies each binding against Herdr before it is stored:
+; PaneAbsent (the container's Herdr session shows no agent of the binding's
+; harness at its workspace, pane and terminal), ProcessMismatch (the pane's
+; foreground processes do not include the binding's process), SessionMismatch
+; (Herdr reports another native session for the pane), SessionUnreported (a
+; Claude pane reports no native session), SessionUnproven (a Codex pane
+; reports none and no rollout whose session_meta names the session exists),
+; HerdrUnreadable (the session's snapshot or the pane's processes could not
+; be read).
+
+Signal
+[ signal_flow:[ FlowNode FlowId Aspect PowerLevel ModelName HarnessKind NativeSessionId HerdrSessionName HerdrAgentName HerdrWorkspaceId HerdrPaneId HerdrTerminalId Caller CallerResolutionRejection Event LeaveOuts ]
+  flow_ethos:[ OrdinarySocketPath MetaSocketPath SourceRoot ClientPath Home ControlSocketPath CodexEndpoint StableCodex NextCodex KeyName CommandSigil InterruptKeys SubmitKeys HarnessProfile HarnessProfiles MetaAspects MessageNexusPath MessageNexusBinary Lease Subaspect Topic Layer Address ] ]
+[ Configuration
+  Configure.ConfigurationChange
+  ConsumeReset.ResetRequest
+  RegisterFlow.FlowNode
+  MetaBindExisting.MetaBindExisting
+  Retire.FlowId
+  Deliver.DeliveryRequest
+  Vet.DeliveryRequest
+  Command.CommandRequest
+  ResolvePeer.ProcessIdentity
+  ReadEvents.FlowId
+  Refresh.Address ]
+[ Configured.ConfigureOutcome
+  Configuration.ConfigurationSnapshot
+  Unconfigured
+  ResetConsumed.ResetOutcome
+  FlowRegistered.FlowNode
+  ConfigureRejected.ConfigureRejection
+  ResetRejected.ResetRejection
+  FlowRegistrationRejected.FlowRegistrationRejection
+  BoundExisting.BoundExisting
+  BindExistingRejected.BindExistingRejection
+  FlowRetired.FlowNode
+  RetireRejected.RetireRejection
+  Delivered.Delivery
+  DeliveryRejected.DeliveryRejection
+  Vetted.FlowId
+  Commanded.CommandOutcome
+  CommandRejected.CommandRejection
+  PeerResolved.Caller
+  PeerResolutionRejected.CallerResolutionRejection
+  MetaRefused.MetaRefusal
+  Refused.Refusal
+  EventsRead.{ FlowId Vector<Event> }
+  ReadEventsRejected.[ UnknownFlow StoreRefused ]
+  Refreshed.Address
+  RefreshRejected.RefreshRejection ]
+[ ; Flow Library owns the shared configuration field types.
+  ; This record exists only for Flow's current internal launch defaults.
+  ; The process sockets are separately supplied by Library.Start; this
+  ; record is not a Configure wire payload.
+  NexusRuntimeSettings.{ OrdinarySocketPath MetaSocketPath SourceRoot StableCodex NextCodex Vector<HarnessProfile> MetaAspects MessageNexusPath MessageNexusBinary Lease }
+  ConfigureModel.{ Layer Native.String }
+  ConfigureThreshold.{ Layer Handover.Integer Refresh.Integer }
+  ; The leave-outs a metaflow's Start takes when it names none.
+  ConfigureLeaveOut.{ Address LeaveOuts }
+  ConfigureNexus.{ SourceRoot StableCodex NextCodex HarnessProfiles MetaAspects MessageNexusPath MessageNexusBinary Lease }
+  ; Keep the payload type distinct from the unit Query.Configuration variant.
+  ConfigurationChange.[ Models.Vector<ConfigureModel>
+                         Thresholds.Vector<ConfigureThreshold>
+                         LeaveOuts.Vector<ConfigureLeaveOut>
+                         Nexus.ConfigureNexus ]
+  ConfigureOutcome.[ Replaced Unchanged ]
+  ConfigurationSnapshot.{ Nexus.ConfigureNexus Models.Vector<ConfigureModel> Thresholds.Vector<ConfigureThreshold> DefaultLeaveOuts.Vector<ConfigureLeaveOut> }
+  IdempotencyKey.String
+  CreditId.String
+  CreditSelection.[ Next
+                    Specific.CreditId ]
+  ResetRequest.{ IdempotencyKey CreditSelection }
+  ResetOutcome.[ Reset NothingToReset NoCredit AlreadyRedeemed ]
+  ConfigureRejection.[ StoreRefused DuplicateEntry CodexModelsOverlap ]
+  RefreshRejection.[ Unknown Awake Ended NoLaunchProfile StoreRefused ]
+  ResetRejection.[ AdapterUnavailable ProtocolRefused ]
+  FlowRegistrationRejection.[ StoreRefused UnknownOrUnclaimedIdentity ConflictingBinding ]
+  ProcessId.Integer
+  ProcessUserId.Integer
+  ProcessStartToken.String
+  ProcessIdentity.{ ProcessId ProcessUserId ProcessStartToken }
+  HerdrServerSocketPath.String
+  HerdrServerProcessIdentity.ProcessIdentity
+  MetaFlowOwnerId.FlowId
+  HerdrTabId.String
+  WorkingDirectory.String
+  FlowLifecycle.[ RegisteredUnconfirmed ]
+  FlowContainer.{ HerdrSessionName HerdrServerSocketPath HerdrServerProcessIdentity MetaFlowOwnerId }
+  FlowBinding.{ FlowId Aspect PowerLevel ModelName HarnessKind NativeSessionId HerdrWorkspaceId HerdrPaneId HerdrTabId HerdrTerminalId HerdrAgentName ProcessIdentity WorkingDirectory }
+  MetaBindExisting.{ FlowContainer Vector<FlowBinding> }
+  BoundFlowBinding.{ FlowId FlowLifecycle }
+  FlowBindingRefusalReason.[ AmbiguousPane DeadProcess DuplicateFlowId AnatomyMismatch PaneAbsent ProcessMismatch SessionMismatch SessionUnreported SessionUnproven HerdrUnreadable ]
+  RefusedFlowBinding.{ FlowId FlowBindingRefusalReason }
+  FlowBindingResult.[ Bound.BoundFlowBinding
+                      Refused.RefusedFlowBinding ]
+  BoundExisting.{ FlowContainer Vector<FlowBindingResult> }
+  BindExistingRejection.[ ContainerUnavailable ContainerIdentityMismatch StoreRefused ]
+  RetireRejection.[ UnknownFlow AlreadyGone StoreRefused ]
+  DeliveryId.String
+  MessageId.String
+  CommandLine.String
+  ByteOffset.Integer
+  Sender.[ Flow.FlowId
+           Owner ]
+  PsycheContext.String
+  PsycheVerbatim.String
+  Content.[ Text.String
+            Psyche.{ PsycheContext PsycheVerbatim } ]
+  Letter.{ MessageId Sender Content }
+  Message.[ HardAbrupt.Letter
+            MiddleAbrupt.Letter
+            Soft.Letter ]
+  DeliveryRequest.{ DeliveryId FlowId Message }
+  InterruptWitness.[ NotRequested Observed Unobserved ]
+  DeliveryGrade.[ Transported Presented Uncertain ]
+  Delivery.{ DeliveryId FlowId InterruptWitness DeliveryGrade }
+  BodyRefusal.[ EmptyBody
+                HarnessCommand.CommandLine
+                ControlCharacter.ByteOffset ]
+  DeliveryRejection.[ UnknownFlow
+                      FlowStopped
+                      RouteUnavailable
+                      RecipientWorking
+                      RecipientBlocked
+                      ComposerOccupied
+                      BodyRefused.BodyRefusal
+                      NotDelivered
+                      PersistenceRefused
+                      FlowRetired
+                      FlowExited ]
+  HarnessCommand.[ Compact Interrupt ]
+  CommandRequest.{ FlowId HarnessCommand }
+  CommandGrade.[ Transported Observed Uncertain ]
+  CommandOutcome.{ FlowId HarnessCommand CommandGrade }
+  CommandRejection.[ UnknownFlow FlowStopped RouteUnavailable RecipientBlocked UnsupportedForHarness NotDelivered FlowRetired FlowExited ]
+  MetaRefusal.[ PeerUnknown
+                PeerNotAuthorized.Caller ]
+  Refusal.[ Store.String ]
+  ]
 ```
 
 ```sh
