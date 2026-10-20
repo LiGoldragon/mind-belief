@@ -3,7 +3,9 @@ description: The non-Primary jj publication procedure is needed.
 dependencies: [compensation-file-editing]
 ---
 
-In another repository or independent jj workspace, a commit names only the paths this flow edited: `jj commit -m 'message' path ...`.
+In another repository's shared checkout, under an edit-coordination lock, a commit names only the paths this flow edited: `jj commit -m 'message' path ...`.
+
+Read a baseline from a revision with `git show REV:PATH` or `jj file show -r REV PATH`; build and test from a pushed revision.
 
 The sequence for landing normal non-Primary jj work:
 
