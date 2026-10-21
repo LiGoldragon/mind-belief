@@ -17,6 +17,8 @@ Living messenger: the user interface through which a flow reaches the living, as
 
 Illustrated book: a book to which a model has added illustrations, deciding where each goes. Flashbook, picture book and photo book name the same thing.
 
+Drifting context: context that passes from flow to flow by handover and message and is landed in no module, so a new flow starts without it. Good drifting context is lost for want of landing; bad drifting context is meant to be lost.
+
 Witness: an observation of the thing itself — a test run, a probe,
 the code read. What someone says about the thing is a claim.
 
