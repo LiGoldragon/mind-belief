@@ -12,15 +12,16 @@ its owners change it without the living's review.
 The operation and trial kinds are retired.
 
 {% raw %}
-Target-specific text in a flat source uses `{% if claude %}`, `{% if codex %}`, or `{% if pi %}`, with `{% else %}` and `{% endif %}` alone on their lines; every other character is literal skill content.
+Target-specific text in a flat source uses `{% if claude %}`, `{% if codex %}`, or `{% if pi %}`, with `{% else %}` and `{% endif %}` alone on their lines; every other character is literal context-module content.
 {% endraw %}
 
-`user-only: true` — the skill enters only through the user prompt or a
+`user-only: true` — the context module enters only through the user prompt or a
 launcher's first turn; the flow cannot load it. It deploys as
 `disable-model-invocation: true` in Claude Code, and in Codex as a policy
-sidecar beside the skill that withholds it from the skills catalog.
+sidecar beside the on-demand skill that withholds it from the skills catalog.
 
-A role skill carries an aspect's identity and names its
-dependencies. Mark role skills user-only.
+A role context module carries an aspect's identity and names its
+dependencies. Mark role context modules user-only.
 
-A skill's reasoning and concepts live in a parallel <skill>-rationale skill, loaded by psyche-facing flows only.
+A context module's reasoning and concepts live in a parallel rationale
+context module, loaded by psyche-facing flows only.

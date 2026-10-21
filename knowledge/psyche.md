@@ -29,7 +29,7 @@ the living psyche is always called the living psyche, or the living.
 
 Descending authority:
 
-- **Spirit** — philosophy. Almost never changes. Load the spirit-core skill.
+- **Spirit** — philosophy. Almost never changes. Load the `spirit:core` context module.
 - **Intent** — declared goals and guiding rules. Broader and fewer
   than Vision. When work does not align with known Intent, escalate
   before continuing.
@@ -47,18 +47,18 @@ A notion may be drawn upon for suggestions. A flow told explicitly to implement 
 
 ## Where psyche lives
 
-- The spirit-core skill — spirit's current home; entry files will
+- The `spirit:core` context module — spirit's current home; entry files will
   carry it.
-- The vision-<topic> skill — crystallized vision: self-standing
+- The `vision:<topic>` context module — crystallized vision: self-standing
   statements, each reviewed by the living before it stands.
-- The intent-<topic> skill — crystallized intent: entered only on the
+- The `intent:<topic>` context module — crystallized intent: entered only on the
   living's explicit word.
 - `flows/<short-id>/vision/<topic>.md` — raw records, in the flow
   that heard them. Finding raw psyche means searching
   `flows/*/vision/`.
 - `flows/<short-id>/notion/<topic>.md` — raw notions, in the flow that heard them.
 - `vision-raw/<topic>.md` — legacy: the vision corpus not yet crystallized
-  heard before flows, draining into vision skills as crystallization
+  heard before flows, draining into vision context modules as crystallization
   touches it; phased out, gone when empty. Nothing new lands
   there — a raw record lives in the flow that heard it.
 
