@@ -30,9 +30,7 @@ the living psyche is always called the living psyche, or the living.
 Descending authority:
 
 - **Spirit** — philosophy. Almost never changes. Load the `spirit:core` context module.
-- **Intent** — declared goals and guiding rules. Broader and fewer
-  than Vision. When work does not align with known Intent, escalate
-  before continuing.
+- **Intent** — declared goals and guiding rules. Broader and fewer than Vision.
 - **Vision** — concrete, topic-scoped, abundant, moves constantly.
   The default level. Everything starts here unless obviously broader.
 
