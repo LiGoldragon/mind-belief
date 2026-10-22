@@ -11,9 +11,7 @@ same topic. Records are considered individually, never by file.
 One record may serve many crystallizations; one crystallization may
 draw from many topics. When readings overlap or contradict, weigh
 them as the psyche skill says: a later explicit correction carries the
-most weight, and any other tension goes to the psyche. A crystallization
-is composed only in the main flow. A subflow only gathers records that
-could qualify as candidates for crystallizing together.
+most weight, and any other tension goes to the psyche.
 
 A proposal re-articulates; it never quotes. A crystallized
 statement stands on its own words. Every crystallization refers to the raw psyche it was crystallized from, in the message of the commit that lands it and never in a skill: one line per reference, the originating flow's short id and the record file's topic, `e06e4c07 nexus` (`vision-raw <topic>` for a vision-raw record). Since crystallization moves the record into the archive, the line resolves to the `archive-` file. The archived
