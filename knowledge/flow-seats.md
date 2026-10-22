@@ -1,27 +1,39 @@
 ---
-description: The Flow 0.37.1 public CLI for metaflow state, sending and declared launches.
+description: The Flow CLI for sending, self-binding and declared launches.
 dependencies: [vision-flow, knowledge-flow]
 ---
 
-Flow 0.37.1 exposes messaging and declared launches through the ordinary `flow` CLI. Source: Flow `fc53f4f`, `crates/flow-nexus/src/sending.rs` and `waking.rs`. The running Ouranos CLI reported `flow 0.37.1` on 2026-10-19.
+The ordinary `flow` CLI takes one inline datom as one shell argument. Source: Flow `d87b15a`, `crates/flow/src/main.rs`, `crates/flow-nexus/src/sending.rs` and `waking.rs`; signal-flow `994ce15`, `src/generated/signal.rs`. These are source contracts, not evidence of an installed revision.
 
 ```sh
-flow 'Current.{ Psyche core Secondary }'
+flow 'Current.{ Mind tools Secondary }'
 flow 'Metaflows'
-flow 'Send.{ Address.{ Psyche core Secondary } Soft.Order.«The source packet is ready.» }'
+flow 'Send.{ Address.{ Mind tools Secondary } Wake Soft.Order.«Review the source packet.» }'
+flow 'Send.{ Address.{ Mind tools Secondary } Queue Soft.Notice.«The source packet is available.» }'
+flow 'Send.{ Up Wake Soft.Result.«The bounded package is ready.» }'
+flow 'BindSeat.{ Mind tools Secondary }'
 flow 'Launch.{ { Mind tools Secondary } «Review the declared task.» }'
 ```
 
-`Current` reports `Awake.<id>`, `Asleep` or `Unknown`. `Metaflows` lists addresses, their current state, prior flows and queued requests. A closed pane does not by itself mean a metaflow is absent: its state and queue belong to Flow.
+`Send` has three positions: recipient, delivery, message. The recipient is `Address.{ Aspect topic Layer }` or `Up`, the layer above in the sender's aspect and topic. Delivery is `Wake` or `Queue`. `Wake` requests wake and queue draining; `Queue` retains work without independently requesting a wake. Delivery is explicit and independent of the message kind. `DeliverAll.{ Mind tools Secondary }` requests delivery of all work already queued for that address.
 
-`Send` resolves its sender from the calling process and addresses a metaflow. Priorities are `Soft`, `MiddleAbrupt` and `HardAbrupt`. Kinds are `Order`, `Question`, `Result`, `Notice`, `Psyche` and `Psyches`. `Psyche` carries context and verbatim strings; `Psyches` carries their vector.
+The CLI also accepts a two-position `Send`, recipient followed by message, and supplies `Wake`. It sends the same typed three-position request to Nexus:
 
-Soft sends queue. Abrupt sends first attempt delivery to a live recipient; when that attempt does not return delivery success, the implementation queues the request. `Queued` confirms queue acceptance; `Delivered` confirms the abrupt delivery path, not that the recipient understood or completed the request.
+```sh
+flow 'Send.{ Address.{ Mind tools Secondary } Soft.Order.«Review the source packet.» }'
+```
 
-Orders, questions and psyche requests make an Asleep metaflow due to wake. Results and notices do not independently trigger a wake. An unknown target returns `Refused.Unknown.Address`; Send does not create an unknown metaflow.
+A message is a priority carrying a request. Priorities are `Soft`, `MiddleAbrupt` and `HardAbrupt`. Request kinds are `Order`, `Question`, `Result`, `Notice`, `Psyche` and `Psyches`. `Psyche` carries context and verbatim strings; `Psyches` carries their vector. The sender is resolved from the calling process; no command supplies a sender Flow ID.
 
-Launch composes the address's declared system and user modules. Its model comes from `Configure.Models`; module declarations come from `Configure.Metaflows`; leave-outs come from configuration. Missing declarations refuse as `Undeclared`, and an unconfigured model refuses. Launching one's own live address selects replacement of the calling flow.
+```sh
+flow 'Send.{ Address.{ Psyche core Secondary } Wake Soft.Psyche.{ «The context.» «The exact words.» } }'
+flow 'Send.{ Up Queue Soft.Psyches.[ { «First context.» «First words.» } { «Second context.» «Second words.» } ] }'
+```
 
-The selected implementation allows all routes within an aspect. Across aspects it requires the same topic and layer; Field can answer Psyche only after Psyche has sent to that Field address. That answer permission is held in process memory and is lost on Nexus restart.
+Successful admission returns `SendAccepted.{ logical-delivery-id cursor Queued }`. This witnesses durable acceptance, not native arrival, reading or completion. `ObserveSends.None` opens the sender's outcome stream; a returned cursor can resume it. An unknown recipient returns `Refused.Unknown.Address`; sending does not declare or launch an unknown metaflow. `Up` from a Primary returns `Refused.NoneAbove`.
 
-At this revision, an idle seat with no queued work stays Awake in its pane. A fresh wake uses the metaflow's declared modules, or its last launch's modules when no declaration exists. Launch success, queue acceptance and native receipt are separate observations.
+`Current` reports `Current.Awake.<id>`, `Current.Asleep` or `Current.Unknown`. `Metaflows` lists addresses, current state, prior flows and queued requests. A closed pane alone does not establish that a metaflow is absent.
+
+`BindSeat` identifies the calling native seat and binds it to the supplied address. Its only position is the address; it takes no supplied native session, process or Flow ID. An occupied address can refuse as `Taken`; an unlocated caller refuses as `Unidentified`.
+
+`Launch` has two positions: address and instruction string. It composes the address's declared system and user modules with the configured model and layer effort. Missing declarations return `StartRejected.Undeclared`; a missing configured model refuses as `NotConfigured`. Launching the caller's own live address replaces that flow. Launch success, send acceptance and native receipt are separate observations.
