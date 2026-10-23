@@ -49,6 +49,5 @@ Treat a missing-database read returning `400 no such repository` as absent and a
 Configure the canonical Beads remote with `bd dolt remote add`.
 Use `compensation-secrets` for PAT and JWK delivery.
 When Dolt needs a missing JWK credential, import it through Dolt’s supported stdin contract.
-Persistent credential import is allowed when that supported contract requires it and the task authorizes credential setup.
 Synchronize without force.
 Stop only when owner, name, or visibility cannot be derived, or an unexpected conflict or destructive repair is required.

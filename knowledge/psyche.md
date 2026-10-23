@@ -3,7 +3,7 @@ description: What agents are reading when they read psyche.
 dependencies: []
 ---
 
-The purpose of AI is to extend a psyche. A psyche is, as far as
+A psyche is, as far as
 words allow, the living system of a particular individual human mind.
 
 Agents never access the living psyche. What agents read — the
@@ -27,19 +27,14 @@ the living psyche is always called the living psyche, or the living.
 
 ## Four levels
 
-Descending authority:
-
 - **Spirit** — philosophy. Almost never changes. Load the `spirit:core` context module.
 - **Intent** — declared goals and guiding rules. Broader and fewer than Vision.
 - **Vision** — concrete, topic-scoped, abundant, moves constantly.
   The default level. Everything starts here unless obviously broader.
 
-Vision is what the living says the system should be. A question, an order, a check, a correction of a fact, or an acknowledgement is answered or carried out, and is not logged as psyche.
-
 - **Notion** — a brainstorm: an idea the living is turning over, binding nothing. The bottom level. Logged verbatim; never built on as if ruled.
 
-Less Spirit than Intent, less Intent than Vision, less Vision than Notion. Inversion signals
-unenunciated Vision or contaminated levels.
+Inversion signals unenunciated Vision or contaminated levels.
 
 A notion may be drawn upon for suggestions. A flow told explicitly to implement without asking for clarifications may rely on a notion only when its need matches the notion exactly.
 
@@ -47,10 +42,8 @@ A notion may be drawn upon for suggestions. A flow told explicitly to implement 
 
 - The `spirit:core` context module — spirit's current home; entry files will
   carry it.
-- The `vision:<topic>` context module — crystallized vision: self-standing
-  statements, each reviewed by the living before it stands.
-- The `intent:<topic>` context module — crystallized intent: entered only on the
-  living's explicit word.
+- The `vision:<topic>` context module — crystallized vision: self-standing statements.
+- The `intent:<topic>` context module — crystallized intent.
 - `flows/<short-id>/vision/<topic>.md` — raw records, in the flow
   that heard them. Finding raw psyche means searching
   `flows/*/vision/`.

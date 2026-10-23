@@ -19,8 +19,7 @@ Claude Code has three strata. CLAUDE.md and the other entry files
 are delivered as a user message after the system prompt, never
 inside it: they are middle stratum, as are system-reminder
 injections, skills loaded through the skill interface, and subflow
-briefs. Tool results and the machine's own output are bottom
-stratum.
+briefs.
 
 A skill's frontmatter says who may invoke it.
 `disable-model-invocation: true` withholds it from the model: the name is

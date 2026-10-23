@@ -21,6 +21,4 @@ workloads rather than adopting a universal number.
    all-constraints pass rate, sequential depth, task success, or budget and
    cost?
 
-The measurements should retain the current direction: preserve one coherent
-home for each statement, avoid duplicate statements, and do not proliferate
-modules without a tested reason.
+The measurements should retain the current direction: do not proliferate modules without a tested reason.

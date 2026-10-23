@@ -3,7 +3,7 @@ description: An ordinary Orchestrate Lock request must be constructed, submitted
 dependencies: []
 ---
 
-Use `orchestrate` for ordinary requests. The client takes exactly one inline Datom value and no flags. The installed wrapper supplies `ORCHESTRATE_SOCKET`; a direct client binary requires it.
+Use `orchestrate` for ordinary requests. The installed wrapper supplies `ORCHESTRATE_SOCKET`; a direct client binary requires it.
 
 Acquire a Lock. Its four positional fields are `LockName`, `FlowId`, `LockPaths`, and `LockReason`:
 

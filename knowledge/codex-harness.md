@@ -25,8 +25,7 @@ developer_instructions is a developer-role message sent beside the
 base instructions and never part of them. AGENTS.md files, from
 the Codex home and from the repository root down to the working
 directory, enter as user-role messages under an AGENTS.md
-instructions marker and cannot override base instructions. Tool
-results and the machine's own output are bottom stratum.
+instructions marker and cannot override base instructions.
 
 Codex renders a skills catalog into the session instructions: a name, a
 description and a location for each skill it discovers. The catalog is the

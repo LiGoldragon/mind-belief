@@ -17,7 +17,7 @@ A live seat outside Flow's records can bind itself:
 flow 'BindSeat.{ Mind core Secondary }'
 ```
 
-BindSeat locates the calling seat and native session, claims its ID through `flow-id`, records the native binding and takes the metaflow address under the address-taking rules. It does not accept a supplied native ID or pane. A conflicting binding or occupied address can refuse as `Taken`; an unlocated caller refuses as `Unidentified`.
+BindSeat locates the calling seat and native session, claims its ID through `flow-id`, records the native binding and takes the metaflow address under the address-taking rules. It does not accept a supplied native ID or pane.
 
 On 2026-10-19, the existing Mind core Secondary Codex seat ran this command through its own tool process and received `Bound.41fa34` from the deployed 0.37.1 Nexus. This witnesses that seat's binding only; it does not establish any other seat's registration.
 
