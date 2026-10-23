@@ -55,10 +55,6 @@ pub trait Canonicalizable { fn canonicalize(&mut self); }
 let text = person.datomize(Path::new()).protosize().textualize();
 ```
 
-```
-«she said \»no\» and left»
-```
-
 ## Canonical print
 
 A single `;` opens a comment to end of line; comments are not printed.
