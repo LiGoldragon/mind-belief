@@ -6,7 +6,7 @@ These findings were read from GitHub main objects on 2026-10-13, not from the sh
 
 ## Book procedures
 
-Neither psyche-context nor field-context holds Primary's three `subagents/book.md`, `book-page.md` and `book-reader.md` source procedures. All three are authored files in Primary's main tree under `subagents/`. A Field compensation context module referring to `subagents/book.md` does not make that module the procedure's source.
+Neither psyche-context nor field-context holds Primary's three `subagents/book.md`, `book-page.md` and `book-reader.md` source procedures. All three are authored files in Primary's main tree under `subagents/`. A Field compensation belief module referring to `subagents/book.md` does not make that module the procedure's source.
 
 Curriculum's `src/roles.rs` maps each Claude agent identifier to `workspace/subagents/<identifier>.md`, reads it if present, and puts the text in the role packet's procedure field. The renderer composes that procedure with role/standing context into the generated `.claude/agents/<identifier>.md`. `roles.datom` declares book and book-page as Claude agent aliases. It does not declare a book-reader alias: the book-page procedure names the reader file in the reader's brief. Thus the authored procedure, role declaration and generated agent file are separate sources. The generated `.claude/agents` copies are not the authored procedure.
 
@@ -18,9 +18,9 @@ Primary's aspect declarations list it in the common system selection for Psyche,
 
 ## Hyphenated names and registry topics
 
-Curriculum's current `SkillEntry::read_named` uses the Markdown filename stem as the registered module name; a source in Psyche's `vision/` directory receives a `vision-` prefix. Dependency resolution uses those names unchanged. The `knowledge:context-modules` module's registry identifier remains `knowledge-context-modules`; this path does not convert it to a camelCase topic.
+Curriculum's current `SkillEntry::read_named` uses the Markdown filename stem as the registered module name; a source in Psyche's `vision/` directory receives a `vision-` prefix. Dependency resolution uses those names unchanged. The `knowledge:belief-modules` module's registry identifier remains `knowledge-belief-modules`; this path does not convert it to a camelCase topic.
 
-Flow's shared Ethos source declares `Topic.String` and `Key.{ Subaspect Topic }`; its comment says the intended Topic:Name constraint cannot yet be expressed there. These fields are not an implemented filename-to-topic conversion rule. No authoritative conversion from a context module's hyphenated name to the proposed Topic:Name camelCase form was verified in the inspected current registry and composition paths. Such a mapping is an inquiry, rather than a guessed replacement of hyphens.
+Flow's shared Ethos source declares `Topic.String` and `Key.{ Subaspect Topic }`; its comment says the intended Topic:Name constraint cannot yet be expressed there. These fields are not an implemented filename-to-topic conversion rule. No authoritative conversion from a belief module's hyphenated name to the proposed Topic:Name camelCase form was verified in the inspected current registry and composition paths. Such a mapping is an inquiry, rather than a guessed replacement of hyphens.
 
 ## Held text through a hook
 

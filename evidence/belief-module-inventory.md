@@ -1,4 +1,4 @@
-# Context module inventory
+# Belief module inventory
 
 Observed 2026-10-14. This snapshot covers regular `skills/*.md` files in the
 three checked-out worktrees, including tracked, modified, and untracked files;
@@ -24,7 +24,7 @@ tokens; no supported tokenizer was available.
 | Repository | Module | Bytes | Lines | Words |
 | --- | --- | ---: | ---: | ---: |
 | psyche-context | intent-anatomy.md | 297 | 10 | 50 |
-| psyche-context | intent-context-modules.md | 256 | 8 | 43 |
+| psyche-context | intent-belief-modules.md | 256 | 8 | 43 |
 | psyche-context | intent-context.md | 288 | 9 | 53 |
 | psyche-context | intent-conversion.md | 372 | 11 | 69 |
 | psyche-context | intent-data.md | 559 | 12 | 95 |
@@ -42,7 +42,7 @@ tokens; no supported tokenizer was available.
 | psyche-context | vision-aspects.md | 694 | 12 | 117 |
 | psyche-context | vision-book.md | 1345 | 14 | 251 |
 | psyche-context | vision-committing.md | 431 | 12 | 77 |
-| psyche-context | vision-context-modules.md | 2170 | 57 | 231 |
+| psyche-context | vision-belief-modules.md | 2170 | 57 | 231 |
 | psyche-context | vision-crystallization.md | 1534 | 44 | 244 |
 | psyche-context | vision-datom.md | 15541 | 318 | 2565 |
 | psyche-context | vision-deployment.md | 420 | 14 | 82 |

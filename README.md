@@ -1,6 +1,6 @@
 # mind-context
 
-This repository holds the Mind aspect's authored context modules in
+This repository holds the Mind aspect's authored belief modules in
 `knowledge/` and `inquiry/`, with subject-only filenames. Stable logical
 IDs retain the `knowledge-` and `inquiry-` type prefixes. Behavioral compensations live in field-context.
 

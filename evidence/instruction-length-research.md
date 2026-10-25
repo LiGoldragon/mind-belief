@@ -2,7 +2,7 @@
 
 Research date: 2026-10-14. This is a source ledger for the accompanying
 knowledge and inquiry modules. The reviewed evidence does not establish a
-universal ideal context-module size in words, lines, or tokens.
+universal ideal belief-module size in words, lines, or tokens.
 
 ## Primary empirical studies
 

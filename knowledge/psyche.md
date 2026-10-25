@@ -27,7 +27,7 @@ the living psyche is always called the living psyche, or the living.
 
 ## Four levels
 
-- **Spirit** — philosophy. Almost never changes. Load the `spirit:core` context module.
+- **Spirit** — philosophy. Almost never changes. Load the `spirit:core` belief module.
 - **Intent** — declared goals and guiding rules. Broader and fewer than Vision.
 - **Vision** — concrete, topic-scoped, abundant, moves constantly.
   The default level. Everything starts here unless obviously broader.
@@ -40,16 +40,16 @@ A notion may be drawn upon for suggestions. A flow told explicitly to implement 
 
 ## Where psyche lives
 
-- The `spirit:core` context module — spirit's current home; entry files will
+- The `spirit:core` belief module — spirit's current home; entry files will
   carry it.
-- The `vision:<topic>` context module — crystallized vision: self-standing statements.
-- The `intent:<topic>` context module — crystallized intent.
+- The `vision:<topic>` belief module — crystallized vision: self-standing statements.
+- The `intent:<topic>` belief module — crystallized intent.
 - `flows/<short-id>/vision/<topic>.md` — raw records, in the flow
   that heard them. Finding raw psyche means searching
   `flows/*/vision/`.
 - `flows/<short-id>/notion/<topic>.md` — raw notions, in the flow that heard them.
 - `vision-raw/<topic>.md` — legacy: the vision corpus not yet crystallized
-  heard before flows, draining into vision context modules as crystallization
+  heard before flows, draining into vision belief modules as crystallization
   touches it; phased out, gone when empty. Nothing new lands
   there — a raw record lives in the flow that heard it.
 

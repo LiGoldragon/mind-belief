@@ -1,9 +1,9 @@
 ---
-description: What is known about context module size, loading, and adherence.
+description: What is known about belief module size, loading, and adherence.
 dependencies: [knowledge-context-strata, knowledge-claude-harness, knowledge-codex-harness]
 ---
 
-No reviewed evidence establishes a universal optimum for a context module in
+No reviewed evidence establishes a universal optimum for a belief module in
 words, lines, or tokens. The 500-line recommendation in Anthropic's Agent
 Skills authoring guidance is provider guidance for maintainability and
 progressive disclosure, not an experimentally verified adherence cutoff. The
@@ -45,7 +45,7 @@ includes its current `vision/ethos.md` input alongside 40 `skills/*.md`
 files. It measured bytes,
 newline lines, and `LC_ALL=C wc -w` words, including frontmatter. It did not
 measure model tokens, and the snapshot's rows and revisions are recorded in
-`evidence/context-module-inventory.md`; the landing itself changes the Mind
+`evidence/belief-module-inventory.md`; the landing itself changes the Mind
 count. The inventory snapshot records Psyche base
 `bf03117b424413cea4c3df7cf76a279127c8567d`, Mind base
 `344f6c3669d3d882f96f63ed435022a3cfed2bf4`, and Field base

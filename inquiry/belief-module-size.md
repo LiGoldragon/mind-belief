@@ -1,6 +1,6 @@
 ---
-description: Open measurements for context module size and instruction adherence.
-dependencies: [knowledge-context-module-size]
+description: Open measurements for belief module size and instruction adherence.
+dependencies: [knowledge-belief-module-size]
 ---
 
 The useful module-size threshold remains open. Measure it with matched

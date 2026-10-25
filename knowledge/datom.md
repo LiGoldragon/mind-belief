@@ -87,4 +87,4 @@ orchestrate 'Lock.{ MyLock 6329f1 [ /abs/path ] «why I hold it» }'
 
 ## A datom needs a type
 
-A datom is written only against a type that already exists. When none exists, the type is declared first, in Ethos through the `vision:ethos` context module; there is no ad hoc datom and no field label standing in for a type.
+A datom is written only against a type that already exists. When none exists, the type is declared first, in Ethos through the `vision:ethos` belief module; there is no ad hoc datom and no field label standing in for a type.
