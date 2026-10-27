@@ -20,7 +20,7 @@ Primary's aspect declarations list it in the common system selection for Psyche,
 
 Curriculum's current `SkillEntry::read_named` uses the Markdown filename stem as the registered module name; a source in Psyche's `vision/` directory receives a `vision-` prefix. Dependency resolution uses those names unchanged. The `knowledge:belief-modules` module's registry identifier remains `knowledge-belief-modules`; this path does not convert it to a camelCase topic.
 
-Flow's shared Ethos source declares `Topic.String` and `Key.{ Subaspect Topic }`; its comment says the intended Topic:Name constraint cannot yet be expressed there. These fields are not an implemented filename-to-topic conversion rule. No authoritative conversion from a belief module's hyphenated name to the proposed Topic:Name camelCase form was verified in the inspected current registry and composition paths. Such a mapping is an inquiry, rather than a guessed replacement of hyphens.
+Flow's shared Ethos source declares `Topic.String` and `Key.{ Subaspect Topic }`; its comment says the intended Topic:Name constraint cannot yet be expressed there. These fields are not an implemented filename-to-topic conversion rule. No authoritative conversion from a belief module's hyphenated name to the proposed Topic:Name camelCase form was verified in the inspected current registry and composition paths. Such a mapping is unverified, rather than a guessed replacement of hyphens.
 
 ## Held text through a hook
 
@@ -28,7 +28,7 @@ The existing `knowledge:periodic-hook-context` module already states the context
 
 Channel-wise, a command hook that has obtained held message text can return that string as `hookSpecificOutput.additionalContext`, with hookEventName UserPromptSubmit. In the previously inspected Claude 2.1.294 implementation, this becomes reminder-wrapped meta user context. Rechecking current Codex GitHub main confirms that `HookAdditionalContext` still explicitly uses the developer role and `hooks.additional_context` kind. Returning the text does not itself select a queue, resolve a recipient, atomically drain it, acknowledge consumption or preserve exactly-once delivery. The hook contract is the injection half of a bridge, not a complete held-message delivery mechanism.
 
-Current messenger-clj has durable pending records and explicit repair paths. Their existence does not establish that a prompt hook drains them. An automatic held-queue bridge and its native delivery/acknowledgment semantics were not verified and remain in inquiry. Claude's public GitHub repository is a documentation/plugin surface, not the inspected harness implementation; its exact current-main implementation equivalence is not claimed from that tree.
+Current messenger-clj has durable pending records and explicit repair paths. Their existence does not establish that a prompt hook drains them. An automatic held-queue bridge and its native delivery/acknowledgment semantics were not verified. Claude's public GitHub repository is a documentation/plugin surface, not the inspected harness implementation; its exact current-main implementation equivalence is not claimed from that tree.
 
 ## Flow Ethos and the missing vision module
 

@@ -1,7 +1,7 @@
 # Android paralinguistic transcription research evidence
 
 Checked 2026-10-14. This file preserves the primary source trail for the
-knowledge and inquiry modules. A provider's documented field or product claim
+knowledge modules. A provider's documented field or product claim
 is not an acoustic measurement, and a marketing claim is not a matched trial.
 
 ## Primary API and platform sources

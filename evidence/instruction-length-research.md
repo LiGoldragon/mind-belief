@@ -1,7 +1,7 @@
 # Instruction length and adherence research
 
 Research date: 2026-10-14. This is a source ledger for the accompanying
-knowledge and inquiry modules. The reviewed evidence does not establish a
+knowledge modules. The reviewed evidence does not establish a
 universal ideal belief-module size in words, lines, or tokens.
 
 ## Primary empirical studies

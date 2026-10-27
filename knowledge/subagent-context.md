@@ -18,7 +18,7 @@ The inspected child configuration copies `session.get_base_instructions()` into 
 
 Developer instructions are separate. The parent-derived developer instructions can be replaced by a named role's `developer_instructions`; multi-agent V2 also has `subagent_developer_instructions`. This can give main and child different developer context without changing their shared base instructions. Full-history forks carry conversation history as well; a differing child configuration does not erase already carried text.
 
-The role loader accepts skill overrides that disable inherited skills or instruction inclusion; it discards positive `enabled` entries and positive bundled/include-instructions overrides. It therefore does not establish a named-role mechanism that enables a skill hidden or disabled in the main. The remaining child-only skill-discovery and native isolation questions are in `inquiry-harness-contracts`.
+The role loader accepts skill overrides that disable inherited skills or instruction inclusion; it discards positive `enabled` entries and positive bundled/include-instructions overrides. It therefore does not establish a named-role mechanism that enables a skill hidden or disabled in the main.
 
 ## Evidence
 

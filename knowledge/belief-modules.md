@@ -4,9 +4,9 @@ dependencies: []
 ---
 
 A module's prefix names its kind: `spirit-`, `vision-`, `intent-`,
-`knowledge-`, `inquiry-` or `compensation-`.
+`knowledge-` or `compensation-`.
 Psyche owns spirit, vision and intent; these change only on the living's word.
-Mind owns knowledge of verified contracts and inquiry methods.
+Mind owns knowledge of verified contracts.
 Field owns compensation for behavior the system does not yet provide;
 its owners change it without the living's review.
 The operation and trial kinds are retired.
