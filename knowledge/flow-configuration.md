@@ -16,39 +16,14 @@ otherwise. A Start that names no leave-outs takes its address's
 default list, and a list naming another harness's leave-out is
 refused.
 
-```
-+------------+      +----------------+
-| a Start    |      | a fresh wake   |
-+-----+------+      +-------+--------+
-      |                     |
-      | names               | takes its
-      | its model           | layer's model
-      v                     v
-+-----------------------------------+
-| the model                         |
-+-----------------+-----------------+
-                  |
-                  | decides
-                  v
-+-----------------------------------+
-| the harness: Codex when a Codex   |
-| endpoint serves the model         |
-+-----------------+-----------------+
-                  |
-                  | is checked against
-                  v
-+-----------------------------------+
-| the leave-outs: the Start's own,  |
-| or the address's default list     |
-+--------+-----------------+--------+
-         |                 |
-  all of |                 | one of
-  this   |                 | another
- harness |                 | harness
-         v                 v
-+---------------+  +---------------+
-| launched      |  | refused       |
-+---------------+  +---------------+
+```mermaid
+flowchart TB
+    a["a Start"] -- "names its model" --> m["the model"]
+    w["a fresh wake"] -- "takes its layer's model" --> m
+    m -- "decides" --> h["the harness: Codex when a Codex endpoint serves the model"]
+    h -- "is checked against" --> l["the leave-outs: the Start's own, or the address's default list"]
+    l -- "all of this harness" --> x["launched"]
+    l -- "one of another harness" --> y["refused"]
 ```
 
 ## One model per layer

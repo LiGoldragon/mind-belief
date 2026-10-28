@@ -15,51 +15,14 @@ Verified on 2026-10-17 against Primary `bda70b5`, Flow `67b80b3`
 
 ## How it flows
 
-```
-+-----------------------------+
-| a flow near its limit       |
-+--------------+--------------+
-               |
-               | writes by judgment
-               v
-+-----------------------------+
-| flows/<id>/handover.md      |
-| free Markdown               |
-+--------------+--------------+
-               |
-               | is read by
-               v
-+-----------------------------+
-| the secretary, or the       |
-| successor itself            |
-+--------------+--------------+
-               |
-               | starts through
-               v
-+-----------------------------+
-| the native launcher         |
-+-------+-------------+-------+
-        |             |
-        | fills       | writes
-        v             v
-+-------------+ +-------------------+
-| first       | | continuation.json |
-| prompt:     | | flowId,           |
-| {{handover}}| | predecessor,      |
-+-------------+ | topic, metaflow   |
-                +-------------------+
-
-+-----------------------------+
-| the Flow Nexus fresh wake   |
-+--------------+--------------+
-               |
-               | hands the new flow
-               v
-+-----------------------------+
-| modules of the last launch  |
-| and the queued requests;    |
-| no handover                 |
-+-----------------------------+
+```mermaid
+flowchart TB
+    a["a flow near its limit"] -- "writes by judgment" --> b["flows/<id>/handover.md free Markdown"]
+    b -- "is read by" --> c["the secretary, or the successor itself"]
+    c -- "starts through" --> d["the native launcher"]
+    d -- "fills" --> e["first prompt: {{handover}}"]
+    d -- "writes" --> g["continuation.json flowId, predecessor, topic, metaflow"]
+    h["the Flow Nexus fresh wake"] -- "hands the new flow" --> i["modules of the last launch and the queued requests; no handover"]
 ```
 
 ## The file

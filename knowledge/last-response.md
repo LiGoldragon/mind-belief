@@ -14,36 +14,13 @@ installed and running), Primary `bda70b5`, and field-context
 
 ## How it flows
 
-```
-+------------------------------+
-| a flow's turn                |
-+--------------+---------------+
-               |
-               | ends in
-               v
-+------------------------------+
-| the last response:           |
-| free text, maybe holding     |
-| one to-the-living block      |
-+------+---------------+-------+
-       |               |
-       | is scanned    | is not read by
-       | by            |
-       v               v
-+--------------+ +-------------------+
-| book-fetch   | | flow-hook: Stop   |
-| latestBlock  | | sends only        |
-+------+-------+ | Report.Stopped    |
-       |         +---------+---------+
-       | hands the         |
-       | block to          | tells
-       v                   v
-+--------------+ +-------------------+
-| the book     | | the Flow Nexus:   |
-| page subflow | | context size,     |
-+--------------+ | then sleep or     |
-                 | drain the queue   |
-                 +-------------------+
+```mermaid
+flowchart TB
+    a["a flow's turn"] -- "ends in" --> b["the last response: free text, maybe holding one to-the-living block"]
+    b -- "is scanned by" --> c["book-fetch latestBlock"]
+    b -- "is not read by" --> d["flow-hook: Stop sends only Report.Stopped"]
+    c -- "hands the block to" --> e["the book page subflow"]
+    d -- "tells" --> g["the Flow Nexus: context size, then sleep or drain the queue"]
 ```
 
 ## The marked block

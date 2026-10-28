@@ -16,30 +16,12 @@ Claude flow that Flow started carries the hook that reports `Stopped`.
 A Codex flow, which runs no hook, and an adopted flow, started without
 Flow's hook, never report it, so their queue stays.
 
-```
-+--------------------------+
-| a request queued for a   |
-| metaflow                 |
-+------+-------------+-----+
-       |             |
-asleep |             | awake
-       v             v
-+------------+ +--------------+
-| woken: the | | waits for    |
-| whole      | | its flow to  |
-| queue in   | | report a     |
-| one prompt | | turn's end   |
-+------------+ +--+--------+--+
-                  |        |
- a Claude flow    |        | a Codex flow,
- Flow started     |        | or an adopted
-                  |        | flow
-                  v        v
-         +------------+ +------------+
-         | typed in,  | | stays      |
-         | oldest     | | queued     |
-         | first      | |            |
-         +------------+ +------------+
+```mermaid
+flowchart TB
+    a["a request queued for a metaflow"] -- "asleep" --> b["woken: the whole queue in one prompt"]
+    a -- "awake" --> c["waits for its flow to report a turn's end"]
+    c -- "a Claude flow Flow started" --> d["typed in, oldest first"]
+    c -- "a Codex flow, or an adopted flow" --> e["stays queued"]
 ```
 
 A Primary is the exception: it is never woken and never put to sleep,
