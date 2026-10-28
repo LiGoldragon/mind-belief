@@ -23,7 +23,7 @@ words. Do not paraphrase without the living reviewing the result.
 
 "Psyche" alone means the written psyche, the records named under
 Where psyche lives;
-the living psyche is always called the living psyche, or the living.
+the living person is always called the living.
 
 ## Four levels
 

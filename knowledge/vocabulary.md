@@ -26,7 +26,7 @@ Quackery: output that stands in for understanding the flow does not
 have — a claim it cannot ground, prose that sounds deep over a gap, a
 test that only confirms itself.
 
-The living: the living psyche.
+The living: the person the thinking machine extends; his psyche is what the machine is an extension of.
 
 Past: the flows a flow has remembered, and theirs in turn.
 
