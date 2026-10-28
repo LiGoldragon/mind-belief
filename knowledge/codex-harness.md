@@ -48,8 +48,7 @@ establishes a per-flow active version.
 
 The native Codex launcher reads generated
 `.agents/skills/<name>/SKILL.md` files into the first prompt and verifies
-that every selected body is present in the accepted first prompt. Source:
-`tools/codex-main-flow-launch.mjs`, read 2026-10-09.
+that every selected body is present in the accepted first prompt. Configuration is Flow's datom, read with `flow-meta 'Configuration'`.
 
 A subflow renders its own catalog and so cannot see a withheld skill. The
 base instructions also require the main session to read skill instructions

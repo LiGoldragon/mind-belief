@@ -35,9 +35,8 @@ them.
 
 ## The first prompt
 
-`config/main-flow/shared.edn` holds the template; `{{handover}}`,
-`{{modules}}` and `{{raw-psyche}}` must be present, and
-`tools/main-flow-mode/launch-config.mjs` refuses an empty handover:
+Configuration is Flow's datom, read with `flow-meta 'Configuration'`. `{{handover}}`,
+`{{modules}}` and `{{raw-psyche}}` must be present, and an empty handover is refused:
 
 ```clojure
 {:first-prompt-template "{{modules}}\n\n# Handover and topic context\n{{handover}}\n\n# Raw psyche records with context\n{{raw-psyche}}\n\n{{topic-context}}\n\n…"}
