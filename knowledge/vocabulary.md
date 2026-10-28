@@ -41,3 +41,5 @@ A defined term overrides competing terminology in the flow's own words.
 Machine: short for thinking machine.
 
 Use machine, not AI; use flow, not agent, except when reproducing an external name or quotation.
+
+Memory: The database of a Nexus is Memory, in every flow's words; a file or crate still named sema is a legacy name, said as Memory and renamed when met. Sema names only the meaning dialect.
