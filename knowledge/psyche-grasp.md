@@ -3,8 +3,8 @@ description: 'A code site needs marking with how deeply the psyche has seen and 
 dependencies: [knowledge-psyche]
 ---
 
-Term "psyche-grasp" is provisional — TO BE REVIEWED by the psyche.
-Psyche-grasp measures the psyche's understanding OF the code. Code-seniority measures alignment WITH the psyche; these are distinct.
+Term "psyche-grasp" is provisional — TO BE REVIEWED by the living.
+Psyche-grasp measures the living's understanding OF the code. Code-seniority measures alignment WITH the living; these are distinct.
 
 Levels, lowest to highest: `unseen`, `glimpsed`, `slightly-reviewed`, `understood`, `authored`.
 
@@ -12,5 +12,5 @@ Mark form — Rust: `// psyche-grasp: <level> (YYYY-MM-DD)`
 Mark form — Ethos/datom: `;; psyche-grasp: <level> (YYYY-MM-DD)`
 
 Mark when a psyche-relevant design lands at a site.
-Upgrade a mark only on real psyche contact with that site; never write a level that was not earned.
+Upgrade a mark only on real contact of the living with that site; never write a level that was not earned.
 Documentation lives in the code — external documentation falls stale.

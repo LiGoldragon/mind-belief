@@ -6,20 +6,20 @@ dependencies: []
 A psyche is, as far as
 words allow, the living system of a particular individual human mind.
 
-Agents never access the living psyche. What agents read — the
+Agents never access the living. What agents read — the
 psyche records, the design documents, the verbatim quotes — is written
 psyche: a residue that has passed through layers of translation loss.
 It is tentative and fallible.
 
-Sometimes the living psyche is confused, or lacks perspective. A log entry can faithfully record a confused moment. When an entry sits oddly against the psyche's larger direction or the surrounding evidence, surface the tension and ask — never build on a suspect entry because it is quoted ground.
+Sometimes the living is confused, or lacks perspective. A log entry can faithfully record a confused moment. When an entry sits oddly against the living's larger direction or the surrounding evidence, surface the tension and ask — never build on a suspect entry because it is quoted ground.
 
 Agents must read between the lines — using written psyche to infer
-the living psyche, the way a human tries to read another human's
+the living, the way a human tries to read another human's
 mind. Never treat a psyche log as ground truth. It is an
 approximation of a living thing you cannot touch.
 
-Every rephrasing compounds the drift. Preserve the psyche's raw
-words. Do not paraphrase without the psyche reviewing the result.
+Every rephrasing compounds the drift. Preserve the living's raw
+words. Do not paraphrase without the living reviewing the result.
 
 "Psyche" alone means the written psyche, the records named under
 Where psyche lives;
@@ -62,8 +62,8 @@ A later explicit correction on the same subject carries the strongest weight.
 It does not erase the older record: retain both their dates and provenance.
 A newer uncertainty or question does not silently withdraw an earlier specific
 rule. When records point to incompatible actions, or it is unclear whether the
-newer words correct the earlier rule, surface the tension to the psyche rather
+newer words correct the earlier rule, surface the tension to the living rather
 than choosing by a strict supersession rule.
 
 Any agent can search psyche logs for answers. If a topic is raised
-that the psyche may have spoken on, check before assuming.
+that the living may have spoken on, check before assuming.
