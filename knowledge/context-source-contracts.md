@@ -14,7 +14,7 @@ Curriculum's `src/roles.rs` maps each Claude agent identifier to `workspace/suba
 
 The authored file is `psyche-context/intent/main-flow.md`. Its kind is intent; its frontmatter declares `user-only: true`, empty dependencies, and SYSTEM composition by the launcher. It is not a separate registry module kind called metaflow. Being selected by a metaflow does not change its intent kind.
 
-Primary's aspect declarations list it in the common system selection for Psyche, Mind and Field voices. Actual selection is conditional: `mainSystemModules` uses a metaflow's explicit `modules` vector instead of that default selection when supplied. In the current declarations, Psyche Flow Primary and Secondary explicitly select intent-main-flow, while Psyche Core Primary's override selects only intent-psyche-interaction. Therefore the source/configuration does not establish that every layer and topic automatically receives intent-main-flow. System placement and actual native loading also remain distinct.
+Primary's aspect declarations list it in the common system selection for Psyche, Mind and Field voices. Actual selection is conditional: `mainSystemModules` uses a metaflow's explicit `modules` vector instead of that default selection when supplied. In the current declarations, Psyche Flow Primary and Secondary explicitly select intent-main-flow, while Psyche Core Primary's override selects only intent-living-interaction. Therefore the source/configuration does not establish that every layer and topic automatically receives intent-main-flow. System placement and actual native loading also remain distinct.
 
 ## Hyphenated names and registry topics
 
