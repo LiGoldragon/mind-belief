@@ -23,6 +23,8 @@ Release by the returned integer ID using the Orchestrate release request skill v
 
 `Released` returns the complete Lock. `ReleaseRejected` is a typed refusal.
 
+A lock whose holder has no live flow is stale: check the holder's six-character id against `herdr pane list` labels and `flow 'Metaflows'`; `orchestrate 'Release.<id>'` releases any lock by its number, whoever holds it, and a stale lock is released by whoever meets it.
+
 Observe current Locks:
 
     orchestrate 'Observe.Locks'
