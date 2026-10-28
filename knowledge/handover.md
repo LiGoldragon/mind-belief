@@ -35,35 +35,8 @@ them.
 
 ## The first prompt
 
-Configuration is Flow's datom, read with `flow-meta 'Configuration'`. `{{handover}}`,
-`{{modules}}` and `{{raw-psyche}}` must be present, and an empty handover is refused:
-
-```clojure
-{:first-prompt-template "{{modules}}\n\n# Handover and topic context\n{{handover}}\n\n# Raw psyche records with context\n{{raw-psyche}}\n\n{{topic-context}}\n\n…"}
-```
-
-```js
-if (!handover?.trim()) throw new Error('first prompt handover or topic context is required');
-const values = {modules, handover, 'raw-psyche': sources.join('\n'), 'topic-context': metaflow['topic-context'] ?? '', metaflow: `${metaflow.aspect} ${metaflow.topic} ${metaflow.layer}`};
-```
-
-`tools/claude-native-seat-refresh.py` fills the slot from its manifest:
-the role, topic, model, effort and predecessor as JSON, then each listed
-source file's body.
-
-```python
-def role_brief(manifest, sources, effort_observed=True):
-    metadata = {key: manifest.get(key) for key in ("role", "topic", "model", "effort", "predecessor")}
-    return json.dumps(metadata, ensure_ascii=False) + "\n\n" + "\n\n".join(
-        f"## Source: `{item['path']}`\n\n{item['body']}" for item in sources
-    )
-```
-
-The lineage is written apart, by `tools/native-main-flow-launch-shared.mjs`:
-
-```json
-{"flowId":"d68c82","predecessor":null,"topic":"Core","metaflow":"Psyche core Secondary: successor of 445410"}
-```
+Configuration is Flow's datom, read with `flow-meta 'Configuration'`. The first
+prompt carries the handover, the modules and the raw psyche records.
 
 ## In the Flow Nexus
 

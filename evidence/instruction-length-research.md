@@ -90,11 +90,10 @@ They establish loader mechanics, not runtime equivalence across deployments.
 | `/home/li/primary/config/context-refresh.json:1-9` | `28a78d2` | The 200000-token value is a context warning, not a module limit. |
 | `/home/li/primary/tools/field-census/README.md:20-38` | `28a78d2` | Context census supports exact/proxy totals, not per-skill contribution. |
 
-The current launch configuration pins Psyche
+The flake pins Psyche
 `bf03117b424413cea4c3df7cf76a279127c8567d`, Mind
 `0f990b61bc6f89b60f05a34cc1c4a36709406f70`, and Field
 `5a542ba4f87365df5eebda2e85338bb553c00fcb` in
-`/home/li/primary/config/main-flow/shared.edn:4-12` and
 `/home/li/primary/flake.nix:21-35`, observed 2026-10-14. These are configured
 source pins, not proof that generated or deployed runtime contexts are
 equivalent to them.
