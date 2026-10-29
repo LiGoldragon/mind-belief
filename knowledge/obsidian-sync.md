@@ -18,7 +18,7 @@ The changelog of 2026-02-27 says "Obsidian Sync now supports headless operation 
 
 It is in open beta, needs an active Sync subscription, and is installed with `npm install -g obsidian-headless`. https://obsidian.md/help/sync/headless
 
-The repository README requires Node.js 22 or later, names the client "Headless client for Obsidian Sync and Obsidian Publish", and lists no license. https://github.com/obsidianmd/obsidian-headless
+The npm package `obsidian-headless` is at 0.0.14, published 2026-07-30, license field `UNLICENSED`, engines node `>=22.0.0` (`npm view obsidian-headless version time.0.0.14 license engines`, 2026-10-29). The repository README requires Node.js 22 or later, names the client "Headless client for Obsidian Sync and Obsidian Publish", and lists no license. https://github.com/obsidianmd/obsidian-headless
 
 Sync commands (help page, as listed):
 
@@ -41,3 +41,9 @@ README: `--json` is accepted by most commands; for end-to-end encrypted vaults `
 ## Obsidian CLI
 
 It needs the desktop app: it connects to the running instance and launches the app if it is not open. It requires installer 1.12.7 or later and is enabled in Settings, General, Command line interface. Example: `obsidian search query="meeting notes"`. https://obsidian.md/help/cli
+
+The help page states Obsidian 1.12 installer and 1.12.7 or later; it does not state the version in which the CLI first appeared (a second report says 1.12.4; not witnessed here). Its command groups include Files and folders, Search, Properties, Bases, File history, Sync, Publish, Developer commands.
+
+## Local REST API plugin (third party)
+
+`obsidian-local-rest-api` 5.5.2, author Adam Coddington; its manifest.json states `minAppVersion` 1.13.1 and `isDesktopOnly: true`; the latest GitHub release is dated 2026-10-17. The README states HTTPS at `https://127.0.0.1:27124`, optional plain HTTP on 27123, API-key authentication, read/create/update/delete of vault files, patching of headings, block references and frontmatter keys, search, event streams, command execution, and a built-in MCP server at `/mcp/`. https://github.com/coddingtonbear/obsidian-local-rest-api and https://raw.githubusercontent.com/coddingtonbear/obsidian-local-rest-api/main/manifest.json
