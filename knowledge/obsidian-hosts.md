@@ -2,12 +2,12 @@
 description: What Obsidian, sync tooling and network services exist on the living's hosts is needed, for placing a vault or sync server. It ages; check the date.
 ---
 
-Witnessed 2026-10-29 on host `ouranos` by flow 2c8b6a; source /home/li/primary/flows/2c8b6a/research/hosts.md (commands recorded there). Cluster nodes other than ouranos are known from cluster data only.
+Witnessed 2026-10-29 on host `ouranos` by flow 2c8b6a; source /home/li/primary/flows/2c8b6a/research/hosts.md (commands recorded there). Updated the same day by flow 280282 from `/home/li/primary/flows/280282/research/callout-acceptance.md` and `/home/li/primary/flows/280282/research/sync-acceptance.md`. Cluster nodes other than ouranos are known from cluster data only.
 
 Obsidian on ouranos:
-- `which obsidian` finds nothing; it is not in `/run/current-system/sw/bin`, `~/.nix-profile/bin` or the system closure; no flatpak.
-- `/nix/store` has no obsidian, syncthing or couchdb entries.
-- No vault: `find /home/li -maxdepth 4 -name .obsidian` returned nothing.
+- `command -v obsidian` finds nothing; it is not in `/run/current-system/sw/bin` or `~/.nix-profile/bin`; no flatpak.
+- Isolated tests on 2026-10-29 added the nixpkgs Obsidian 1.13.4 bootstrap package and Syncthing 2.1.3 to `/nix/store`; the bootstrap loaded a separately downloaded official Obsidian 1.14.5 app archive for the rendering tests. Neither executable is in `PATH`, `/run/current-system/sw/bin` or `~/.nix-profile/bin`, and no CouchDB store path was found. `syncthing.service` remained inactive and no listener appeared on ports 22000, 21027 or 8384.
+- In the original flow 2c8b6a survey, `find /home/li -maxdepth 4 -name .obsidian` found no vault. Later isolated test vaults lived under `/tmp`; this is not a new absence probe.
 - `/home/li/.password-store/Obsidian/ligoldragon.gpg` exists, not decrypted.
 
 Services on ouranos (`systemctl list-units`, `ss -tlnp`):
