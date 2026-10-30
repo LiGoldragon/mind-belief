@@ -30,8 +30,6 @@ Never name a field in a request; the position carries the data.
 
 The current `lojix` executable exchanges one request for one reply and exits. It cannot consume ongoing subscription events. Do not use it as a streaming terminal monitor; re-query with `Query.ByDeployment` or `Query.ByEventLog`.
 
-## Owner requests
-
 ## Replies and terminal state
 
 `DeployAccepted` is admission only. It does not prove evaluation, build, copy, activation, or completion.

@@ -11,7 +11,7 @@ Acquire a Lock. Its four positional fields are `LockName`, `FlowId`, `LockPaths`
 
 `LockName` names the work; `FlowId` is the owning flow's `FLOW_ID`; `LockPaths` lists the reserved absolute paths; `LockReason` states why. Put the actual owning `FLOW_ID` only in `FlowId`, never concatenated into `LockName` merely for uniqueness or title display.
 
-Datom strings are in guillemets, «like this»; curly quotes and ASCII double quotes are not delimiters. A copyable multi-word reason example is:
+Datom strings are in guillemets, «like this»; curly quotes and ASCII double quotes are not delimiters.
 
 A single-word reason is bare.
 
