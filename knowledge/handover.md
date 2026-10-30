@@ -11,7 +11,7 @@ A successor started by Primary's native launcher receives text in the
 Flow Nexus receives its modules and the queued requests.
 
 Verified on 2026-10-17 against Primary `bda70b5`, Flow `67b80b3`
-(0.35.11), meta-signal-flow `a918b7d` and field-context `95121c6`.
+(0.35.11), meta-signal-flow `a918b7d` and field-belief `95121c6`.
 
 ## How it flows
 

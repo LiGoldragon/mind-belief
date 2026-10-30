@@ -9,7 +9,7 @@ block inside it. When a turn ends, the Flow Nexus is told only that the
 turn stopped.
 
 Verified on 2026-10-17 against Flow `67b80b3` (0.35.11, the version
-installed and running), Primary `bda70b5`, and field-context
+installed and running), Primary `bda70b5`, and field-belief
 `compensation/main-flow.md` at `95121c6`.
 
 ## How it flows
@@ -26,7 +26,7 @@ flowchart TB
 ## The marked block
 
 A presentation meant to become a book sits between two marker lines, and
-its first line inside is one datom naming the book (field-context
+its first line inside is one datom naming the book (field-belief
 `compensation/main-flow.md`, line 42):
 
 ```markdown
