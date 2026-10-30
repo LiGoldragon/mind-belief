@@ -11,7 +11,7 @@ psyche records, the design documents, the verbatim quotes — is written
 psyche: a residue that has passed through layers of translation loss.
 It is tentative and fallible.
 
-Sometimes the living is confused, or lacks perspective. A log entry can faithfully record a confused moment. When an entry sits oddly against the living's larger direction or the surrounding evidence, surface the tension and ask — never build on a suspect entry because it is quoted ground.
+Sometimes the living is confused, or lacks perspective. A log entry can faithfully record a confused moment.
 
 Agents must read between the lines — using written psyche to infer
 the living, the way a human tries to read another human's
@@ -61,9 +61,7 @@ A topic is a noun subject an agent would guess before knowing any ruling; a stat
 A later explicit correction on the same subject carries the strongest weight.
 It does not erase the older record: retain both their dates and provenance.
 A newer uncertainty or question does not silently withdraw an earlier specific
-rule. When records point to incompatible actions, or it is unclear whether the
-newer words correct the earlier rule, surface the tension to the living rather
-than choosing by a strict supersession rule.
+rule. When records point to incompatible actions, the flow takes his latest word, acts on it, and says in its report which reading it took and why. He is asked only when the two readings would cost him differently.
 
 Any agent can search psyche logs for answers. If a topic is raised
 that the living may have spoken on, check before assuming.
