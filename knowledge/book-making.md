@@ -1,6 +1,6 @@
 ---
 description: A book source is made, built or published for the living; load before writing or publishing a book.
-dependencies: [vision-book]
+dependencies: [vision:book]
 ---
 
 ## The author makes the book

@@ -1,6 +1,6 @@
 ---
 description: Work must be tracked across sessions or between agents.
-dependencies: [knowledge-secrets]
+dependencies: [knowledge:secrets]
 ---
 
 Run `bd` from the repository the work belongs to.
