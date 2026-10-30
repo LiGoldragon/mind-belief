@@ -1,6 +1,6 @@
 ---
 description: The non-Primary jj publication procedure is needed.
-dependencies: [compensation-file-editing]
+dependencies: []
 ---
 
 In another repository's shared checkout, under an edit-coordination lock, a commit names only the paths this flow edited: `jj commit -m 'message' path ...`.

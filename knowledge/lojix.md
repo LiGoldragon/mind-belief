@@ -1,6 +1,6 @@
 ---
 description: A Lojix request must be constructed, submitted, observed, or interpreted.
-dependencies: [compensation-nix-workflow]
+dependencies: []
 ---
 
 `lojix-nexus` owns durable state and two authority-tiered sockets. The ordinary contract is `signal-lojix`; the owner contract is `meta-signal-lojix`.

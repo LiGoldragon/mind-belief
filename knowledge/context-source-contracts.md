@@ -6,7 +6,7 @@ These findings were read from GitHub main objects on 2026-10-13, not from the sh
 
 ## Book procedures
 
-Neither psyche-belief nor field-belief holds Primary's three `subagents/book.md`, `book-page.md` and `book-reader.md` source procedures. All three are authored files in Primary's main tree under `subagents/`. A Field compensation belief module referring to `subagents/book.md` does not make that module the procedure's source.
+Neither psyche-belief nor field-belief holds Primary's three `subagents/book.md`, `book-page.md` and `book-reader.md` source procedures. All three are authored files in Primary's main tree under `subagents/`.
 
 Curriculum's `src/roles.rs` maps each Claude agent identifier to `workspace/subagents/<identifier>.md`, reads it if present, and puts the text in the role packet's procedure field. The renderer composes that procedure with role/standing context into the generated `.claude/agents/<identifier>.md`. `roles.datom` declares book and book-page as Claude agent aliases. It does not declare a book-reader alias: the book-page procedure names the reader file in the reader's brief. Thus the authored procedure, role declaration and generated agent file are separate sources. The generated `.claude/agents` copies are not the authored procedure.
 

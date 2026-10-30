@@ -3,13 +3,10 @@ description: The authored belief-module kinds, template syntax or loading metada
 dependencies: []
 ---
 
-A module's prefix names its kind: `spirit-`, `vision-`, `intent-`,
-`knowledge-` or `compensation-`.
+A module's prefix names its kind: `spirit-`, `vision-`, `intent-` or `knowledge-`.
 Psyche owns spirit, vision and intent; these change only on the living's word.
 Mind owns knowledge of verified contracts.
-Field owns compensation for behavior the system does not yet provide;
-its owners change it without the living's review.
-The operation and trial kinds are retired.
+The operation, trial and compensation kinds are retired.
 
 {% raw %}
 Target-specific text in a flat source uses `{% if claude %}`, `{% if codex %}`, or `{% if pi %}`, with `{% else %}` and `{% endif %}` alone on their lines; every other character is literal belief-module content.

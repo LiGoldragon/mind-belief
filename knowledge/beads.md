@@ -1,6 +1,6 @@
 ---
 description: Work must be tracked across sessions or between agents.
-dependencies: [compensation-secrets]
+dependencies: [knowledge-secrets]
 ---
 
 Run `bd` from the repository the work belongs to.
@@ -43,11 +43,11 @@ Wait and retry an embedded-Dolt lock instead of concurrent access.
 
 When repository metadata identifies the owner, repository name, and GitHub visibility, create and attach its missing DoltHub database.
 Use one database per repository, named from that metadata, with matching visibility and no suffix.
-Use `compensation-secrets` to connect `gopass show -o dolthub.com/api-token` directly to curl’s supported secret-input interface; keep the token out of agent output, arguments, and environment.
+Use `knowledge-secrets` to connect `gopass show -o dolthub.com/api-token` directly to curl’s supported secret-input interface; keep the token out of agent output, arguments, and environment.
 Authenticate `GET https://www.dolthub.com/api/v1alpha1/user` and `POST https://www.dolthub.com/api/v1alpha1/database` with `Authorization: token ...`; send `ownerName`, `repoName`, and `visibility` to create the matching database.
 Treat a missing-database read returning `400 no such repository` as absent and a creation response returning `409 already exists` as success.
 Configure the canonical Beads remote with `bd dolt remote add`.
-Use `compensation-secrets` for PAT and JWK delivery.
+Use `knowledge-secrets` for PAT and JWK delivery.
 When Dolt needs a missing JWK credential, import it through Dolt’s supported stdin contract.
 Synchronize without force.
 Stop only when owner, name, or visibility cannot be derived, or an unexpected conflict or destructive repair is required.
