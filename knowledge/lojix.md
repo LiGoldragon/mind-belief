@@ -96,6 +96,4 @@ This differs from Nexus deployment flake syntax.
 
 ## Placement
 
-Keep Lojix configuration in the operating-system source. Do not add setup-specific deployment scripts to the user environment.
-
 The supported deployment and observation interface is `lojix` and `lojix-meta`; setup-specific wrapper scripts are not an alternative interface.
