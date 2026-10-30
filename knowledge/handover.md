@@ -58,10 +58,3 @@ Its body, sent as JSON:
   observedTokens, thresholdTokens, measurementQuality, action: 'refresh-started',
   decisions: [], unresolvedReasons: […], contextSplit: {…}, windowTokens }
 ```
-
-## The compensation that stands in
-
-field-context `compensation/launch.md`, lines 24 to 28: the secretary of
-a flow at its threshold orders its successor started at once; the
-successor takes its topics from the handover; the predecessor is retired
-only after the successor has answered on a supported route.
