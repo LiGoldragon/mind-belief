@@ -4,4 +4,4 @@ dependencies: []
 placement: system
 ---
 
-Read-only exploration sub-agent for the Codex orchestrator
+Read-only exploration subflow

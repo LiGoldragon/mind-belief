@@ -13,8 +13,6 @@ Acquire a Lock. Its four positional fields are `LockName`, `FlowId`, `LockPaths`
 
 Datom strings are in guillemets, «like this»; curly quotes and ASCII double quotes are not delimiters. A copyable multi-word reason example is:
 
-    orchestrate 'Lock.{ OrchestrateDocs 444e5e [ /absolute/path/to/file ] «Clarify Lock fields» }'
-
 A single-word reason is bare.
 
 `Locked` returns the complete Lock: its integer ID, name, Flow, paths, and reason. `LockRejected` is a typed refusal. Paths are absolute.
@@ -22,8 +20,6 @@ A single-word reason is bare.
 Release by the returned integer ID using the Orchestrate release request skill variable, substituting the integer for <lock-id>. Read the typed reply.
 
 `Released` returns the complete Lock. `ReleaseRejected` is a typed refusal.
-
-A lock whose holder has no live flow is stale: check the holder's six-character id against `herdr pane list` labels and `flow 'Metaflows'`; `orchestrate 'Release.<id>'` releases any lock by its number, whoever holds it, and a stale lock is released by whoever meets it.
 
 Observe current Locks:
 

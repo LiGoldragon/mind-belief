@@ -4,4 +4,4 @@ dependencies: []
 placement: system
 ---
 
-General-purpose sub-agent for the Codex orchestrator
+General-purpose subflow

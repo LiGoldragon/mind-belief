@@ -34,9 +34,7 @@ the living person is always called the living.
 
 - **Notion** — a brainstorm: an idea the living is turning over, binding nothing. The bottom level. Logged verbatim; never built on as if ruled.
 
-Inversion signals unenunciated Vision or contaminated levels.
-
-A notion may be drawn upon for suggestions. A flow told explicitly to implement without asking for clarifications may rely on a notion only when its need matches the notion exactly.
+A notion may be drawn upon for suggestions.
 
 ## Where psyche lives
 
@@ -48,10 +46,6 @@ A notion may be drawn upon for suggestions. A flow told explicitly to implement 
   that heard them. Finding raw psyche means searching
   `flows/*/vision/`.
 - `flows/<short-id>/notion/<topic>.md` — raw notions, in the flow that heard them.
-- `vision-raw/<topic>.md` — legacy: the vision corpus not yet crystallized
-  heard before flows, draining into vision belief modules as crystallization
-  touches it; phased out, gone when empty. Nothing new lands
-  there — a raw record lives in the flow that heard it.
 
 Raw means no confirmation was asked. Vision and Notion can be
 raw; Intent and Spirit can only be crystallized.

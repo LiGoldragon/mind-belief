@@ -1,6 +1,6 @@
 ---
 description: Invoking, seizing, or reasoning about the Claude Code harness: its system prompt flags, what they replace, what persists, and where its entry files land.
-dependencies: [knowledge-context-strata]
+dependencies: []
 ---
 
 Claude Code's top stratum is the system prompt. The
@@ -39,14 +39,6 @@ A launcher has two other routes into the first turn: a SessionStart hook
 returns `initialUserMessage` or `additionalContext`, or the launcher reads
 the skill file and writes its body into the first prompt.
 
-On 2026-10-09, `claude --version` returned `2.1.294 (Claude Code)`.
-This is an observation of the installed command, not a metaflow binding.
-
-The native Claude launcher reads generated
-`.claude/skills/<name>/SKILL.md` files, sends bounded leading slash
-requests, and verifies the returned skill bodies against those files.
-Configuration is the Flow Nexus's datom, read with `flow-meta 'Configuration'`.
-
 A subflow receives no startup prompt of its own. It cannot see or load a
 withheld skill; what it must carry belongs in its brief.
 
@@ -61,10 +53,3 @@ nothing else. Tool schemas travel in the API's tools parameter and
 remain; the permission system, hooks, the scanning of subflow
 output, entry-file injection, and the model's training persist
 outside the prompt.
-
-Claude Code stops its background tasks when the host's free memory
-looks low, judging by free rather than available memory, so another
-process's build can end a long task that is nowhere near its own
-limit. A long-running process launched from the harness runs
-detached, as a transient systemd user service or scope with its own
-memory cap, and the harness watches for its end.

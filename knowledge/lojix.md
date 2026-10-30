@@ -28,210 +28,13 @@ Never name a field in a request; the position carries the data.
 
 ## Ordinary requests
 
-`Query` carries `ByNode`, `ByGeneration`, `ByDeployment`, `ByEventLog`, or `ByTestRun`.
-
-`ByNode` has, in order:
-
-1. cluster name
-2. node name
-3. optional requested generation artifact
-
-Exact witnessed form:
-
-```sh
-lojix 'Query.ByNode.{ alpha node-1 None }'
-```
-
-`ByGeneration` carries one generation identifier.
-
-`ByDeployment` carries one deployment identifier.
-
-`ByEventLog` has, in order:
-
-1. first event-log position
-2. last event-log position
-
-`ByTestRun` has, in order:
-
-1. cluster name
-2. node name
-3. optional test-run identifier
-
-`WatchDeployments` has, in order:
-
-1. optional deployment identifier
-2. optional cluster name
-3. optional node name
-
-The all-target schema-derived form is:
-
-```sh
-lojix 'WatchDeployments.{ None None None }'
-```
-
-`WatchCacheRetention` has, in order:
-
-1. optional cluster name
-2. optional node name
-
-The all-target schema-derived form is:
-
-```sh
-lojix 'WatchCacheRetention.{ None None }'
-```
-
-A successful watch request returns:
-
-```text
-Watching.{ subscription-token commit-sequence }
-```
-
-A rejection is `WatchRejected.MalformedWatch`, `WatchRejected.SubscriptionLimitReached`, or `WatchRejected.StreamUnavailable`.
-
 The current `lojix` executable exchanges one request for one reply and exits. It cannot consume ongoing subscription events. Do not use it as a streaming terminal monitor; re-query with `Query.ByDeployment` or `Query.ByEventLog`.
-
-`Unwatch` carries one subscription token.
 
 ## Owner requests
 
-`Deploy.Host` has, in order:
-
-1. cluster name
-2. node name
-3. host composition
-4. proposal source
-5. secrets input
-6. flake reference
-7. deployment transport
-8. deployment input mode
-9. deployment output selector
-10. activation backend
-11. host deploy action
-12. source revision policy
-13. optional Nix builder
-14. extra substituters
-
-`Deploy.UserEnvironment` has, in order:
-
-1. cluster name
-2. node name
-3. user name
-4. proposal source
-5. secrets input
-6. flake reference
-7. deployment transport
-8. deployment input mode
-9. deployment output selector
-10. activation backend
-11. user-environment action
-12. source revision policy
-13. optional Nix builder
-14. extra substituters
-
-A deployment transport is the positional product of:
-
-1. Nix store URI
-2. SSH destination
-
-A deployment output selector is a one-field positional product.
-
-An optional builder is `None` or `Some` carrying its string.
-
-Extra substituters are a vector of two-string positional products.
-
-Host compositions are `CompleteHost` and `BaseHost`.
-
-Host deploy actions are `Evaluate`, `Realize`, `SetBootProfile`, `ActivateNow`, `TestActivation`, and `ScheduleBootOnce`.
-
-User-environment actions are `Realize`, `SetProfile`, and `ActivateNow`.
-
-Deployment input modes are `Horizon` and `Direct`.
-
-Activation backends are `NixosSystemdBootV1` and `HomeManagerNixProfileV1`.
-
-Source revision policies are `RequireImmutable` and `ResolveAndRecord`.
-
-`Pin` has, in order:
-
-1. cluster name
-2. node name
-3. generation identifier
-4. pin label
-
-Exact witnessed form:
-
-```sh
-lojix-meta 'Pin.{ alpha node-1 42 keep }'
-```
-
-`Unpin` has, in order:
-
-1. cluster name
-2. node name
-3. pin label
-
-`Retire` has, in order:
-
-1. cluster name
-2. node name
-3. generation identifier
-
-`Test` carries `Run` or `Check`.
-
-`Test.Run` has, in order:
-
-1. cluster name
-2. node selection
-3. host selection
-4. test execution profile
-
-A node selection is bare `All` or `Nodes` carrying a node-name vector.
-
-A host selection is bare `DefaultHost` or `OnHost` carrying a node name.
-
-A test execution profile has, in order:
-
-1. test mode
-2. Nix system
-3. deployment output selector
-4. optional deployment transport
-
-`Test.Check` carries a node-name vector.
-
 ## Replies and terminal state
 
-Ordinary reply families are `Queried`, `DeploymentEventsQueried`, `TestRunsQueried`, `Watching`, `Unwatched`, `QueryRejected`, `WatchRejected`, and `UnwatchRejected`.
-
-Owner reply families are `DeployAccepted`, `DeployRejected`, `DeployTerminal`, `Pinned`, `PinRejected`, `Unpinned`, `UnpinRejected`, `Retired`, `RetireRejected`, `Tested`, and `TestRejected`.
-
-`DeployAccepted` has, in order:
-
-1. deployment identifier
-2. state marker
-
-Exact witnessed reply:
-
-```text
-DeployAccepted.{ 13 { 263 263 } }
-```
-
 `DeployAccepted` is admission only. It does not prove evaluation, build, copy, activation, or completion.
-
-`DeployTerminal` carries the terminal deployment record.
-
-A deployment terminal is bare `Succeeded`, `Rejected` carrying a terminal reason, or `Failed` carrying failure stage and terminal reason.
-
-Exact witnessed failed-activation form:
-
-```text
-Some.Failed.{ Activate ActivationFailed }
-```
-
-`Pinned` and `Unpinned` carry generation identifier, pin label, source slot, destination slot, and state marker.
-
-`Retired` carries generation identifier, generation slot, and state marker.
-
-`Tested` carries test-run identifier and state marker.
 
 After `DeployAccepted`, re-query by deployment identifier or event-log position until a terminal deployment record exists.
 
@@ -259,42 +62,6 @@ A terminal activation failure can follow a partial target change. Inspect the ta
 
 The Nexus does not accept operator requests. `lojix-write-configuration` is the datom-to-startup boundary and writes the archive consumed by `lojix-nexus`.
 
-Its single request is the `ConfigurationWriteRequest` struct with:
-
-1. ordinary socket path
-2. ordinary socket mode
-3. owner socket path
-4. owner socket mode
-5. state directory
-6. store path
-7. Nexus host
-8. test-default choice
-9. output path
-
-Exact tested form:
-
-```text
-ConfigurationWriteRequest.{ /run/fixture-lojix/ordinary.sock 432 /run/fixture-lojix/owner.sock 384 /var/lib/fixture-lojix /var/lib/fixture-lojix/configured-lojix-store.db fixture-nexus NoTestDefaults /tmp/startup.rkyv }
-```
-
-Production uses bare `NoTestDefaults`.
-
-The nested development form is `TestDefaults` with, in order:
-
-1. cluster name
-2. VM host
-3. mode
-4. flake
-5. Nix system
-6. output selector
-7. proposal source
-
-Success prints:
-
-```text
-ConfigurationWritten.[ path ]
-```
-
 ## Store inspection and reset
 
 Inspect a store read-only with exactly:
@@ -315,56 +82,11 @@ It takes no path. Store selection comes from the service-owned `LOJIX_CONFIGURAT
 
 Stop the Nexus before reset.
 
-The Nexus accepts schema v5 and refuses earlier schemas. Reset removes and recreates recognized v2/v3/v4 stores as v5. An existing v5 store is left intact.
-
-Successful reset replies are:
-
-```text
-LojixStoreReset.{ path 5 count }
-LojixStoreAlreadyCurrent.{ path 5 }
-```
-
-Reset is destructive for a recognized v2/v3/v4 store.
-
 ## Bootstrap
 
 `lojix-bootstrap` is a separate Nexus-free ingress. It accepts exactly one inline `BootstrapRun` value and does not read Nexus sockets, configuration, or store state.
 
-`BootstrapRun` is a struct with:
-
-1. request identifier
-2. bootstrap mode
-
-`BuildOnly` carries:
-
-1. direct immutable build request
-2. optional builder
-3. journal parent
-4. GC root
-5. terminal-evidence path
-
-The direct immutable build request carries:
-
-1. immutable flake
-2. Nix system
-3. output selector
-
-`BootOnce` additionally carries a test plan and either `RemoteNixosSystemdBootV1` or `LocalBootstrapV1`.
-
-`RemoteNixosSystemdBootV1` carries:
-
-1. Nix store URI
-2. SSH destination
-3. SSH policy
-4. system profile
-5. boot entries
-
-Its SSH policy carries caller-owned identity, caller-owned known-hosts, and bare `RequireKnownHost`. Ambient SSH configuration is not accepted.
-
-`LocalBootstrapV1` carries:
-
-1. system profile
-2. boot entries
+Ambient SSH configuration is not accepted.
 
 Bootstrap immutable flakes use:
 
@@ -373,8 +95,6 @@ github:owner/repository/40-lowercase-hex-revision
 ```
 
 This differs from Nexus deployment flake syntax.
-
-Terminal output is bare `BootstrapTerminal.Succeeded` or `BootstrapTerminal.Failed`. Parse or validation failure prints a redacted `BootstrapRejected.[ … ]`.
 
 ## Placement
 

@@ -4,4 +4,4 @@ dependencies: []
 placement: system
 ---
 
-Implementation sub-agent for the Codex orchestrator
+Implementation subflow
