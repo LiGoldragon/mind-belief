@@ -12,7 +12,7 @@ flow 'Send.{ Address.{ Mind tools Secondary } Wake Soft.Order.«Review the sourc
 flow 'Send.{ Address.{ Mind tools Secondary } Queue Soft.Notice.«The source packet is available.» }'
 flow 'Send.{ Up Wake Soft.Result.«The bounded package is ready.» }'
 flow 'BindSeat.{ Mind tools Secondary }'
-flow 'Launch.{ { Mind tools Secondary } «Review the declared task.» }'
+flow 'Launch.{ { Mind tools Secondary } Predecessors.0 «Review the declared task.» }'
 ```
 
 `Send` has three positions: recipient, delivery, message. The recipient is `Address.{ Aspect topic Layer }` or `Up`, the layer above in the sender's aspect and topic. Delivery is `Wake` or `Queue`. `Wake` requests wake and queue draining; `Queue` retains work without independently requesting a wake. Delivery is explicit and independent of the message kind. `DeliverAll.{ Mind tools Secondary }` requests delivery of all work already queued for that address.
@@ -36,4 +36,4 @@ Successful admission returns `SendAccepted.{ logical-delivery-id cursor Queued }
 
 `BindSeat` identifies the calling native seat and binds it to the supplied address. Its only position is the address; it takes no supplied native session, process or Flow ID. An occupied address can refuse as `Taken`; an unlocated caller refuses as `Unidentified`.
 
-`Launch` has two positions: address and instruction string. It composes the address's declared system and user modules with the configured model and layer effort. Missing declarations return `StartRejected.Undeclared`; a missing configured model refuses as `NotConfigured`. Launching the caller's own live address replaces that flow. Launch success, send acceptance and native receipt are separate observations.
+`Launch` has three positions: address, remembering and instruction string. Remembering is `Predecessors.<depth>` or `Custom.<vector of Flow IDs>`. It composes the address's declared system and user modules with the configured model and layer effort. Missing declarations return `StartRejected.Undeclared`; a missing configured model refuses as `NotConfigured`. Launching the caller's own live address replaces that flow. Launch success, send acceptance and native receipt are separate observations.
