@@ -6,7 +6,7 @@ dependencies: []
 A module's prefix names its kind: `spirit-`, `vision-`, `intent-` or `knowledge-`.
 Psyche owns spirit, vision and intent; these change only on the living's word.
 Mind owns knowledge of verified contracts.
-The operation, trial and compensation kinds are retired.
+The operation and trial kinds are retired.
 
 {% raw %}
 Target-specific text in a flat source uses `{% if claude %}`, `{% if codex %}`, or `{% if pi %}`, with `{% else %}` and `{% endif %}` alone on their lines; every other character is literal belief-module content.
