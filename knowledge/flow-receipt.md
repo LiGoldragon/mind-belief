@@ -1,13 +1,13 @@
 ---
 description: Startup and queue delivery receipts in Flow 0.37.1.
-dependencies: [vision-flow, knowledge-flow]
+dependencies: [vision-flow-nexus, knowledge-flow-nexus]
 ---
 
 Source: Flow 0.37.1, `fc53f4f`, `crates/flow-nexus/src/herdr/launch.rs`, `sending.rs` and `waking.rs`.
 
 Launch and Send receipts describe different operations. `Launch` composes declared modules and a brief into a native start. `Send` answers `Queued` or `Delivered` on its successful paths. Neither a queue receipt nor an interrupt witness proves that a recipient completed the request.
 
-During startup, Flow records the SHA-256 of each submitted prompt part and reads the native transcript for the expected session. Each observed user part must match the next recorded hash. A differing part refuses as `PartDiffers`; an accepted launch additionally requires the expected native model and effort evidence.
+During startup, the Flow Nexus records the SHA-256 of each submitted prompt part and reads the native transcript for the expected session. Each observed user part must match the next recorded hash. A differing part refuses as `PartDiffers`; an accepted launch additionally requires the expected native model and effort evidence.
 
 Claude pasted parts are checked by reconstructing the recorded `pasted_content` element. The reconstruction preserves a part's trailing newline and applies the native tag escape; it must equal the transcript element byte for byte. The former newline-stripping failure is not the selected 0.37.1 implementation.
 

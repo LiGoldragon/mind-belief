@@ -1,6 +1,6 @@
 ---
 description: How the production Flow Nexus picks a flow's model, harness and leave-outs, and where that refuses or mis-picks a Codex flow.
-dependencies: [vision-flow, vision-model-roles, knowledge-flow]
+dependencies: [vision-flow-nexus, vision-model-roles, knowledge-flow-nexus]
 ---
 
 Read on 2026-10-17 in Flow `67b80b3` (0.35.11, installed and running);
@@ -10,7 +10,7 @@ the configuration was read from the running Nexus with
 ## How a launch is configured
 
 A Start names its own model. A fresh wake has none to name, so it takes
-the one model Flow keeps for its layer. The model then decides the
+the one model the Flow Nexus keeps for its layer. The model then decides the
 harness: Codex when a configured Codex endpoint serves it, Claude
 otherwise. A Start that names no leave-outs takes its address's
 default list, and a list naming another harness's leave-out is

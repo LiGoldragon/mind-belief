@@ -1,6 +1,6 @@
 ---
-description: A flow must be launched, named, claimed or reached, or a hook or sandbox flow run, with what is deployed today rather than with Flow as designed.
-dependencies: [vision-flow]
+description: A flow must be launched, named, claimed or reached, or a hook or sandbox flow run, with what is deployed today rather than with the Flow Nexus as designed.
+dependencies: [vision-flow-nexus]
 ---
 
 ## Stated configuration and launch contract

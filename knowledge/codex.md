@@ -20,7 +20,7 @@ File decisions have no amendment variant.
 
 Permissions replies carry structured `permissions`, `scope` defaulting to `turn`, and nullable `strictAutoReview`.
 
-Approval replies never grant Flow authority or override host policy.
+Approval replies never grant the Flow Nexus authority or override host policy.
 
 Thread start and resume use a thread sandbox enum. Turn start uses structured `sandboxPolicy`.
 

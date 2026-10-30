@@ -1,6 +1,6 @@
 ---
 description: What a flow's last response is today, what reads it, and what the Flow Nexus learns when a turn ends.
-dependencies: [vision-flow]
+dependencies: [vision-flow-nexus]
 ---
 
 A flow's last response is the assistant text its harness records at the
@@ -76,7 +76,7 @@ It reads Claude transcripts only: the session comes from
 
 ## What the Flow Nexus learns at the end of a turn
 
-Flow writes `flow-hook` into every Claude flow it launches. On `Stop` it
+The Flow Nexus writes `flow-hook` into every Claude flow it launches. On `Stop` it
 reads `hook_event_name` and `FLOW_ID` and sends one datom; it reads
 nothing of the response (`crates/flow/src/hook.rs`):
 
@@ -100,12 +100,12 @@ flow 'Report.{ «d68c82» Stopped }'
 On `Stopped` the Nexus reads the context size from the Claude transcript
 (see knowledge-refresh), then types the oldest queued request into the
 flow or puts it to sleep (`crates/flow-nexus/src/waking.rs`). No path in
-Flow reads, stores or forwards the response text.
+The Flow Nexus reads, stores or forwards the response text.
 
 ## Codex
 
 A Codex rollout records the answer of a completed turn as
 `payload.last_agent_message` of its `task_complete` row, and the final
 text as a `response_item` with phase `final_answer` (knowledge-codex-rollout).
-No Primary tool and no Flow path reads either of them as a response
+No Primary tool and no Flow Nexus path reads either of them as a response
 object.

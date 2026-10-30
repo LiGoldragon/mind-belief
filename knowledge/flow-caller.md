@@ -1,17 +1,17 @@
 ---
 description: Process-based caller attribution and self-binding a live seat through Flow 0.37.1.
-dependencies: [vision-flow, knowledge-flow, knowledge-flow-seats]
+dependencies: [vision-flow-nexus, knowledge-flow-nexus, knowledge-flow-seats]
 ---
 
 Source: Flow 0.37.1, `fc53f4f`, `crates/flow-nexus/src/caller.rs` and `sending.rs`.
 
 Send, Launch and BindSeat take the calling process from the Unix socket peer. Their public payloads carry no sender Flow ID.
 
-For a Herdr caller, Flow follows process ancestry and Herdr's pane/session marks, identifies the Herdr server by its listening socket, and checks the recorded pane binding against the live Herdr snapshot. The binding includes session, pane, terminal and harness. A reused pane with a different terminal is not the old caller.
+For a Herdr caller, the Flow Nexus follows process ancestry and Herdr's pane/session marks, identifies the Herdr server by its listening socket, and checks the recorded pane binding against the live Herdr snapshot. The binding includes session, pane, terminal and harness. A reused pane with a different terminal is not the old caller.
 
-For a Codex command, Flow walks ancestry to the command process whose parent executable is a configured Codex app-server. It reads that command process's `CODEX_THREAD_ID`, then resolves the native thread through Flow's records. It does not take the thread from an arbitrary descendant's environment. When the command has no Herdr pane marks, BindSeat searches live Herdr session snapshots for that native thread.
+For a Codex command, the Flow Nexus walks ancestry to the command process whose parent executable is a configured Codex app-server. It reads that command process's `CODEX_THREAD_ID`, then resolves the native thread through the Flow Nexus's records. It does not take the thread from an arbitrary descendant's environment. When the command has no Herdr pane marks, BindSeat searches live Herdr session snapshots for that native thread.
 
-A live seat outside Flow's records can bind itself:
+A live seat outside the Flow Nexus's records can bind itself:
 
 ```sh
 flow 'BindSeat.{ Mind core Secondary }'

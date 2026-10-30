@@ -1,6 +1,6 @@
 ---
 description: When a request queued for a metaflow reaches its flow in the production Flow Nexus, and which flows never receive it today.
-dependencies: [vision-flow, knowledge-flow, knowledge-flow-caller]
+dependencies: [vision-flow-nexus, knowledge-flow-nexus, knowledge-flow-caller]
 ---
 
 Read on 2026-10-17 in Flow `67b80b3` (0.35.11, installed and running);
@@ -11,10 +11,10 @@ the queues were observed through the running Nexus at 12:55 -06:00.
 Every request is queued first. An asleep metaflow is woken by a work
 request and gets its whole queue in its first prompt. An awake
 metaflow's queue waits for its flow to report the end of a turn
-(`Stopped`); Flow then types the oldest request into its pane. Only a
-Claude flow that Flow started carries the hook that reports `Stopped`.
+(`Stopped`); the Flow Nexus then types the oldest request into its pane. Only a
+Claude flow that the Flow Nexus started carries the hook that reports `Stopped`.
 A Codex flow, which runs no hook, and an adopted flow, started without
-Flow's hook, never report it, so their queue stays.
+the Flow Nexus's hook, never report it, so their queue stays.
 
 ```mermaid
 flowchart TB
@@ -152,7 +152,7 @@ fn wake_is_due(&self, metaflow: &Metaflow) -> bool {
 
 An awake flow's queue is typed in by `settle_stopped`, which runs when a
 `Report` of `Stopped` arrives. The report comes from `flow-hook`, which
-Flow puts in the settings of each Claude flow it launches
+the Flow Nexus puts in the settings of each Claude flow it launches
 (`crates/flow-nexus/src/herdr/launch.rs`):
 
 ```rust
@@ -171,14 +171,14 @@ let mut settings = serde_json::json!({
 At 12:55 -06:00, `flow 'Metaflows'` showed two awake metaflows with
 work waiting:
 
-| Metaflow | Flow | Waiting |
+| Metaflow | Flow Nexus | Waiting |
 |---|---|---|
 | Psyche flow Secondary | 17c364, Codex, its pane idle | two Orders from Psyche ethos Secondary |
 | Psyche core Secondary | d68c82, adopted Claude | one Notice from Psyche flow Secondary |
 
 Earlier that day Field delivered 17c364's queued requests by hand: it
-sent Flow a `Report` of `Stopped` after each turn 17c364 had really
-finished, and Flow typed the oldest request. That is recorded in
+sent the Flow Nexus a `Report` of `Stopped` after each turn 17c364 had really
+finished, and the Flow Nexus typed the oldest request. That is recorded in
 `/home/li/primary/flows/42265e/log.md` and
 `/home/li/private-repos/flow-evidence/42265e/direct-starter-retry-20261017/idle-drain-17c364/`.
 

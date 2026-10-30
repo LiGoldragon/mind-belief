@@ -1,6 +1,6 @@
 ---
 description: What a handover is today, who writes it, and how a successor flow receives it.
-dependencies: [vision-flow, knowledge-refresh]
+dependencies: [vision-flow-nexus, knowledge-refresh]
 ---
 
 A handover today is a Markdown file a flow writes by its own judgment,
@@ -35,7 +35,7 @@ them.
 
 ## The first prompt
 
-Configuration is Flow's datom, read with `flow-meta 'Configuration'`. The first
+Configuration is the Flow Nexus's datom, read with `flow-meta 'Configuration'`. The first
 prompt carries the handover, the modules and the raw psyche records.
 
 ## In the Flow Nexus

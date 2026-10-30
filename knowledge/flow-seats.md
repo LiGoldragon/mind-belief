@@ -1,6 +1,6 @@
 ---
 description: The Flow CLI for sending, self-binding and declared launches.
-dependencies: [vision-flow, knowledge-flow]
+dependencies: [vision-flow-nexus, knowledge-flow-nexus]
 ---
 
 Source: Flow `d87b15a`, `crates/flow/src/main.rs`, `crates/flow-nexus/src/sending.rs` and `waking.rs`; signal-flow `994ce15`, `src/generated/signal.rs`. These are source contracts, not evidence of an installed revision.

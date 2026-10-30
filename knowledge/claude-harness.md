@@ -45,7 +45,7 @@ This is an observation of the installed command, not a metaflow binding.
 The native Claude launcher reads generated
 `.claude/skills/<name>/SKILL.md` files, sends bounded leading slash
 requests, and verifies the returned skill bodies against those files.
-Configuration is Flow's datom, read with `flow-meta 'Configuration'`.
+Configuration is the Flow Nexus's datom, read with `flow-meta 'Configuration'`.
 
 A subflow receives no startup prompt of its own. It cannot see or load a
 withheld skill; what it must carry belongs in its brief.

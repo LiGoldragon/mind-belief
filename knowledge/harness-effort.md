@@ -30,7 +30,7 @@ In this actual catalog, aliases fable, opus, sonnet and haiku resolved respectiv
 
 ## The configured Haiku row
 
-Configuration is Flow's datom, read with `flow-meta 'Configuration'`. The inspected generated Claude trivial/tester agent definitions also set `model: haiku` and `effort: medium`. These inspected definitions agree with the living's 2026-10-12 “Layer and model equivalence” record in `flows/d68c82/vision/model-roles.md`. That record names medium for Claude throughout and low for OpenAI's Luna Quaternary. It does not establish low for Haiku.
+Configuration is the Flow Nexus's datom, read with `flow-meta 'Configuration'`. The inspected generated Claude trivial/tester agent definitions also set `model: haiku` and `effort: medium`. These inspected definitions agree with the living's 2026-10-12 “Layer and model equivalence” record in `flows/d68c82/vision/model-roles.md`. That record names medium for Claude throughout and low for OpenAI's Luna Quaternary. It does not establish low for Haiku.
 
 The old `knowledge-layer-models` table is absent from current mind-belief main: `f84525c8421f6b1df5e6fc6edef0465cf5008ba9` deleted it and redirected lookups to `vision-model-roles`. An old checkout copy is not a current source rule. This knowledge records the observed configuration; the canonical living correspondence remains in `vision-model-roles`. No living wording or shared dirty checkout was changed. This is not an audit of every live process override.
 
