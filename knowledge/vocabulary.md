@@ -19,10 +19,6 @@ Illustrated book: a book to which a model has added illustrations, deciding wher
 
 Drifting context: context that passes from flow to flow by handover and message and is landed in no module, so a new flow starts without it. Good drifting context is lost for want of landing; bad drifting context is meant to be lost.
 
-Quackery: output that stands in for understanding the flow does not
-have — a claim it cannot ground, prose that sounds deep over a gap, a
-test that only confirms itself.
-
 The living: the person the thinking machine extends; his psyche is what the machine is an extension of.
 
 Past: the flows a flow has remembered, and theirs in turn.
