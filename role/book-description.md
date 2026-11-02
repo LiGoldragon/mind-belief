@@ -4,4 +4,4 @@ dependencies: []
 placement: system
 ---
 
-Publish a fresh living-messenger presentation from the calling flow's transcript.
+Publish a living-messenger presentation from the source file the calling flow wrote and named by path.
