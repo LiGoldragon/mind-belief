@@ -4,4 +4,4 @@ dependencies: []
 placement: system
 ---
 
-Update the living's page from the calling flow's transcript.
+Update the living's page from the file the calling flow wrote and named by path.
