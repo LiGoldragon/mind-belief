@@ -1,11 +1,21 @@
 ---
 description: How a book reaches the living: what its source holds, who publishes it, and how it is built.
-dependencies: [vision-presentation, vision-proposal, vision-review]
+dependencies: [vision-presentation]
 ---
 
 ## Who does what
 
 The author writes the source and hands its path to the bookmaker, the flow whose role is publishing; the bookmaker builds the page, publishes it and answers with the title and the link; the author gives the living the title and the link, in one line. A redo is the same source path handed again: the bookmaker replaces the edition and resolves the comment threads the source answers. Nobody but the bookmaker publishes. The bookmaker's address is the roster's; how a flow sends to it is knowledge:flow-messaging's.
+
+## What a proposal shows
+
+A removed line is shown as the text it was, beside the line that makes it unnecessary, and nothing else is made of it: it is not drawn, not summarised and not shown as a state of anything. A replaced line shows its removal and its addition together, and only the changed words are marked. A module shown whole, as it stands, situates the landing; a new module shows whole as added, under the path it will have; a deleted module shows whole as removed with a Destroy or Archive mark. A dependency changed shows in the front matter.
+
+Code shown is complete: every name it uses is declared in the proposal, a method with its trait and that trait's ethos. Every type a proposal names is in the proposal, added to a module or shown as it already stands, in full. Code not yet settled is marked tentative. A rule said as "never" or "always" is shown as the code that enforces it. A question between alternative lines shows each alternative with the exact lines it lands. A versioned module is self-contained and names its version once, in its description.
+
+A proof, a test, a milestone or a sequence of work is an order and goes to a bead; written into a proposal it is a vision impurity. The records a proposal draws from live in an unrendered reference file beside it, one per book, in a references/ directory, archived with the landing when the proposal is accepted.
+
+A figure is a line of a belief module, drawn, and a presentation shows one only as its module holds it or as a proposal lands it. A figure shows one thing, readable in seconds on a phone: a box is a thing or a collection; an arrow is a one-way relation carrying a verb, so that box, verb, box reads as a sentence; nearness and enclosure are kinship; top to bottom is order; colour carries a role or is absent, and means the same in every figure.
 
 ## What a source holds
 
