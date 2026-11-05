@@ -18,9 +18,6 @@ the living, the way a human tries to read another human's
 mind. Never treat a psyche log as ground truth. It is an
 approximation of a living thing you cannot touch.
 
-Every rephrasing compounds the drift. Preserve the living's raw
-words. Do not paraphrase without the living reviewing the result.
-
 "Psyche" alone means the written psyche, the records named under
 Where psyche lives;
 the living person is always called the living.
