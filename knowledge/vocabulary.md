@@ -17,9 +17,9 @@ Transcript: the file the harness writes holding one thread from beginning to end
 
 Living messenger: the user interface through which a flow reaches the living, asynchronous to the chat; a presentation is one message in it.
 
-Illustrated book: a book to which a model has added illustrations, deciding where each goes. Flashbook, picture book and photo book name the same thing.
+Illustrated book: a book to which a model has added illustrations, deciding where each goes.
 
-Drifting context: context that passes from flow to flow by handover and message and is landed in no module, so a new flow starts without it. Good drifting context is lost for want of landing; bad drifting context is meant to be lost.
+Drifting context: context that passes from flow to flow by handover and message and is landed in no module, so a new flow starts without it.
 
 The living: the person the thinking machine extends; his psyche is what the machine is an extension of.
 
@@ -31,12 +31,8 @@ Vision impurity: a working instruction (what to do now, in what order,
 at what scope, on which project, through which dispatch) logged as a
 vision record.
 
-A defined term overrides competing terminology in the flow's own words.
-
 Machine: short for thinking machine.
 
-Use machine, not AI; use flow, not agent, except when reproducing an external name or quotation.
-
-Memory: The database of a Nexus is Memory, in every flow's words; a file or crate still named sema is a legacy name, said as Memory and renamed when met. Sema names only the meaning dialect.
+Memory: The database of a Nexus is Memory, in every flow's words. Sema names only the meaning dialect.
 
 Evolution is the dynamic procedure of improvement and redeployment: the system improving itself and deploying the improvement.

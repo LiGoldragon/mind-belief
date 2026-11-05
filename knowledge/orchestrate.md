@@ -9,9 +9,9 @@ Acquire a Lock. Its four positional fields are `LockName`, `FlowId`, `LockPaths`
 
     orchestrate 'Lock.{ <LockName> <FlowId> [ <absolute-path> ... ] <LockReason> }'
 
-`LockName` names the work; `FlowId` is the owning flow's `FLOW_ID`; `LockPaths` lists the reserved absolute paths; `LockReason` states why. Put the actual owning `FLOW_ID` only in `FlowId`, never concatenated into `LockName` merely for uniqueness or title display.
+`LockName` names the work; `FlowId` is the owning flow's `FLOW_ID`; `LockPaths` lists the reserved absolute paths; `LockReason` states why.
 
-Datom strings are in guillemets, «like this»; curly quotes and ASCII double quotes are not delimiters.
+Datom strings are in guillemets, «like this».
 
 A single-word reason is bare.
 
@@ -25,6 +25,5 @@ Observe current Locks:
 
     orchestrate 'Observe.Locks'
 
-`Observed` carries one complete point-in-time Lock snapshot. It is not a subscription.
+`Observed` carries one complete point-in-time Lock snapshot.
 
-Treat a client failure as a failed operation.

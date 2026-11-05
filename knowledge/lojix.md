@@ -7,7 +7,7 @@ dependencies: []
 
 Use `lojix` on the ordinary socket for `Query`, `WatchDeployments`, `WatchCacheRetention`, and `Unwatch`.
 
-Use `lojix-meta` on the owner socket for `Deploy`, `Pin`, `Unpin`, `Retire`, and `Test`. The owner contract is not optional.
+Use `lojix-meta` on the owner socket for `Deploy`, `Pin`, `Unpin`, `Retire`, and `Test`.
 
 Use `LOJIX_ORDINARY_SOCKET` and `LOJIX_OWNER_SOCKET`; neither socket has a default path.
 
@@ -24,15 +24,13 @@ Some.Value
 «alpha beta»
 ```
 
-Never name a field in a request; the position carries the data.
-
 ## Ordinary requests
 
-The current `lojix` executable exchanges one request for one reply and exits. It cannot consume ongoing subscription events. Do not use it as a streaming terminal monitor; re-query with `Query.ByDeployment` or `Query.ByEventLog`.
+The current `lojix` executable exchanges one request for one reply and exits; it is queried again with `Query.ByDeployment` or `Query.ByEventLog`.
 
 ## Replies and terminal state
 
-`DeployAccepted` is admission only. It does not prove evaluation, build, copy, activation, or completion.
+`DeployAccepted` is admission only.
 
 After `DeployAccepted`, re-query by deployment identifier or event-log position until a terminal deployment record exists.
 
@@ -68,8 +66,6 @@ Inspect a store read-only with exactly:
 lojix-inspect-store 'InspectStore.{ /tmp/lojix.sema }'
 ```
 
-Inspection does not create or register missing tables.
-
 Reset accepts only:
 
 ```sh
@@ -84,16 +80,12 @@ Stop the Nexus before reset.
 
 `lojix-bootstrap` is a separate Nexus-free ingress. It accepts exactly one inline `BootstrapRun` value and does not read Nexus sockets, configuration, or store state.
 
-Ambient SSH configuration is not accepted.
-
 Bootstrap immutable flakes use:
 
 ```text
 github:owner/repository/40-lowercase-hex-revision
 ```
 
-This differs from Nexus deployment flake syntax.
-
 ## Placement
 
-The supported deployment and observation interface is `lojix` and `lojix-meta`; setup-specific wrapper scripts are not an alternative interface.
+The supported deployment and observation interface is `lojix` and `lojix-meta`.
