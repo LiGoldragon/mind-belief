@@ -5,7 +5,7 @@ dependencies: []
 
 ## Reading usage
 
-`/home/li/primary/tools/codex-usage` prints usage left, when the window
+`/git/github.com/LiGoldragon/makeshift-tools/codex-usage` prints usage left, when the window
 resets, and every available reset with its id and expiry, soonest first.
 `--json` prints the raw reply. It is read-only.
 
@@ -13,7 +13,7 @@ It starts `codex app-server` and calls `account/rateLimits/read` with the
 `~/.codex` login. The binary must be a real codex-cli 0.161 or later run directly, since
 the `codex` wrapper on PATH adds `--remote`, which `app-server` rejects.
 The tools try `codex` on PATH, then the newest
-`/nix/store/*-codex-0.1*/bin/codex`; `CODEX_BIN` overrides both. On
+`/nix/store/*-codex-0.1*/bin/codex`; `--codex PATH` overrides both. On
 2026-11-03, `/nix/store/q25axkvjdkwhk8lml81sqrm2pikvhgw6-codex-0.163.0/bin/codex`
 worked.
 
@@ -54,14 +54,14 @@ Observed 2026-11-03: three resets listed, expiring 6 Nov 17:32, 30 Nov
 14:15 and 1 Dec 16:44 (local); the weekly window resets 4 Nov 05:53.
 
 1. Run `codex-usage`; keep its output as the before state.
-2. Run `/home/li/primary/tools/codex-redeem-reset <id>` with that reset's id.
+2. Run `/git/github.com/LiGoldragon/makeshift-tools/codex-redeem-reset <id>` with that reset's id.
 3. It prints the outcome and the after state; the after state is the
    witness of what the redemption did. Report both states.
 
 `codex-redeem-reset` refuses unless the id is available and the soonest to
 expire, and unless either `ordinaryUsageAllowed` is `false` or a window is
-at least `CODEX_RESET_MIN_USED_PERCENT` used (default 95), or the reset
-expires within `CODEX_RESET_EXPIRY_WINDOW_MINUTES` (default 90) and the
+at least `--min-used-percent` used (default 95), or the reset
+expires within `--expiry-window-minutes` (default 90) and the
 week is at least 1% used. It prints which condition allowed it. It calls
 `account/rateLimitResetCredit/consume` with a fresh idempotency key and the
 credit id. Outcomes: `reset`, `nothingToReset`, `noCredit`,
