@@ -8,7 +8,7 @@ dependencies: [vision-book]
 The publisher builds the source it is handed and publishes the page. The builder renders what it is given and enforces nothing.
 
 ```sh
-bb tools/book-build.clj \
+bb /git/github.com/LiGoldragon/makeshift-tools/book-build.clj \
   /abs/book.md out.html \
   --figures /abs/figures
 ```
