@@ -3,7 +3,9 @@ description: One of our own terms is used, or a term is being defined.
 dependencies: []
 ---
 
-Flow: one run of a metaflow, from launch to end: its main thread and every subflow it starts; also the Nexus that manages flows.
+Flow: one run of a permaflow, from launch to end: its main thread and every subflow it starts; also the Nexus that manages flows.
+
+Permaflow: one persistent address, { Aspect topic Model }, with its succession of flows; said metaflow until the metaflow became several complexes defined together.
 
 Flow identity: the canonical short `FLOW_ID` shared by that whole flow.
 
