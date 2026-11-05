@@ -5,7 +5,11 @@ dependencies: []
 
 Flow: one run of a permaflow, from launch to end: its main thread and every subflow it starts; also the Nexus that manages flows.
 
-Permaflow: one persistent address, { Aspect topic Model }, with its succession of flows; said metaflow until the metaflow became several complexes defined together.
+Permaflow: one persistent address, { Aspect topic Model }, with its succession of flows.
+
+Metaflow: several flows arranged together: members, routes and a speaker; addressed by Launch and Send.
+
+Complex: the being a person names, my accountant, my coder: a named set of metaflows and the relationships between them, defined by its purpose and beliefs, with a speaker; it runs on a host, and may have instances, each the complex run on a host. The ladder: flow, permaflow, metaflow, complex.
 
 Flow identity: the canonical short `FLOW_ID` shared by that whole flow.
 
