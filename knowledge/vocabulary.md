@@ -23,6 +23,10 @@ Drifting context: context that passes from flow to flow by handover and message 
 
 The living: the person the thinking machine extends; his psyche is what the machine is an extension of.
 
+Psyche: the living system of one human mind, as far as words allow; written psyche, the records, is a residue of it, tentative and fallible, and "psyche" alone means the written psyche.
+
+Raw: a record on which no confirmation was asked. Vision and notion can be raw; intent and spirit are only crystallized.
+
 Past: the flows a flow has remembered, and theirs in turn.
 
 Base context: the harness-built portion of the top stratum — the instructions the harness itself composes ahead of everything authored here. Vendor parlance: system prompt.
