@@ -24,6 +24,10 @@ the moved lines, as they stand
 
 The container's state is `proposed` or `landed`; `landed` shows the dark shade.
 
+## An account
+
+An account's source is prose: the `Presentation.{ «title» }` line, the `# title`, then paragraphs under level-two headings of its own, with `mermaid` fences and labelled code fences where the account needs them; it shows no module and lands nothing. The gist is its first paragraph. Where a vision proposal truly arises in it, that part is a `### Proposal N: title · repo › path` section as any proposal has, and only that part is marked.
+
 ## Change marks
 
 In a change every line opens with `- ` (red, removed), `+ ` (green, added) or two spaces (unchanged, shown for place). Colour comes from these marks and the move container alone. Inside a line, `[-removed-]` and `[+added+]` mark changed words.
