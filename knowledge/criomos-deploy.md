@@ -25,8 +25,9 @@ from the environment. `clients/meta/src/lib.rs:13,39–52` uses
 absolute Horizon proposal before sending it (`clients/meta/src/lib.rs:92–110`).
 
 The immutable CLI contract declares the wire shape at
-`meta-signal-lojix/ethos/signal.ethos:30–31`: cluster, node, and (for
-UserEnvironment) user, followed by proposal, secrets input, flake reference,
+`meta-signal-lojix/ethos/signal.ethos:30–31`: cluster, node, HostComposition
+for Host or user for UserEnvironment, followed by proposal, secrets input, flake
+reference,
 `DeploymentTransport`, input mode, output selector, activation backend, action,
 source policy, optional builder, and extra substitutors. The installed Rust
 records at `src/runtime_model.rs:507–523` (Host) and `:525–541`
