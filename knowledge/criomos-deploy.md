@@ -1,179 +1,173 @@
 ---
-description: Lojix deployments used by CriomOS and its Home environment.
-dependencies: [knowledge:lojix, knowledge:secrets]
+description: A change to a host or to the user environment is made, checked and switched in through Lojix.
+dependencies: [knowledge:lojix, knowledge:criomos, knowledge:secrets]
 ---
 
-## A deployment request
+## From commit to generation switch
 
-`lojix-meta` speaks the owner contract. `lojix` speaks the ordinary query
-contract. Each client takes one datom argument and returns one reply.
-
-```sh
-LOJIX_OWNER_SOCKET=/run/lojix/meta.sock lojix-meta 'Deploy.UserEnvironment.{ goldragon ouranos li /nix/store/dspiiriyy2zprxsxz4iiil2jlhk38qwz-horizon-definition/horizon-definition.datom SecretsDirectory./git/github.com/LiGoldragon/goldragon/secrets github:LiGoldragon/CriomOS?rev=9c047de0dbb3a51000a53c4f63fcbc7f55af45a9 { ssh-ng://li@ouranos.goldragon.criome li@ouranos.goldragon.criome } Horizon { homeConfigurations.li.activationPackage } HomeManagerNixProfileV1 ActivateNow RequireImmutable Some.@/etc/nix/machines [] }'
+```mermaid
+flowchart TB
+  a["a commit"]
+  b["a revision"]
+  c["a CriomOS commit"]
+  d["a CriomOS revision"]
+  e["a Lojix deployment"]
+  f["a generation"]
+  a -- "is checked and pushed as" --> b
+  b -- "is pinned by the lock of" --> c
+  c -- "is pushed as" --> d
+  d -- "is named by" --> e
+  e -- "switches in" --> f
 ```
 
-The `Deploy.UserEnvironment` positions are cluster, node, user, absolute
-Horizon proposal, secrets input, immutable flake reference, the explicit
-`{ nix-store-uri ssh-destination }` pair, mode, output selector, profile
-backend, action, revision policy, builder, and extra substituters. The
-approved user pair above is user-scoped; a root transport is not a substitute.
+The owning repository is CriomOS for a host, CriomOS-home for the user environment, the cluster's own repository for the cluster data. The consumer pins a producer with `nix flake update <input>`; the URL stays bare. Nothing is installed, linked, started or edited on a machine by hand.
 
-The installed clients accept one inline Datom argument and resolve the socket
-from the environment. `clients/meta/src/lib.rs:13,39–52` uses
-`LOJIX_OWNER_SOCKET`; `clients/ordinary/src/lib.rs:9,35–48` uses
-`LOJIX_ORDINARY_SOCKET`. The meta client actualizes the request and reads the
-absolute Horizon proposal before sending it (`clients/meta/src/lib.rs:92–110`).
-
-The immutable CLI contract declares the wire shape at
-`meta-signal-lojix/ethos/signal.ethos:30–31`: cluster, node, HostComposition
-for Host or user for UserEnvironment, followed by proposal, secrets input, flake
-reference,
-`DeploymentTransport`, input mode, output selector, activation backend, action,
-source policy, optional builder, and extra substitutors. The installed Rust
-records at `src/runtime_model.rs:507–523` (Host) and `:525–541`
-(UserEnvironment) are internal materialized representations: each adds
-`horizon_definition_option` after input mode, so they are not a CLI positional
-shape. The nested types are declared at
-`src/runtime_model.rs:82–85` (store URI and SSH destination), `:92–98`
-(output selector, activation backend), and `:110–113` (secrets input).
-`src/schema_runtime.rs:1793–1799` maps UserEnvironment Realize and SetProfile
-to ProfileOnly, and ActivateNow to LiveActivation.
-
-`Realize` is build and materialization only. It does not set the profile or
-run activation. `ActivateNow` sets the Home Manager profile and then runs the
-materialized `activate` program. Observe the durable terminal record:
-
-```sh
-lojix 'Query.ByDeployment.{ 240 }'
-lojix 'Query.ByDeployment.{ 241 }'
+```datom
+; a Realize of the CriomOS revision R
+; P: the proposal, S: the secrets, R: the revision
+; U: example-user@example-node.example-cluster.example
+Deploy.UserEnvironment.{
+   example-cluster example-node example-user
+   P
+   SecretsDirectory.S
+   github:example-owner/CriomOS?rev=R
+   { ssh-ng://U U }
+   Horizon
+   { homeConfigurations.example-user.activationPackage }
+   HomeManagerNixProfileV1
+   Realize            ; then ActivateNow
+   RequireImmutable
+   Some.@/etc/nix/machines
+   [] }
 ```
 
-These ordinary-client commands require the configured `LOJIX_ORDINARY_SOCKET`
-inherited by the observed shell; the command text does not select the owner
-socket. The completed records were:
+`P` is the absolute `horizon-definition.datom` the cluster data check yields, `S` the cluster's secrets directory, `R` a pushed 40-hex CriomOS revision.
 
-```text
-240: UserEnvironment.Realize, ProfileOnly, Completed, Some.Succeeded
-241: UserEnvironment.ActivateNow, LiveActivation, Completed, Some.Succeeded
+## A Lojix deployment
+
+```mermaid
+flowchart TB
+  r["Deploy, Realize"]
+  h["DeployAccepted"]
+  t["a terminal"]
+  a["Deploy, ActivateNow"]
+  g["a Current generation"]
+  l["the live target"]
+  r -- "is answered by" --> h
+  h -- "is queried until" --> t
+  t -- "Succeeded, permits" --> a
+  a -- "ends in" --> g
+  g -- "is checked against" --> l
 ```
 
-The owner admissions were:
-
-```text
-DeployAccepted.{ 240 { 5301 5301 } }
-DeployAccepted.{ 241 { 5322 5322 } }
+```ethos
+; meta-signal-lojix: the owner's request
+DeploySubmission.[
+   UserEnvironment.UserEnvironmentDeployment
+   Host.HostDeployment ]
+UserEnvironmentDeployment.{
+   ClusterName
+   NodeName
+   UserName
+   ProposalSource      ; horizon-definition
+   SecretsInput
+   FlakeReference      ; CriomOS?rev=<hex>
+   DeploymentTransport ; user-scoped
+   DeploymentInputMode
+   DeploymentOutputSelector
+   ActivationBackend
+   UserEnvironmentAction
+   SourceRevisionPolicy
+   Option<NixBuilderSpec>
+   Vector<ExtraSubstituter> }
+HostDeployment.{
+   ClusterName
+   NodeName
+   HostComposition     ; in place of the user
+   ProposalSource
+   SecretsInput
+   FlakeReference
+   DeploymentTransport ; root-scoped
+   DeploymentInputMode
+   DeploymentOutputSelector
+   ActivationBackend
+   HostDeployAction
+   SourceRevisionPolicy
+   Option<NixBuilderSpec>
+   Vector<ExtraSubstituter> }
+; signal-lojix: the parts
+SecretsInput.[ NoSecrets
+               SecretsDirectory.String ]
+DeploymentTransport.{ NixStoreUri
+                      SshDestination }
+DeploymentInputMode.[ Horizon Direct ]
+DeploymentOutputSelector.{ FlakeAttribute }
+ActivationBackend.[ HomeManagerNixProfileV1
+                    NixosSystemdBootV1 ]
+UserEnvironmentAction.[ Realize
+                        SetProfile
+                        ActivateNow ]
+HostComposition.[ CompleteHost BaseHost ]
+SourceRevisionPolicy.[ RequireImmutable
+                       ResolveAndRecord ]
+; signal-lojix: the answers
+DeployHandle.{ DeploymentIdentifier
+               DatabaseMarker } ; admission only
+DeploymentRecord.{
+   DeploymentIdentifier
+   GenerationIdentifier
+   DeploymentRequestIdentity
+   Option<AdmissionMarker>
+   DeploymentLifecycle
+   Option<TerminalMarker>
+   Option<DeploymentTerminal> } ; done when Some
+DeploymentTerminal.[
+   Succeeded
+   Failed.DeploymentFailure  ; stderr only
+   Rejected.DeploymentTerminalReason ]
+ActivationEffect.[ ProfileOnly LiveActivation
+                   BootProfile BootOnceProfile
+                   TestActivation ]
+GenerationSlot.[ Current BootPending Recent
+                 Pinned Rollback ]
 ```
 
-The raw 241 submission was executed in the retained child transcript
-`/home/li/.codex-next-8mkkxq293hk2/sessions/2026/11/05/rollout-2026-11-05T21-18-10-01a1aedd-22bb-7ea1-8433-5130eccc8365.jsonl`; its exact command is the one-line request above and its raw owner reply is
-`DeployAccepted.{ 241 { 5322 5322 } }`. The ordinary query command is witnessed with the configured ordinary socket inherited; no owner socket is supplied to `lojix`.
-
-The terminal 241 query returned a live current generation and marker 5359;
-the terminal record carried marker 5355.
-
-Deployment 241's current generation was:
-
-```text
-/nix/store/c2ll7rpqqzjx4ycxlr43dfdhcmyijrwh-home-manager-generation
+```datom
+; a Realize, then an ActivateNow, as Lojix answers
+DeployAccepted.{ 13 { 500 500 } }
+Queried.{ [] [ { 13 13
+   { UserEnvironment.example-user example-cluster example-node
+     UserEnvironment
+     UserEnvironment.Realize ProfileOnly
+     RequireImmutable Some.R }
+   Some.{ 500 500 } Completed
+   Some.{ 516 516 } Some.Succeeded } ] … }
+DeployAccepted.{ 14 { 521 521 } }
+Queried.{ [ { 14 14 example-cluster example-node
+     UserEnvironment LiveActivation Current
+     Some.G Some.R } ]
+   [ { 14 14 … UserEnvironment.ActivateNow
+     LiveActivation … Completed
+     Some.{ 554 554 } Some.Succeeded } ] … }
 ```
 
-The response also recorded immutable revision
-`9c047de0dbb3a51000a53c4f63fcbc7f55af45a9`.
+`G` is the Home Manager generation's store path. `Current` is what Lojix recorded, not what runs. After an `ActivateNow` the target is read: the Home Manager profile resolving to `G`, `~/.nix-profile` holding `G`'s home-path alone, every Home file linking into `G`'s home-files, and each unit the change touched in the state it was meant to reach. `ActivateNow` sets the profile before it activates, so the profile, the links and the units are each read apart. A file or a profile package placed by hand fails the activation: a file in a declared file's place stops it at the link check, and a hand-installed package that collides with the declared home-path stops it after the old home-path has left the profile. Past the record, a diagnosis is a separately authorized command as the user; never a root shell, a hand move, a forced overwrite or an unapproved retry.
 
-The flake URL used by Lojix is distinct from Nix input locking. The source
-flake keeps a bare `github:LiGoldragon/CriomOS-home` input URL and records its
-revision in `flake.lock`; Lojix receives `?rev=<40-hex>` on the consumer
-repository reference. Do not put a revision into the bare source URL.
+A host takes the same chart with `Deploy.Host`, the root pair `{ ssh-ng://root@<host> root@<host> }` and the output `nixosConfigurations.target.config.system.build.toplevel`; `SetBootProfile` leaves the generation `BootPending`, and the living reboots.
 
-## Profile and activation effects
+## A cluster data check
 
-`ActivateNow` performs the profile set before activation. A failed activation
-can therefore leave the profile advanced while services still point at the
-previous generation. Report the profile, runtime links, service state, and
-Lojix terminal separately.
-
-The installed pipeline's materialization branch is visible at
-`src/schema_runtime.rs:1878–1884`: UserEnvironment selects a
-`UserEnvironmentMaterialization` for the named user. Its action mapping at
-`src/schema_runtime.rs:1793–1799` makes Realize ProfileOnly and ActivateNow
-LiveActivation. The activation executor runs profile then activation at
-`src/schema_runtime.rs:7529–7557`.
-
-The installed executor runs the user activation through the explicit SSH
-target. It captures stdout and stderr, but on a nonzero exit retains trimmed
-stderr only; stdout is discarded in failure evidence. This is an executor
-defect, not evidence that the process produced no stdout.
-
-The command runner pipes both streams and reads them to EOF at
-`src/schema_runtime.rs:7859–7924`. On success it returns stdout; on a
-nonzero status it creates `StageFailure` from the trimmed stderr at
-`src/schema_runtime.rs:7933–7942`. The retained failure also carries the
-program, complete argument vector, and optional exit code
-(`src/schema_runtime.rs:7811–7825`).
-
-The supported diagnostic is the retained activation command and exit record,
-plus a separately authorized direct user command when needed. Never use a
-root shell, `--xtrace`, a hand-move, force overwrite, or an unapproved retry.
-
-## Host boot-profile deployments
-
-Host deployments are a separate route. The recorded ACPI operation used
-deployment 237 with `BaseHost`, `SetBootProfile`, an immutable CriomOS source,
-and the existing encrypted-files directory. Its terminal state was
-`Completed`, `Some.Succeeded`, with generation `BootPending`; no reboot was
-performed. The living performs the reboot. These host facts do not establish
-the fields or transport of a UserEnvironment request.
-
-Its supported observation form is:
-
-```sh
-lojix 'Query.ByDeployment.{ 237 }'
+```mermaid
+flowchart TB
+  c1["cluster-definition.datom"]
+  d["horizon-definition"]
+  c2["horizon-configuration.datom"]
+  f["nix flake check"]
+  p["the proposal path"]
+  c1 -- "is composed into" --> d
+  c2 -- "is composed into" --> d
+  d -- "is projected per node by" --> f
+  f -- "passing, yields" --> p
 ```
 
-The retained tool transcript for flow `01a1ae03-c8db-7673-b7ba-97832991746f`
-contains this exact command and reply (05 November 2026):
-
-```text
-lojix 'Query.ByDeployment.{ 237 }'
-Queried.{ [ { 237 237 goldragon ouranos BaseHost BootProfile BootPending Some./nix/store/ipa0cmqx4pxl3wy35x2y6gd9slyyg35a-nixos-system-ouranos-26.11.20260813.0e251e2 Some.52e55e913abcad018a63324cbc6092ea91c43764 } ] [ { 237 237 { HostEnvironment goldragon ouranos BaseHost Host.SetBootProfile BootProfile RequireImmutable Some.52e55e913abcad018a63324cbc6092ea91c43764 } Some.{ 5229 5229 } Completed Some.{ 5262 5262 } Some.Succeeded } ] { 5266 5266 } }
-```
-
-The retained tool transcript for flow `01a1ae03-c8db-7673-b7ba-97832991746f`
-contains the observation and the command construction below. The shell variable
-`P` expands from the separately observed proposal-path file; `R` is the immutable
-revision shown in the command.
-
-The durable report records deployment 237 as the successful `BaseHost`
-`SetBootProfile` route and records the old runtime generation separately from
-the bootloader default. It does not record a Home activation.
-
-The durable report is `/home/li/primary/flows/329917/reports/acpi-model-deployment.md`;
-the retained executor transcript contains the command construction and admission:
-
-```sh
-P=$(cat /tmp/acpi-329917-proposal-path)
-R=52e55e913abcad018a63324cbc6092ea91c43764
-lojix-meta "Deploy.Host.{ goldragon ouranos BaseHost $P SecretsDirectory./git/github.com/LiGoldragon/goldragon/secrets github:LiGoldragon/CriomOS?rev=$R { ssh-ng://root@localhost root@localhost } Horizon { nixosConfigurations.target.config.system.build.toplevel } NixosSystemdBootV1 SetBootProfile RequireImmutable Some.@/etc/nix/machines [] }"
-```
-
-The variable file contained only
-`/nix/store/dspiiriyy2zprxsxz4iiil2jlhk38qwz-horizon-definition/horizon-definition.datom`;
-the admission was `DeployAccepted.{ 237 { 5229 5229 } }`. The retained Host
-transcript is
-`/home/li/.codex-next-8mkkxq293hk2/sessions/2026/11/05/rollout-2026-11-05T17-20-46-01a1ae03-c8db-7673-b7ba-97832991746f.jsonl`.
-The exact original Host argv therefore is now
-witnessed without reading any secret contents.
-
-## Materialization and live verification
-
-`Current` in a query identifies Lojix's committed generation; it does not
-prove the live profile or service links. After a successful Home activation,
-verify the target profile and the generated surfaces separately from the
-deployment record. The colon rollout's five skill surfaces each contained
-109 colon-named directories, including `knowledge:flow-messaging`; its
-producer journal reported psyche, mind, and field revisions separately.
-
-The Home input's `SecretsDirectory` is metadata selecting an existing
-directory. This knowledge records no secret contents. A deployment may use
-`NoSecrets` for a host operation only when that is the actual request and
-owner-approved route; do not infer it for a Home request.
+`horizon-compose` in the cluster's repository composes its `cluster-definition.datom` with `criomos-horizon-config/horizon-configuration.datom`; a definition that does not compose fails the build. `nix flake check` projects each node through `horizon-cli` and asserts its builder, network and capability facts. A passing check yields the proposal `P` above.

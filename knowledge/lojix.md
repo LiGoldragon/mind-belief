@@ -5,6 +5,8 @@ dependencies: []
 
 `lojix-nexus` owns Lojix's state and two sockets. `lojix` speaks the ordinary contract, `signal-lojix`, on `LOJIX_ORDINARY_SOCKET`, to query and watch; `lojix-meta` speaks the owner contract, `meta-signal-lojix`, on `LOJIX_OWNER_SOCKET`, to configure, deploy, pin, unpin, retire and test. Neither socket has a default path.
 
+`lojix-nexus` and both clients are the lojix revision CriomOS's `flake.lock` pins; its source is read there, not at lojix main. CriomOS sets both variables for every user (`modules/nixos/lojix.nix`): `/run/lojix/ordinary.sock` and `/run/lojix/meta.sock`.
+
 Each client takes exactly one argument, one datom, and returns one reply. Positions carry the data and a field is never named: a struct is `{ }`, a vector `[ ]`, a variant a head glued to its payload by a period, `None` bare and `Some.value` glued, and a string holding a space in guillemets. A request may span lines.
 
 ## Observing
@@ -59,7 +61,7 @@ When a deployment directly names a target pair, use it without asking for a seco
 
 A deployment proposal must be an existing absolute regular non-symlink `horizon-definition.datom` file.
 
-Use `RequireImmutable` when production deployment must identify one exact source revision. Push producer revisions before pushing the consumer revision that pins them.
+A production deployment is `RequireImmutable`, at a pushed CriomOS revision; producers are pushed before the consumer that pins them.
 
 A `Current` generation is Lojix's committed state. It does not establish the target's live Nix profile or runtime links.
 
