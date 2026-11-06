@@ -139,7 +139,20 @@ the bootloader default. It does not record a Home activation.
 
 The exact deployment-237 request datom is not retained in this source. Its
 durable report is `/home/li/primary/flows/329917/reports/acpi-model-deployment.md`.
-Use the report's witnessed fields rather than reconstructing omitted ones.
+The retained executor transcript does contain the command construction and
+admission:
+
+```sh
+P=$(cat /tmp/acpi-329917-proposal-path)
+R=52e55e913abcad018a63324cbc6092ea91c43764
+lojix-meta "Deploy.Host.{ goldragon ouranos BaseHost $P SecretsDirectory./git/github.com/LiGoldragon/goldragon/secrets github:LiGoldragon/CriomOS?rev=$R { ssh-ng://root@localhost root@localhost } Horizon { nixosConfigurations.target.config.system.build.toplevel } NixosSystemdBootV1 SetBootProfile RequireImmutable Some.@/etc/nix/machines [] }"
+```
+
+The variable file contained only
+`/nix/store/dspiiriyy2zprxsxz4iiil2jlhk38qwz-horizon-definition/horizon-definition.datom`;
+the admission was `DeployAccepted.{ 237 { 5229 5229 } }`. The transcript
+path is the one cited above. The exact original Host argv therefore is now
+witnessed without reading any secret contents.
 
 ## Materialization and live verification
 
