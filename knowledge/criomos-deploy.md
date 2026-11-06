@@ -9,15 +9,7 @@ dependencies: [knowledge:lojix, knowledge:secrets]
 contract. Each client takes one datom argument and returns one reply.
 
 ```sh
-LOJIX_OWNER_SOCKET=/run/lojix/meta.sock lojix-meta \
-  'Deploy.UserEnvironment.{ goldragon ouranos li \
-    /nix/store/dspiiriyy2zprxsxz4iiil2jlhk38qwz-horizon-definition/horizon-definition.datom \
-    SecretsDirectory./git/github.com/LiGoldragon/goldragon/secrets \
-    github:LiGoldragon/CriomOS?rev=9c047de0dbb3a51000a53c4f63fcbc7f55af45a9 \
-    { ssh-ng://li@ouranos.goldragon.criome li@ouranos.goldragon.criome } \
-    Horizon { homeConfigurations.li.activationPackage } \
-    HomeManagerNixProfileV1 ActivateNow RequireImmutable \
-    Some.@/etc/nix/machines [] }'
+LOJIX_OWNER_SOCKET=/run/lojix/meta.sock lojix-meta 'Deploy.UserEnvironment.{ goldragon ouranos li /nix/store/dspiiriyy2zprxsxz4iiil2jlhk38qwz-horizon-definition/horizon-definition.datom SecretsDirectory./git/github.com/LiGoldragon/goldragon/secrets github:LiGoldragon/CriomOS?rev=9c047de0dbb3a51000a53c4f63fcbc7f55af45a9 { ssh-ng://li@ouranos.goldragon.criome li@ouranos.goldragon.criome } Horizon { homeConfigurations.li.activationPackage } HomeManagerNixProfileV1 ActivateNow RequireImmutable Some.@/etc/nix/machines [] }'
 ```
 
 The `Deploy.UserEnvironment` positions are cluster, node, user, absolute
@@ -25,6 +17,20 @@ Horizon proposal, secrets input, immutable flake reference, the explicit
 `{ nix-store-uri ssh-destination }` pair, mode, output selector, profile
 backend, action, revision policy, builder, and extra substituters. The
 approved user pair above is user-scoped; a root transport is not a substitute.
+
+The installed clients accept one inline Datom argument and resolve the socket
+from the environment. `clients/meta/src/lib.rs:13,39–52` uses
+`LOJIX_OWNER_SOCKET`; `clients/ordinary/src/lib.rs:9,35–48` uses
+`LOJIX_ORDINARY_SOCKET`. The meta client actualizes the request and reads the
+absolute Horizon proposal before sending it (`clients/meta/src/lib.rs:67–91`).
+
+The installed wire schema is at `src/adapters.rs:646–660`. Host fields are
+cluster, node, HostComposition, proposal, secrets input, flake reference,
+transport, input mode, output selector, backend, host action, source policy,
+optional builder, and extra substituters. UserEnvironment has the same order
+with user name and user action in the corresponding positions.
+`src/schema_runtime.rs:1793–1799` maps UserEnvironment Realize and SetProfile
+to ProfileOnly, and ActivateNow to LiveActivation.
 
 `Realize` is build and materialization only. It does not set the profile or
 run activation. `ActivateNow` sets the Home Manager profile and then runs the
@@ -75,10 +81,24 @@ can therefore leave the profile advanced while services still point at the
 previous generation. Report the profile, runtime links, service state, and
 Lojix terminal separately.
 
+The installed pipeline's materialization branch is visible at
+`src/schema_runtime.rs:1878–1884`: UserEnvironment selects a
+`UserEnvironmentMaterialization` for the named user. Its action mapping at
+`src/schema_runtime.rs:1793–1799` makes Realize ProfileOnly and ActivateNow
+LiveActivation. The activation executor runs profile then activation at
+`src/schema_runtime.rs:7529–7557`.
+
 The installed executor runs the user activation through the explicit SSH
 target. It captures stdout and stderr, but on a nonzero exit retains trimmed
 stderr only; stdout is discarded in failure evidence. This is an executor
 defect, not evidence that the process produced no stdout.
+
+The command runner pipes both streams and reads them to EOF at
+`src/schema_runtime.rs:7859–7924`. On success it returns stdout; on a
+nonzero status it creates `StageFailure` from the trimmed stderr at
+`src/schema_runtime.rs:7925–7938`. The retained failure also carries the
+program, complete argument vector, and optional exit code
+(`src/schema_runtime.rs:7811–7825`).
 
 The supported diagnostic is the retained activation command and exit record,
 plus a separately authorized direct user command when needed. Never use a
@@ -99,6 +119,19 @@ Its supported observation form is:
 LOJIX_OWNER_SOCKET=/run/lojix/owner.sock \
   lojix 'Query.ByDeployment.{ 237 }'
 ```
+
+The retained tool transcript for flow `01a1ae03-c8db-7673-b7ba-97832991746f`
+contains this exact command and reply (05 November 2026):
+
+```text
+lojix 'Query.ByDeployment.{ 237 }'
+Queried.{ [ { 237 237 goldragon ouranos BaseHost BootProfile BootPending Some./nix/store/ipa0cmqx4pxl3wy35x2y6gd9slyyg35a-nixos-system-ouranos-26.11.20260813.0e251e2 Some.52e55e913abcad018a63324cbc6092ea91c43764 } ] [ { 237 237 { HostEnvironment goldragon ouranos BaseHost Host.SetBootProfile BootProfile RequireImmutable Some.52e55e913abcad018a63324cbc6092ea91c43764 } Some.{ 5229 5229 } Completed Some.{ 5262 5262 } Some.Succeeded } ] { 5266 5266 } }
+```
+
+The transcript path is
+`/home/li/.codex-next-8mkkxq293hk2/sessions/2026/11/05/rollout-2026-11-05T17-20-46-01a1ae03-c8db-7673-b7ba-97832991746f.jsonl`.
+It contains the observation, not the original Host submission datom; that
+submission remains unavailable and is not reconstructed here.
 
 The durable report records deployment 237 as the successful `BaseHost`
 `SetBootProfile` route and records the old runtime generation separately from
