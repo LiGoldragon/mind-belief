@@ -24,13 +24,15 @@ from the environment. `clients/meta/src/lib.rs:13,39–52` uses
 `LOJIX_ORDINARY_SOCKET`. The meta client actualizes the request and reads the
 absolute Horizon proposal before sending it (`clients/meta/src/lib.rs:92–110`).
 
-The immutable contract declares the wire shape at
-`meta-signal-lojix/ethos/signal.ethos:30–31`. The corresponding installed Rust
-records are `src/runtime_model.rs:507–523` (Host) and `:525–541`
-(UserEnvironment): cluster, node, and (for UserEnvironment) user, followed by proposal, secrets input,
-flake reference, `DeploymentTransport`, input mode, output selector,
-activation backend, action, source policy, optional builder, and extra
-substitutors. The nested types are declared at
+The immutable CLI contract declares the wire shape at
+`meta-signal-lojix/ethos/signal.ethos:30–31`: cluster, node, and (for
+UserEnvironment) user, followed by proposal, secrets input, flake reference,
+`DeploymentTransport`, input mode, output selector, activation backend, action,
+source policy, optional builder, and extra substitutors. The installed Rust
+records at `src/runtime_model.rs:507–523` (Host) and `:525–541`
+(UserEnvironment) are internal materialized representations: each adds
+`horizon_definition_option` after input mode, so they are not a CLI positional
+shape. The nested types are declared at
 `src/runtime_model.rs:82–85` (store URI and SSH destination), `:92–98`
 (output selector, activation backend), and `:110–113` (secrets input).
 `src/schema_runtime.rs:1793–1799` maps UserEnvironment Realize and SetProfile
@@ -155,8 +157,10 @@ lojix-meta "Deploy.Host.{ goldragon ouranos BaseHost $P SecretsDirectory./git/gi
 
 The variable file contained only
 `/nix/store/dspiiriyy2zprxsxz4iiil2jlhk38qwz-horizon-definition/horizon-definition.datom`;
-the admission was `DeployAccepted.{ 237 { 5229 5229 } }`. The transcript
-path is the one cited above. The exact original Host argv therefore is now
+the admission was `DeployAccepted.{ 237 { 5229 5229 } }`. The retained Host
+transcript is
+`/home/li/.codex-next-8mkkxq293hk2/sessions/2026/11/05/rollout-2026-11-05T17-20-46-01a1ae03-c8db-7673-b7ba-97832991746f.jsonl`.
+The exact original Host argv therefore is now
 witnessed without reading any secret contents.
 
 ## Materialization and live verification
