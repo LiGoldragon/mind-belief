@@ -22,13 +22,17 @@ The installed clients accept one inline Datom argument and resolve the socket
 from the environment. `clients/meta/src/lib.rs:13,39–52` uses
 `LOJIX_OWNER_SOCKET`; `clients/ordinary/src/lib.rs:9,35–48` uses
 `LOJIX_ORDINARY_SOCKET`. The meta client actualizes the request and reads the
-absolute Horizon proposal before sending it (`clients/meta/src/lib.rs:67–91`).
+absolute Horizon proposal before sending it (`clients/meta/src/lib.rs:92–110`).
 
-The installed wire schema is at `src/adapters.rs:646–660`. Host fields are
-cluster, node, HostComposition, proposal, secrets input, flake reference,
-transport, input mode, output selector, backend, host action, source policy,
-optional builder, and extra substituters. UserEnvironment has the same order
-with user name and user action in the corresponding positions.
+The immutable contract declares the wire shape at
+`meta-signal-lojix/ethos/signal.ethos:30–31`. The corresponding installed Rust
+records are `src/runtime_model.rs:507–523` (Host) and `:525–541`
+(UserEnvironment): cluster, node, and (for UserEnvironment) user, followed by proposal, secrets input,
+flake reference, `DeploymentTransport`, input mode, output selector,
+activation backend, action, source policy, optional builder, and extra
+substitutors. The nested types are declared at
+`src/runtime_model.rs:82–85` (store URI and SSH destination), `:92–98`
+(output selector, activation backend), and `:110–113` (secrets input).
 `src/schema_runtime.rs:1793–1799` maps UserEnvironment Realize and SetProfile
 to ProfileOnly, and ActivateNow to LiveActivation.
 
@@ -37,13 +41,13 @@ run activation. `ActivateNow` sets the Home Manager profile and then runs the
 materialized `activate` program. Observe the durable terminal record:
 
 ```sh
-LOJIX_OWNER_SOCKET=/run/lojix/owner.sock \
-  lojix 'Query.ByDeployment.{ 240 }'
-LOJIX_OWNER_SOCKET=/run/lojix/owner.sock \
-  lojix 'Query.ByDeployment.{ 241 }'
+lojix 'Query.ByDeployment.{ 240 }'
+lojix 'Query.ByDeployment.{ 241 }'
 ```
 
-The completed records were:
+These ordinary-client commands require the configured `LOJIX_ORDINARY_SOCKET`
+inherited by the observed shell; the command text does not select the owner
+socket. The completed records were:
 
 ```text
 240: UserEnvironment.Realize, ProfileOnly, Completed, Some.Succeeded
@@ -56,6 +60,10 @@ The owner admissions were:
 DeployAccepted.{ 240 { 5301 5301 } }
 DeployAccepted.{ 241 { 5322 5322 } }
 ```
+
+The raw 241 submission was executed in the retained child transcript
+`/home/li/.codex-next-8mkkxq293hk2/sessions/2026/11/05/rollout-2026-11-05T21-18-10-01a1aedd-22bb-7ea1-8433-5130eccc8365.jsonl`; its exact command is the one-line request above and its raw owner reply is
+`DeployAccepted.{ 241 { 5322 5322 } }`. The ordinary query command is witnessed with the configured ordinary socket inherited; no owner socket is supplied to `lojix`.
 
 The terminal 241 query returned a live current generation and marker 5359;
 the terminal record carried marker 5355.
@@ -96,7 +104,7 @@ defect, not evidence that the process produced no stdout.
 The command runner pipes both streams and reads them to EOF at
 `src/schema_runtime.rs:7859–7924`. On success it returns stdout; on a
 nonzero status it creates `StageFailure` from the trimmed stderr at
-`src/schema_runtime.rs:7925–7938`. The retained failure also carries the
+`src/schema_runtime.rs:7933–7942`. The retained failure also carries the
 program, complete argument vector, and optional exit code
 (`src/schema_runtime.rs:7811–7825`).
 
@@ -116,8 +124,7 @@ the fields or transport of a UserEnvironment request.
 Its supported observation form is:
 
 ```sh
-LOJIX_OWNER_SOCKET=/run/lojix/owner.sock \
-  lojix 'Query.ByDeployment.{ 237 }'
+lojix 'Query.ByDeployment.{ 237 }'
 ```
 
 The retained tool transcript for flow `01a1ae03-c8db-7673-b7ba-97832991746f`
@@ -128,19 +135,17 @@ lojix 'Query.ByDeployment.{ 237 }'
 Queried.{ [ { 237 237 goldragon ouranos BaseHost BootProfile BootPending Some./nix/store/ipa0cmqx4pxl3wy35x2y6gd9slyyg35a-nixos-system-ouranos-26.11.20260813.0e251e2 Some.52e55e913abcad018a63324cbc6092ea91c43764 } ] [ { 237 237 { HostEnvironment goldragon ouranos BaseHost Host.SetBootProfile BootProfile RequireImmutable Some.52e55e913abcad018a63324cbc6092ea91c43764 } Some.{ 5229 5229 } Completed Some.{ 5262 5262 } Some.Succeeded } ] { 5266 5266 } }
 ```
 
-The transcript path is
-`/home/li/.codex-next-8mkkxq293hk2/sessions/2026/11/05/rollout-2026-11-05T17-20-46-01a1ae03-c8db-7673-b7ba-97832991746f.jsonl`.
-It contains the observation, not the original Host submission datom; that
-submission remains unavailable and is not reconstructed here.
+The retained tool transcript for flow `01a1ae03-c8db-7673-b7ba-97832991746f`
+contains the observation and the command construction below. The shell variable
+`P` expands from the separately observed proposal-path file; `R` is the immutable
+revision shown in the command.
 
 The durable report records deployment 237 as the successful `BaseHost`
 `SetBootProfile` route and records the old runtime generation separately from
 the bootloader default. It does not record a Home activation.
 
-The exact deployment-237 request datom is not retained in this source. Its
-durable report is `/home/li/primary/flows/329917/reports/acpi-model-deployment.md`.
-The retained executor transcript does contain the command construction and
-admission:
+The durable report is `/home/li/primary/flows/329917/reports/acpi-model-deployment.md`;
+the retained executor transcript contains the command construction and admission:
 
 ```sh
 P=$(cat /tmp/acpi-329917-proposal-path)
