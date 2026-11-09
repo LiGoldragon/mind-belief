@@ -59,7 +59,7 @@ extraChecks = { cargoNixCheck, ... }: {
 
 ## A check runs; it does not compile
 
-A crate's tests compile once, with the crate, into test binaries. There is one check per crate, which runs those binaries and compiles nothing; a failing test fails it, and the default check is all of them. There is no check per test: a test is named in its code and proved by its crate's check. A crate's `tests/` is in its test build only, so an edit to a test rebuilds the test build alone.
+A crate's tests compile once, with the crate, into test binaries. There is one check per crate, which runs those binaries and compiles nothing; a failing test fails it, and the default check is all of them. There is no check per test: a test is named in its code and proved by its crate's check. A crate builds from its source without what its build never reads: `tests/`, `benches/`, `examples/`, Markdown, `Cargo.lock`, `Cargo.nix`, `crate-hashes.json` and the flake files (build-base's `crate-source.nix`), a member and a git crate alike. Its test build alone reads the whole source, so an edit to a test rebuilds the test build alone, and two commits of a crate that differ only in those files are one source path and one build, whichever revision a lock names.
 
 `nix flake check` saying "running 0 flake checks" means nothing was left to build; the gate's green is put on record by building `checks.default`.
 
