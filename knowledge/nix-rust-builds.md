@@ -25,13 +25,24 @@ nix run github:LiGoldragon/build-base#crate2nix -- generate
 
 Every active repository takes nixpkgs, the Rust toolchain and the crate overrides from build-base and pins none of its own. A crate at one version and one feature set then has one store path in every repository, built once on the remote builder and served to all. A native input a crate needs is added to build-base's overrides, never in a repository. Two repositories share a third-party crate only when their lockfiles pin the same version.
 
+## A Cargo.nix is proved current
+
+`checks.cargo-nix`, in `checks.default` of every repository on the base, proves the committed `Cargo.nix` is what the base's crate2nix generates from the source: the lock's packages against `Cargo.nix`, then an offline regeneration compared byte for byte. `crate-hashes.json` is committed beside `Cargo.nix`, and `Cargo.nix` sits at the workspace root, generated with no flags; a `Cargo.nix` kept apart from its workspace is proved by the base's `cargoNixCheck { source; cargoNix; crateHashes; }`, `source` the workspace holding `Cargo.toml` and `Cargo.lock`. A repository's own checks join `checks.default` through `extraChecks`, so a green default is the whole gate:
+
+```nix
+outputs = { self, base }: base.lib.workspaceOutputs {
+  cargoNix = ./Cargo.nix;
+  extraChecks = { pkgs, workspace, ... }: { fmt = …; clippy = …; };   # names apart from members, cargo-nix and default
+};
+```
+
 ## A check runs; it does not compile
 
 A crate's tests compile once, with the crate, into test binaries. There is one check per crate, which runs those binaries and compiles nothing; a failing test fails it, and the default check is all of them. There is no check per test: a test is named in its code and proved by its crate's check. A crate's `tests/` is in its test build only, so an edit to a test rebuilds the test build alone.
 
-## Where Rust is compiled
+## Where a build runs
 
-Rust is compiled on the remote builder, through Nix; the local machine compiles nothing, cargo included. The host's own declaration names which machine is the remote builder.
+Evaluation and building run on the remote builder itself, over ssh: the source goes to it, `nix flake check`, `nix build` and `nix eval` run there, and only what the local machine must hold is copied back. The local machine evaluates no crate2nix expression and compiles nothing, cargo included. The host's own declaration names which machine is the remote builder.
 
 ## A pin names a published commit
 
