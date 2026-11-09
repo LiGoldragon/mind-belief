@@ -23,7 +23,14 @@ nix run github:LiGoldragon/build-base#crate2nix -- generate
 
 ## One base, so a crate has one hash everywhere
 
-Every active repository takes nixpkgs, the Rust toolchain and the crate overrides from build-base and pins none of its own. A crate at one version and one feature set then has one store path in every repository, built once on the remote builder and served to all. A native input a crate needs is added to build-base's overrides, never in a repository. Two repositories share a third-party crate only when their lockfiles pin the same version.
+Every active repository takes nixpkgs, the Rust toolchain and the crate overrides from build-base and pins none of its own. A crate at one version and one feature set then has one store path in every repository, built once on the remote builder and served to all. A native input a crate needs is added to build-base's overrides, never in a repository.
+
+Build-base holds one version set for every third-party crate across the active repositories, `third-party-versions.json` at its root, generated from their aligned locks. The `third-party-versions` check in every repository's `checks.default` refuses a lock whose third-party versions depart from the set, naming each crate with its lock version and the set's. A version bump happens once, in build-base: the set is regenerated and every active repository follows in the same change.
+
+```sh
+# regenerate the set from the active repositories' locks; it refuses where two locks disagree within one semver line
+nix run github:LiGoldragon/build-base#third-party-version-set -- <Cargo.lock ...>
+```
 
 A repository's own flake, or a consumer of a repository on the base, takes `pkgs` from `base.lib.contexts.<system>.pkgs` and overrides none of the base's inputs (no `inputs.nixpkgs.follows`), so store paths stay shared.
 
