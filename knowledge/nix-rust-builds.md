@@ -25,11 +25,12 @@ nix run github:LiGoldragon/build-base#crate2nix -- generate
 
 Every active repository takes nixpkgs, the Rust toolchain and the crate overrides from build-base and pins none of its own. A crate at one version and one feature set then has one store path in every repository, built once on the remote builder and served to all. A native input a crate needs is added to build-base's overrides, never in a repository.
 
-Build-base holds one version set for every third-party crate across the active repositories, `third-party-versions.json` at its root, generated from their aligned locks. The `third-party-versions` check in every repository's `checks.default` refuses a lock whose third-party versions depart from the set, naming each crate with its lock version and the set's. A version bump happens once, in build-base: the set is regenerated and every active repository follows in the same change.
+Build-base holds one version set for every third-party crate across the active repositories, `third-party-versions.json` at its root, generated from their aligned locks. The `third-party-versions` check in every repository's `checks.default` refuses a lock whose third-party versions depart from the set, naming each crate with its lock version and the set's. Beside it, `third-party-features.json` holds one feature set for every third-party crate: the union of the features the active repositories resolve, applied by build-base's crate builder, so a crate at one version has one build everywhere. The `third-party-features` check refuses a repository that resolves a feature outside the set or lacks a dependency the set pulls; that repository carries the edge itself, its dependency taking the feature in its manifest, lock and `Cargo.nix`. Nothing is held out of either set. A version bump happens once, in build-base: the sets are regenerated and every active repository follows in the same change.
 
 ```sh
-# regenerate the set from the active repositories' locks; it refuses where two locks disagree within one semver line
+# regenerate the sets from the active repositories; the version set refuses where two locks disagree within one semver line
 nix run github:LiGoldragon/build-base#third-party-version-set -- <Cargo.lock ...>
+nix run github:LiGoldragon/build-base#third-party-feature-set -- <Cargo.nix ...>   # also lists the edges a repository must carry
 ```
 
 A repository's own flake, or a consumer of a repository on the base, takes `pkgs` from `base.lib.contexts.<system>.pkgs` and overrides none of the base's inputs (no `inputs.nixpkgs.follows`), so store paths stay shared.
