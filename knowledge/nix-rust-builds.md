@@ -44,6 +44,12 @@ A crate's tests compile once, with the crate, into test binaries. There is one c
 
 Evaluation and building run on the remote builder itself, over ssh: the source goes to it, `nix flake check`, `nix build` and `nix eval` run there, and only what the local machine must hold is copied back. The local machine evaluates no crate2nix expression and compiles nothing, cargo included. The host's own declaration names which machine is the remote builder.
 
+A remote build is one ssh command, its steps chained so its exit is the result, and its end is waited on as an event: the command runs in the foreground, or in the background where its exit wakes the flow that started it.
+
+```sh
+ssh prometheus 'cd ~/work/flow && nix flake check -L 2>&1 | tail -40'
+```
+
 ## A pin names a published commit
 
 A git dependency is pinned to a commit its remote has, and a published history is never rewritten; a build from the repository's remote URL proves it. A git dependency under `[patch]` that points at a workspace crate resolves to that path crate in `Cargo.nix`.
