@@ -64,15 +64,29 @@ A crate's tests compile once, with the crate, into test binaries. There is one c
 
 ## Where a build runs
 
-Evaluation and building run on the remote builder itself, over ssh: the source goes to it, `nix flake check`, `nix build` and `nix eval` run there, and only what the local machine must hold is copied back. The local machine evaluates no crate2nix expression and compiles nothing, cargo included. The host's own declaration names which machine is the remote builder.
-
-A remote build is one ssh command, its steps chained so its exit is the result, and its end is waited on as an event: the command runs in the foreground, or in the background where its exit wakes the flow that started it.
+A gate is evaluated and built on the remote builder itself: nix-fast-build `--remote` runs nix-eval-jobs there, builds every check there, one ssh build per check, and copies nothing back under `--no-download`. The local machine reads the flake's metadata, evaluates no crate2nix expression and compiles nothing, cargo included. The host's own declaration names which machine is the remote builder.
 
 ```sh
-ssh prometheus 'cd ~/work/flow && nix flake check -L 2>&1 | tail -40'
+nix run github:Mic92/nix-fast-build -- --remote prometheus \
+  --no-nom --no-download --eval-workers 1 \
+  --flake 'git+file://<clone>?rev=<commit>#checks.x86_64-linux'
 ```
 
-A gate runs against the committed revision, `git+file://<clone>?rev=<commit>` or the remote URL, never a copied tree: a check that stamps `self.rev` gives another result on a copy, so a copy is another gate.
+The gate builds `checks.<system>` whole, so a failing check is named by its own attribute beside `default`. Its exit is the result, and its end is waited on as an event: the command runs in the foreground, or in the background where its exit wakes the flow that started it. A failure ends the output with the failed attributes, each one's log above it:
+
+```text
+ERROR:nix_fast_build:BUILD: 10 successes, 2 failures
+ERROR:nix_fast_build:Failed attributes: …#checks.x86_64-linux.example-number …#checks.x86_64-linux.default
+```
+
+A gate runs against the committed revision, `git+file://<clone>?rev=<commit>` or the remote URL, never a copied tree: a check that stamps `self.rev` gives another result on a copy, so a copy is another gate. A `git+file` revision is copied to the builder as its source store path; a remote URL is fetched by the builder itself.
+
+A build whose result the local machine holds, such as a package it installs, is a plain `nix build`: the host declares the builder as an ssh-ng remote builder with no local build jobs, so evaluation is local, every derivation builds on the builder, and the result is copied back.
+
+```sh
+# /etc/nix/machines: ssh-ng://nix-ssh@prometheus.goldragon.criome x86_64-linux … ; max-jobs = 0
+nix build 'git+file://<clone>?rev=<commit>#<package>'
+```
 
 ## A pin names a published commit
 
