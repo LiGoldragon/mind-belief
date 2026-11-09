@@ -25,9 +25,11 @@ nix run github:LiGoldragon/build-base#crate2nix -- generate
 
 Every active repository takes nixpkgs, the Rust toolchain and the crate overrides from build-base and pins none of its own. A crate at one version and one feature set then has one store path in every repository, built once on the remote builder and served to all. A native input a crate needs is added to build-base's overrides, never in a repository. Two repositories share a third-party crate only when their lockfiles pin the same version.
 
+A repository's own flake, or a consumer of a repository on the base, takes `pkgs` from `base.lib.contexts.<system>.pkgs` and overrides none of the base's inputs (no `inputs.nixpkgs.follows`), so store paths stay shared.
+
 ## A Cargo.nix is proved current
 
-`checks.cargo-nix`, in `checks.default` of every repository on the base, proves the committed `Cargo.nix` is what the base's crate2nix generates from the source: the lock's packages against `Cargo.nix`, then an offline regeneration compared byte for byte. `crate-hashes.json` is committed beside `Cargo.nix`, and `Cargo.nix` sits at the workspace root, generated with no flags; a `Cargo.nix` kept apart from its workspace is proved by the base's `cargoNixCheck { source; cargoNix; crateHashes; }`, `source` the workspace holding `Cargo.toml` and `Cargo.lock`. A repository's own checks join `checks.default` through `extraChecks`, so a green default is the whole gate:
+`checks.cargo-nix`, in `checks.default` of every repository on the base, proves the committed `Cargo.nix` is what the base's crate2nix generates from the source: the lock's packages against `Cargo.nix`, then an offline regeneration compared byte for byte. `crate-hashes.json` is committed beside `Cargo.nix`, and `Cargo.nix` sits at the workspace root, generated with no flags; a `Cargo.nix` kept apart from its workspace is proved by `cargoNixCheck { source; cargoNix; crateHashes; }`, reached at `base.lib.contexts.<system>.cargoNixCheck` and handed to `extraChecks` with the rest of the build context; `source` is the workspace holding `Cargo.toml` and `Cargo.lock`, and its `crate-hashes.json` is committed beside that `Cargo.nix`. A repository's own checks join `checks.default` through `extraChecks`, so a green default is the whole gate:
 
 ```nix
 outputs = { self, base }: base.lib.workspaceOutputs {
@@ -36,9 +38,22 @@ outputs = { self, base }: base.lib.workspaceOutputs {
 };
 ```
 
+```nix
+# a second, separate Cargo.nix joins checks.default the same way
+extraChecks = { cargoNixCheck, ... }: {
+  dependency-cargo-nix = cargoNixCheck {
+    source = ./dependency;
+    cargoNix = ./nix/dependency/Cargo.nix;
+    crateHashes = ./nix/dependency/crate-hashes.json;
+  };
+};
+```
+
 ## A check runs; it does not compile
 
 A crate's tests compile once, with the crate, into test binaries. There is one check per crate, which runs those binaries and compiles nothing; a failing test fails it, and the default check is all of them. There is no check per test: a test is named in its code and proved by its crate's check. A crate's `tests/` is in its test build only, so an edit to a test rebuilds the test build alone.
+
+`nix flake check` saying "running 0 flake checks" means nothing was left to build; the gate's green is put on record by building `checks.default`.
 
 ## Where a build runs
 
@@ -50,6 +65,10 @@ A remote build is one ssh command, its steps chained so its exit is the result, 
 ssh prometheus 'cd ~/work/flow && nix flake check -L 2>&1 | tail -40'
 ```
 
+A gate runs against the committed revision, `git+file://<clone>?rev=<commit>` or the remote URL, never a copied tree: a check that stamps `self.rev` gives another result on a copy, so a copy is another gate.
+
 ## A pin names a published commit
 
-A git dependency is pinned to a commit its remote has, and a published history is never rewritten; a build from the repository's remote URL proves it. A git dependency under `[patch]` that points at a workspace crate resolves to that path crate in `Cargo.nix`.
+A git dependency is pinned to a commit its remote has, and a published history is never rewritten; a build from the repository's remote URL proves it. A flake used as a test fixture is a locked input by its bare URL, its rev asserted at evaluation, never `builtins.getFlake` on a local path.
+
+A git dependency under `[patch]` that points at a workspace crate resolves to that path crate in `Cargo.nix`.
