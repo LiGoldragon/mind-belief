@@ -7,7 +7,7 @@ The working instance is github.com/LiGoldragon/rust-nix-example, built on github
 
 ## The unit of a build is the crate
 
-Every crate, third-party and workspace member alike, is its own derivation: crate2nix generates `Cargo.nix` from `Cargo.lock`, nixpkgs `buildRustCrate` builds each crate, and `Cargo.nix` is committed, so evaluation imports no derivation. An edit rebuilds the edited crate and the crates that depend on it, and nothing else.
+Every crate, registry, git and workspace member alike, is its own derivation: crate2nix generates `Cargo.nix` from `Cargo.lock`, nixpkgs `buildRustCrate` builds each crate, and `Cargo.nix` is committed, so evaluation imports no derivation. An edit rebuilds the edited crate and the crates that depend on it, and nothing else.
 
 ```nix
 {
@@ -25,12 +25,12 @@ nix run github:LiGoldragon/build-base#crate2nix -- generate
 
 Every active repository takes nixpkgs, the Rust toolchain and the crate overrides from build-base and pins none of its own. A crate at one version and one feature set then has one store path in every repository, built once on the remote builder and served to all. A native input a crate needs is added to build-base's overrides, never in a repository.
 
-Build-base holds one version set for every third-party crate across the active repositories, `third-party-versions.json` at its root, generated from their aligned locks. The `third-party-versions` check in every repository's `checks.default` refuses a lock whose third-party versions depart from the set, naming each crate with its lock version and the set's. Beside it, `third-party-features.json` holds one feature set for every third-party crate: the union of the features the active repositories resolve, applied by build-base's crate builder, so a crate at one version has one build everywhere. The `third-party-features` check refuses a repository that resolves a feature outside the set or lacks a dependency the set pulls; that repository carries the edge itself, its dependency taking the feature in its manifest, lock and `Cargo.nix`. Nothing is held out of either set. A version bump happens once, in build-base: the sets are regenerated and every active repository follows in the same change.
+Build-base holds one version set for every crate a repository takes from another repository, `crate-versions.json` at its root, generated from the active repositories' locks: a registry crate by name and version, a git crate by name, version and locked git revision (the full commit after `#` in the lock's source). A workspace member, a path source, is in neither set. The `crate-versions` check in every repository's `checks.default` refuses a lock whose registry versions or git revisions depart from the set, naming each crate with its lock version (and revision) and the set's. Beside it, `crate-features.json` holds one feature set for every such crate, one per name and version for a registry crate and one per name, version and revision for a git crate: the union of the features the active repositories resolve, applied by build-base's crate builder, so a crate at one version and revision has one build everywhere. The `crate-features` check refuses a repository that resolves a feature outside the set or lacks a dependency the set pulls; that repository carries the edge itself, its dependency taking the feature in its manifest, lock and `Cargo.nix`. Nothing is held out of either set. A version or revision bump happens once, in build-base: the sets are regenerated and every active repository follows in the same change.
 
 ```sh
-# regenerate the sets from the active repositories; the version set refuses where two locks disagree within one semver line
-nix run github:LiGoldragon/build-base#third-party-version-set -- <Cargo.lock ...>
-nix run github:LiGoldragon/build-base#third-party-feature-set -- <Cargo.nix ...>   # also lists the edges a repository must carry
+# regenerate the sets from the active repositories; the version set refuses where two locks disagree within one semver line of a registry crate, and lists each git crate held at more than one revision with the repositories at each, the measure of the drift
+nix run github:LiGoldragon/build-base#crate-version-set -- <Cargo.lock ...>
+nix run github:LiGoldragon/build-base#crate-feature-set -- <Cargo.nix ...>   # also lists the edges a repository must carry
 ```
 
 A repository's own flake, or a consumer of a repository on the base, takes `pkgs` from `base.lib.contexts.<system>.pkgs` and overrides none of the base's inputs (no `inputs.nixpkgs.follows`), so store paths stay shared.
