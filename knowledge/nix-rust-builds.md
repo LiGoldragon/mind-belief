@@ -50,7 +50,7 @@ A repository's own flake, or a consumer of a repository on the base, takes `pkgs
 ```nix
 outputs = { self, base }: base.lib.workspaceOutputs {
   cargoNix = ./Cargo.nix;
-  extraChecks = { pkgs, workspace, ... }: { fmt = …; clippy = …; };   # names apart from members, cargo-nix and default
+  extraChecks = { pkgs, workspace, ... }: { fmt = …; doc = …; };   # names apart from members, cargo-nix and default
 };
 ```
 
@@ -68,6 +68,18 @@ extraChecks = { cargoNixCheck, ... }: {
 ## A check runs; it does not compile
 
 A crate's tests compile once, with the crate, into test binaries. There is one check per crate, which runs those binaries and compiles nothing; a failing test fails it, and the default check is all of them. There is no check per test: a test is named in its code and proved by its crate's check. A crate builds from its source without what its build never reads: `tests/`, `benches/`, `examples/`, Markdown, `Cargo.lock`, `Cargo.nix`, `crate-hashes.json` and the flake files (build-base's `crate-source.nix`), a member and a git crate alike. Its test build alone reads the whole source, so an edit to a test rebuilds the test build alone, and two commits of a crate that differ only in those files are one source path and one build, whichever revision a lock names.
+
+## The test build is the lint gate
+
+A crate's test build is compiled by clippy-driver over every target (library, binaries, unit tests, `tests/`), with the member's `[lints]`, or the workspace's where it takes them, applied uncapped and `lintFlags` after them: an argument of `workspaceOutputs`, `[ "-D" "warnings" ]` unless the flake gives them. The one compilation both lints and makes the test binaries, so no separate clippy gate compiles the member again; a refused lint fails the test build and so the crate's check. Clippy-driver adds no measurable time to a test build (herdr-nexus on prometheus: test builds 20.1 s plain, 19.2 s linted), where the separate gate cost as much as the test build (20.9 s) and a metadata-only gate (`--emit=metadata`, opt-level 0) still cost 6.1 s and a derivation each. A member is linted under the feature set of its check, so a feature-gated line is linted by giving its check that feature set through `memberChecks` (`check "member" [ "default" "json" ]`).
+
+```nix
+base.lib.workspaceOutputs {
+  cargoNix = ./Cargo.nix;
+  lintFlags = [ "-D" "warnings" ];   # the default
+  memberChecks = { check, ... }: { member = check "member" [ "default" "json" ]; };
+}
+```
 
 `nix flake check` saying "running 0 flake checks" means nothing was left to build; the gate's green is put on record by building `checks.default`.
 
