@@ -5,7 +5,7 @@ dependencies: [vision-presentation, vision-proposal]
 
 ## Duties
 
-The author writes the complete source and names its path to the bookmaker. The bookmaker has the Illustrator draw each figure as a vector graphic, builds the page with the repository builder, checks the whole built page and every figure in it, publishes it, and Sends its title and link through flow to the flow that ordered the book. Only the bookmaker publishes. A source that fails the builder's check is the bookmaker's to fix: headings, signs, context lines, the proposal form, and a Mermaid fence among removed lines, which is rendered as removed lines and never drawn. The bookmaker changes no proposed wording; a source whose content is wrong returns to the author with the fault named. A redo replaces the same edition and resolves the comment threads the source answers.
+The author writes the complete source and names its path to the bookmaker. The bookmaker has the Illustrator draw each figure as a vector graphic, builds the page with the repository builder, publishes it, and Sends its title and link through flow to the flow that ordered the book. Only the bookmaker publishes. A source that fails the builder's check is the bookmaker's to fix: headings, signs, context lines, the proposal form, and a Mermaid fence among removed lines, which is rendered as removed lines and never drawn. The bookmaker changes no proposed wording; a source whose content is wrong returns to the author with the fault named. A redo replaces the same edition and resolves the comment threads the source answers. The builder's checker and its one stylesheet guarantee the page; a fault found on a published page is fixed in the builder or the figure grammar.
 
 ## Source anatomy
 
