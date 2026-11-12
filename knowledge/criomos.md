@@ -133,7 +133,7 @@ Lojix has no rollback. Going back is a new deployment of an earlier CriomOS revi
 
 ## A host's root filesystem
 
-An ext4 root carries the `large_dir` feature. The store's `/nix/store/.links` directory, which store optimisation fills, outgrows ext4's two-level directory index: on ouranos it held 2,731,177 entries when the kernel refused it, and `tune2fs -O large_dir` on the mounted root cleared it (`flows/121cc5/ext4-fix.md`). The bootloader reads the separate vfat ESP, so the feature never meets it. A reinstall creates the root with `mkfs.ext4 -O large_dir`, or sets it with `tune2fs` before the store fills. prometheus's root is btrfs, which has no such limit; zeus is unchecked.
+An ext4 root carries the `large_dir` feature. The store's `/nix/store/.links` directory, which store optimisation fills, outgrows ext4's two-level directory index: the kernel refuses it once it holds too many entries, and `tune2fs -O large_dir` on the mounted root clears it. The bootloader reads the separate vfat ESP, so the feature never meets it. A reinstall creates the root with `mkfs.ext4 -O large_dir`, or sets it with `tune2fs` before the store fills. A btrfs root has no such limit.
 
 ## Criome
 
