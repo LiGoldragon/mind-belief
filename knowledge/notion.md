@@ -8,3 +8,5 @@ A notion is a knowledge belief type. Fable writes it from what the living has sa
 A notion is named as any module is, by type, topic and version: `notion:curriculum:1`. Its description says which vision it stands in for or extends. A notion that stands in for a vision is complete: a flow is given the notion and not that vision. A notion that extends a vision is loaded with it, and where the two differ the notion holds.
 
 A notion the living reviews and approves becomes vision and leaves the notion type.
+
+Work implemented from a notion that has not become vision lives on a branch named notion-<short name>, the short name saying what the notion is mostly about, and is merged into main when the notion becomes vision.
