@@ -59,6 +59,12 @@ Library
 
 A dependency a module names is composed with it, for a flow and for a subagent alike. A dependency the composition does not place takes the default placement of its type, a meta setting.
 
+A composition is a set: a module named twice is composed once, at the placement the composition gives it. The order is stable: a module's dependencies before it, then the composition's own order. A dependency cycle is broken where it is first met and reported, with its modules, when the source is read.
+
+Sources are ordered in the configuration. A name held by two sources is given by the first, and the Provenance says which: a local directory stands in front of a repository while developing. A source that cannot be read after a Moved keeps its last good state, and its observers are told it is unread. Nothing about the content of a source fails a composition.
+
+A Subagent composition takes exactly one Role.
+
 Each module's content sits between delimiters that name it, so a flow or a subagent knows where each belief comes from:
 
 ```markdown
