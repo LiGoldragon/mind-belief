@@ -36,6 +36,8 @@ Psyche core Opus weighs it against the vision and the energy: which closed work 
 
 The heartbeat's interval is configuration. When a subscription is draining faster than its week allows, the interval is lengthened and the less important work is put off; when a week is about to end unused, it is shortened and more work is started. The beads carry the importance.
 
+The targets, from the living's words of 12 November: each subscription is spent whole about a day before its window ends, so the last day is his for design; six percent of the Claude week is never spent by the machine; a Codex reset is kept for a blitz of implementation and redeemed only before it would expire. There is no hurry to fill a week: a week ends early only with work worth doing.
+
 ## The tracker
 
 Work is tracked in beads: one bead per piece of work, its owner, what proves it done, and the bead it waits on. A flow that takes work claims its bead, and closes it with the proof. The Field core Terra's look is what notices a bead nobody is working and tells the flow that owns it.
