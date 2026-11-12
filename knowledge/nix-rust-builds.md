@@ -71,7 +71,7 @@ A crate's tests compile once, with the crate, into test binaries. There is one c
 
 ## A member's library is built once
 
-A member's library is built apart from its binaries and its tests: the library's build carries no binary, as its git copy in another repository does, so the two are one derivation, and every dependent, the member's binaries and its test targets link it. The binaries are `rust_<crate>-<version>-bin`, compiled alone against that library and reading its build-script output, so no build script runs twice; they are `packages.<member>`. The test build compiles only what cannot be linked, the library's and each binary's unit tests (`--test`) and the test targets, which link the library, and run the binaries' build through `CARGO_BIN_EXE_<name>`. Where dev-dependencies turn on a feature or an optional dependency, the test build's library is another, shared by no build, and the test build compiles it and the binaries itself, as cargo builds two (herdr-nexus on prometheus: its members' builds and test builds 43.5 s before, 31.2 s apart; flow, whose dev-dependencies turn on optional dependencies, unchanged). A flake composing a member's binaries under a feature set takes `binaries "member" features` from the build context; a member reached through `buildRustCrateForPkgsFor` or `workspaceMembers.<member>.build` is its library alone.
+A member's library is built apart from its binaries and its tests: the library's build carries no binary, as its git copy in another repository does, so the two are one derivation, and every dependent, the member's binaries and its test targets link it. The binaries are `rust_<crate>-<version>-bin`, compiled alone against that library and reading its build-script output, so no build script runs twice; they are `packages.<member>`. The test build compiles only what cannot be linked, the library's and each binary's unit tests (`--test`) and the test targets, which link the library, and run the binaries' build through `CARGO_BIN_EXE_<name>`. Where dev-dependencies turn on a feature or an optional dependency, the test build's library is another, shared by no build, and the test build compiles it and the binaries itself, as cargo builds two. A flake composing a member's binaries under a feature set takes `binaries "member" features` from the build context; a member reached through `buildRustCrateForPkgsFor` or `workspaceMembers.<member>.build` is its library alone.
 
 ```nix
 # a flake composing its packages: a member's binaries under a feature set
@@ -81,7 +81,7 @@ cli = composed.binaries "herdr-nexus-translator" [ "default" "text" ];
 
 ## The test build is the lint gate
 
-A crate's test build is compiled by clippy-driver over every target (library, binaries, unit tests, `tests/`), the library and binaries checked with `--emit=metadata`, as `cargo clippy` checks them, where they are linked from their own builds, with the member's `[lints]`, or the workspace's where it takes them, applied uncapped and `lintFlags` after them: an argument of `workspaceOutputs`, `[ "-D" "warnings" ]` unless the flake gives them. The one compilation both lints and makes the test binaries, so no separate clippy gate compiles the member again; a refused lint fails the test build and so the crate's check. Clippy-driver adds little to a test build (herdr-nexus on prometheus: test builds 20.1 s plain, 19.2 s linted), where the separate gate cost as much as the test build (20.9 s) and a metadata-only gate (`--emit=metadata`, opt-level 0) still cost 6.1 s and a derivation each. A member is linted under the feature set of its check, so a feature-gated line is linted by giving its check that feature set through `memberChecks` (`check "member" [ "default" "json" ]`).
+A crate's test build is compiled by clippy-driver over every target (library, binaries, unit tests, `tests/`), the library and binaries checked with `--emit=metadata`, as `cargo clippy` checks them, where they are linked from their own builds, with the member's `[lints]`, or the workspace's where it takes them, applied uncapped and `lintFlags` after them: an argument of `workspaceOutputs`, `[ "-D" "warnings" ]` unless the flake gives them. The one compilation both lints and makes the test binaries, so no separate clippy gate compiles the member again; a refused lint fails the test build and so the crate's check. Clippy-driver adds little to a test build. A member is linted under the feature set of its check, so a feature-gated line is linted by giving its check that feature set through `memberChecks` (`check "member" [ "default" "json" ]`).
 
 ```nix
 base.lib.workspaceOutputs {
@@ -98,7 +98,7 @@ base.lib.workspaceOutputs {
 A gate is evaluated and built on the remote builder itself: nix-fast-build `--remote` runs nix-eval-jobs there, builds every check there, one ssh build per check, and copies nothing back under `--no-download`. The local machine reads the flake's metadata, evaluates no crate2nix expression and compiles nothing, cargo included. The host's own declaration names which machine is the remote builder.
 
 ```sh
-nix run github:Mic92/nix-fast-build -- --remote prometheus \
+nix run github:Mic92/nix-fast-build -- --remote <builder> \
   --no-nom --no-download --eval-workers 1 \
   --flake 'git+file://<clone>?rev=<commit>#checks.x86_64-linux'
 ```
@@ -115,7 +115,7 @@ A gate runs against the committed revision, `git+file://<clone>?rev=<commit>` or
 A build whose result the local machine holds, such as a package it installs, is a plain `nix build`: the host declares the builder as an ssh-ng remote builder with no local build jobs, so evaluation is local, every derivation builds on the builder, and the result is copied back.
 
 ```sh
-# /etc/nix/machines: ssh-ng://nix-ssh@prometheus.goldragon.criome x86_64-linux … ; max-jobs = 0
+# /etc/nix/machines: ssh-ng://nix-ssh@<builder> x86_64-linux … ; max-jobs = 0
 nix build 'git+file://<clone>?rev=<commit>#<package>'
 ```
 
