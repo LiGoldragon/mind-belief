@@ -131,6 +131,10 @@ HostDeployAction.[
 
 Lojix has no rollback. Going back is a new deployment of an earlier CriomOS revision.
 
+## A host's root filesystem
+
+An ext4 root carries the `large_dir` feature. The store's `/nix/store/.links` directory, which store optimisation fills, outgrows ext4's two-level directory index: on ouranos it held 2,731,177 entries when the kernel refused it, and `tune2fs -O large_dir` on the mounted root cleared it (`flows/121cc5/ext4-fix.md`). The bootloader reads the separate vfat ESP, so the feature never meets it. A reinstall creates the root with `mkfs.ext4 -O large_dir`, or sets it with `tune2fs` before the store fills. prometheus's root is btrfs, which has no such limit; zeus is unchecked.
+
 ## Criome
 
 Criome is a BLS12-381 signature authentication and attestation daemon: it holds a master key, an identity registry and delegation grants; verifies signatures; and signs attestations (`criome/ARCHITECTURE.md`). It serves a working socket for clients and an owner-only meta socket. CriomOS runs it as a systemd service when `services.criome.enable` is set; the option is off by default and the module is imported for every node (`modules/nixos/criome.nix`). Its master key is generated on first start and kept in the daemon's state directory.
