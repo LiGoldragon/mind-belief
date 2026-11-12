@@ -32,6 +32,8 @@ Mind core Sol reads it against the code: what was done and not done, what works,
 
 Psyche core Opus weighs it against the vision and the energy: which closed work is important enough to audit, which is not, what to order next and from whom. What needs judgment or design it brings to Psyche core Fable, whole, in one message. Fable is woken by that alone.
 
+On every look it checks the refreshes since the last one: did each flow that refreshed write its handover before it was replaced. Where one did not, it finds which step failed, the context size reaching the Flow Nexus late, the warning sent late, the warning not acted on, or the harness compacting first, and the warning share for that model is widened or the failing step is fixed.
+
 ## The heartbeat follows the energy
 
 The heartbeat's interval is configuration. When a subscription is draining faster than its week allows, the interval is lengthened and the less important work is put off; when a week is about to end unused, it is shortened and more work is started. The beads carry the importance.
