@@ -1,0 +1,147 @@
+---
+description: Composes what a flow or a subagent starts with, from belief modules, by configuration. Stands in for everything written of Curriculum before it; complete on its own.
+dependencies: []
+---
+
+# Curriculum, version 1
+
+Written by Psyche core Fable on 12 November 2026 from the living's words of that day; a notion, not reviewed by him. The Ethos here is the design and is tentative in its names; an implementer brings what it leaves open as a question to Psyche core Opus.
+
+## What it is
+
+Curriculum composes what a flow or a subagent believes when it starts. It holds belief modules from configured sources, and compositions that say which modules go where. A caller names a composition and gets the text, or has a workspace furnished with it. That is its whole job.
+
+Curriculum is a Nexus: an ordinary socket and a meta socket, signal only, a CLI that takes one datom, its state in its own Memory, its engine Kameo actors. Its four parts, Signal, Operation, Memory and Emission, are each declared in Ethos, and the Rust is generated from them; the hand-written code is the bodies.
+
+## The five things that make it version 1
+
+1. A missing module never fails a composition. The answer carries what was found and the names that were missing; what to do about a missing name is the caller's.
+2. A source is a repository at a reference, or a local directory read as it stands. Sources are configuration.
+3. Where a module goes is the composition's to say, not the module's source and not its name. The same module is a system prompt line in one composition and a skill in another, with no change to the module.
+4. The configuration is edited atomically: one source, one composition, one placement at a time, each change whole or not at all, over the meta socket, kept in Memory.
+5. The registry is resident. It is built when Curriculum starts and changed by an event: a source's reference moved, a directory changed, a configuration value set. A request reads the registry and fetches nothing.
+
+## Names
+
+A module's name is three fields: its type, its topic and its version. In text the colon separates them: `vision:flow-nexus:1`, `spirit:core`. A topic with a single module has no version.
+
+```ethos
+Library
+[]                                         ; imports
+[ Kind.[ Spirit Intent Vision              ; types: the module types, highest first
+         Knowledge Notion Role ]
+  Subject.String                           ;   the topic
+  Version.Integer
+  ModuleName.{ Kind Subject Option<Version> }
+  Path.String
+  Reference.String                         ;   a branch or a revision
+  SourceName.String
+  Source.[ Repository.{ Path Reference }   ;   read at that reference; the event is the reference moving
+           Directory.Path ]                ;   read as it stands; the event is a file changing
+  Placement.[ SystemPrompt                 ;   where a module goes
+              StartupPrompt                ;     in the first prompt
+              VisibleSkill                 ;     a skill the flow sees listed
+              HiddenSkill                  ;     a skill it is not shown
+              Held ]                       ;     reached through Curriculum alone
+  Placed.{ ModuleName Placement }
+  CompositionName.String
+  Composition.{ CompositionName Vector<Placed> }
+  SubagentName.String
+  Target.[ Flow                            ;   composed as a flow's prompts and skills
+           Subagent.SubagentName ]         ;   composed as one subagent file
+  Harness.[ Claude Codex ]
+  Workspace.String
+  Hash.String                              ;   the hash of a module's content as composed
+  Provenance.{ ModuleName SourceName Hash } ]
+[]                                         ; traits
+[]                                         ; associations
+```
+
+A dependency a module names is composed with it, for a flow and for a subagent alike. A dependency the composition does not place takes the default placement of its type, a meta setting.
+
+Each module's content sits between delimiters that name it, so a flow or a subagent knows where each belief comes from:
+
+```markdown
+<!-- module: spirit:core -->
+The purpose of a thinking machine is to extend a living psyche.
+<!-- end-module: spirit:core -->
+```
+
+A Role module carries in its front matter the model, the tools and the caller policy of the subagent it describes; a Subagent composition returns them with the text.
+
+## Signal
+
+```ethos
+Signal
+[ curriculum:[ ModuleName CompositionName Target Harness   ; imports
+               Workspace Provenance Placement ] ]
+[ Resolve.Vector<ModuleName>               ; inputs: which of these names are held
+  Compose.Request                          ;   the text of a composition
+  Furnish.{ Workspace Request }            ;   the same, written into a workspace
+  Read.ModuleName                          ;   one module, any placement, Held among them
+  Observe ]                                ;   the registry's changes, as they happen
+[ Resolved.{ Found.Vector<ModuleName>      ; outputs
+             Missing.Vector<ModuleName> }
+  Composed.Composed
+  Furnished.{ Workspace Vector<ModuleName> }   ;   the names missing, left out
+  Module.Text
+  Observed.Vector<ModuleName>              ;   on open: every name held
+  Changed.Vector<ModuleName>               ;   then each change
+  Refused.[ UnknownComposition.CompositionName
+            UnknownModule.ModuleName
+            Unwritable.Workspace ] ]
+[ Text.String                              ; types
+  Request.{ CompositionName Target Harness }
+  Skill.{ ModuleName Placement Text }
+  Composed.{ System.Text                   ;   the system prompt, modules delimited
+             Startup.Text                  ;   the first prompt's belief
+             Vector<Skill>
+             Missing.Vector<ModuleName>
+             Vector<Provenance> } ]
+```
+
+```datom
+Compose.{ reviewer Flow Claude }
+Composed.{ «…» «…» [ { { Knowledge search None } VisibleSkill «…» } ]
+           [ { Vision none None } ]
+           [ { { Spirit core None } psyche 9f3a… } ] }
+```
+
+The owner's signal, on the meta socket:
+
+```ethos
+Signal
+[ curriculum:[ SourceName Source Composition CompositionName   ; imports
+               Placed ModuleName Kind Placement ] ]
+[ Configure.Set ]                          ; inputs: one value at a time, whole or not at all
+[ Configured.Set                           ; outputs
+  Refused.[ UnknownSource.SourceName
+            UnknownComposition.CompositionName
+            Unreadable.SourceName ] ]
+[ Set.[ Source.{ SourceName Source }       ; types: a source added or replaced
+        RemoveSource.SourceName
+        Composition                        ;   a composition added or replaced, whole
+        RemoveComposition.CompositionName
+        Place.{ CompositionName Placed }   ;   one module placed, or its placement changed
+        Unplace.{ CompositionName ModuleName }
+        Default.{ Kind Placement }         ;   where an unplaced dependency of that type goes
+        Moved.SourceName ] ]               ;   the event: that source changed; read it again
+```
+
+`Moved` is how a change reaches Curriculum: the hook or path unit that sees a reference move or a file change sends it. Curriculum then reads that source alone and tells its observers which names changed.
+
+## Memory and Emission
+
+Memory holds the sources, the compositions, the defaults, and for each source the names it held when last read with their hashes. Furnishing is the one emission: the composed text written into a workspace, the system prompt bundle, the skills directory of the harness, or one subagent file. Curriculum is the only writer of those files.
+
+## What it leaves to others
+
+The handover, the open requests and the records of a flow's predecessors are the Flow Nexus's; Curriculum composes belief alone.
+
+## How it is built
+
+From an empty tree, on its own main branch for version 1 in the Curriculum repository, the version 0 branch left running until the switch. Version 0's sound parts are read and written again where they fit this design; nothing is carried over because it exists. It is small: version 0's job took about 1,800 lines, and this one, with its types generated from Ethos, should need no more. Each thing does one thing: the registry holds, the composer composes, the furnisher writes.
+
+It is built and tested with Nix so that nothing compiles twice, and its tests live in its test repository. The tests that decide the switch: the order of the modules in a prompt, the hashes, a missing name answered and not failed, a role's model, tools and policy, both harnesses furnished, and a configuration change that is whole or absent after a kill at any point.
+
+The switch updates every consumer in one change: the Flow Nexus's composer, the Home units that write skill trees, and the generated agents.
