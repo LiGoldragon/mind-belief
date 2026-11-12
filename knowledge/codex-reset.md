@@ -13,9 +13,7 @@ It starts `codex app-server` and calls `account/rateLimits/read` with the
 `~/.codex` login. The binary must be a real codex-cli 0.161 or later run directly, since
 the `codex` wrapper on PATH adds `--remote`, which `app-server` rejects.
 The tools try `codex` on PATH, then the newest
-`/nix/store/*-codex-0.1*/bin/codex`; `--codex PATH` overrides both. On
-2026-11-03, `/nix/store/q25axkvjdkwhk8lml81sqrm2pikvhgw6-codex-0.163.0/bin/codex`
-worked.
+`/nix/store/*-codex-0.1*/bin/codex`; `--codex PATH` overrides both.
 
 The reply carries:
 
@@ -49,9 +47,6 @@ A reset is redeemed in one of two cases:
 The reset redeemed is the available one expiring soonest. A later reset is
 never redeemed while an earlier one is unused. A reset left to expire is
 lost; a redemption gains what the week has used, so it is worth most late.
-
-Observed 2026-11-03: three resets listed, expiring 6 Nov 17:32, 30 Nov
-14:15 and 1 Dec 16:44 (local); the weekly window resets 4 Nov 05:53.
 
 1. Run `codex-usage`; keep its output as the before state.
 2. Run `/git/github.com/LiGoldragon/makeshift-tools/codex-redeem-reset <id>` with that reset's id.
