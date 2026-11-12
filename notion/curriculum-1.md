@@ -73,7 +73,7 @@ The purpose of a thinking machine is to extend a living psyche.
 <!-- end-module: spirit:core -->
 ```
 
-A Role module carries in its front matter the model, the tools and the caller policy of the subagent it describes; a Subagent composition returns them with the text.
+A Role module carries in its front matter the model, the tools and, optionally, the effort of the subagent it describes; a Subagent composition returns them with the text.
 
 ## Signal
 
@@ -148,6 +148,6 @@ The handover, the open requests and the records of a flow's predecessors are the
 
 From an empty tree, on its own main branch for version 1 in the Curriculum repository, the version 0 branch left running until the switch. Version 0's sound parts are read and written again where they fit this design; nothing is carried over because it exists. It is small: version 0's job took about 1,800 lines, and this one, with its types generated from Ethos, should need no more. Each thing does one thing: the registry holds, the composer composes, the furnisher writes.
 
-It is built and tested with Nix so that nothing compiles twice, and its tests live in its test repository. The tests that decide the switch: the order of the modules in a prompt, the hashes, a missing name answered and not failed, a role's model, tools and policy, both harnesses furnished, and a configuration change that is whole or absent after a kill at any point.
+It is built and tested with Nix so that nothing compiles twice, and its tests live in its test repository. The tests that decide the switch: the order of the modules in a prompt, the hashes, a missing name answered and not failed, a role's model, tools and effort, both harnesses furnished, and a configuration change that is whole or absent after a kill at any point.
 
 The switch updates every consumer in one change: the Flow Nexus's composer, the Home units that write skill trees, and the generated agents.
