@@ -75,6 +75,37 @@ The purpose of a thinking machine is to extend a living psyche.
 
 A Role module carries in its front matter the model, the tools and, optionally, the effort of the subagent it describes; a Subagent composition returns them with the text.
 
+## A source declares its modules
+
+A module is what Curriculum holds, and its name comes from a declaration alone. Every source carries one datom file at its root, `modules.datom`: the declarations of the modules it holds. A file's own name and folder mean nothing to Curriculum; the declaration says which file is which module. A module is added to a source by adding its declaration, and leaves by its declaration leaving. Git is the bootstrap database: it versions and backs up the declarations and the text, and what Curriculum holds in its registry is what every reader gets.
+
+```ethos
+Library
+[ curriculum:[ Kind Subject Version Path ] ]   ; imports
+[ Versions.Vector<Version>                     ; types: the versions of its topic a module holds for; usually one
+  Declaration.{ Kind Subject Versions          ;   the module's name, in three fields,
+                File.Path }                    ;   and the file that holds its text, relative to the source
+  Declarations.Vector<Declaration> ]           ;   the whole of modules.datom
+[]                                             ; traits
+[]                                             ; associations
+```
+
+```datom
+; modules.datom, in a source; the file names are examples and carry no meaning
+[ { Spirit core [ 0 ] «spirit/core.md» }
+  { Vision flow-nexus [ 0 ] «vision/flow-nexus.md» }
+  { Vision flow-nexus [ 1 ] «vision/flow-nexus-v1.md» }
+  { Vision ethos [ 0 1 ] «vision/ethos.md» } ]     ; one module holding for two versions
+```
+
+A name asked for, `vision:flow-nexus:1`, is given by the declaration of that type and topic whose versions hold that number. A name written with no version asks for version 0. Two declarations of one type and topic that share a version, and a declaration whose file is absent, are reported with their names when the source is read, the first kept; nothing about a source's declarations fails a composition.
+
+A module's dependencies are names in three fields, resolved the same way. The description and the dependencies stay in the module's front matter.
+
+When a source is read, at start and on `Moved`, Curriculum reads `modules.datom` first and then the files it names; a file no declaration names is not a module.
+
+The switch to declarations is one change in each source: `modules.datom` is written for every module the source holds, and every composition and every dependency that names a module by an older form, a version written into the topic among them (`flow-nexus-v1`), is rewritten to the three fields.
+
 ## Signal
 
 ```ethos
