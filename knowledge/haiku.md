@@ -4,7 +4,7 @@ disable-model-invocation: true
 dependencies: []
 ---
 
-Haiku is Anthropic's Claude Haiku 5.5, `claude-haiku-5-5`: from 0.10 and 0.50 dollars, the cheapest Claude model; the fastest.
+Haiku is Anthropic's Claude Haiku 5.5, `claude-haiku-5-5`: the fastest. On the subscription it draws the weekly limit shared across the Claude models; Anthropic publishes no figure for its draw, and its API price, from 0.10 and 0.50 dollars, is the lowest of the Claude models (inference: it draws the least).
 
 Anthropic positions it for high-volume work: classification, extraction, routing.
 

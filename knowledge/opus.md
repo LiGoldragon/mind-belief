@@ -4,7 +4,7 @@ disable-model-invocation: true
 dependencies: []
 ---
 
-Opus is Anthropic's Claude Opus 5.5, `claude-opus-5-5`: 4 and 20 dollars, half Fable, twice Sonnet; moderate speed.
+Opus is Anthropic's Claude Opus 5.5, `claude-opus-5-5`: moderate speed. On the subscription it draws the weekly limit shared across the Claude models, about a fifth of Fable per token by one measurement; its API price, 4 and 20 dollars, is half Fable's and twice Sonnet's.
 
 It is recognised for multistep work in a real repository, for long audits and migrations run with subagents and little oversight, for code review that finds more faults with fewer false alarms, and for reports that say plainly what it did and what it needs.
 

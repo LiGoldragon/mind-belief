@@ -4,7 +4,7 @@ disable-model-invocation: true
 dependencies: []
 ---
 
-Fable is Anthropic's Claude Fable 5.2, `claude-fable-5-2`: 8 and 40 dollars, twice Opus, the dearest Claude model; moderate speed.
+Fable is Anthropic's Claude Fable 5.2, `claude-fable-5-2`: the dearest Claude model; moderate speed. On the subscription it draws the weekly limit shared across the Claude models faster than any other Claude model, and may use up to half of that limit; by one measurement it draws about five times Opus per token, against an API price (8 and 40 dollars) of twice Opus's.
 
 It is recognised for long unattended work, for planning and orchestrating other models, and for honesty: Anthropic found it the most factual model it tested.
 

@@ -4,7 +4,7 @@ disable-model-invocation: true
 dependencies: []
 ---
 
-Luna is OpenAI's GPT-6 Luna, `gpt-6-luna`, run in Codex: 0.10 and 0.50 dollars, a twentieth of Sol; the fastest OpenAI model of the system.
+Luna is OpenAI's GPT-6 Luna, `gpt-6-luna`, run in Codex: the fastest OpenAI model of the system. On the subscription it draws about a twentieth of Sol (inference from OpenAI's estimated message ranges), as its API price of 0.10 and 0.50 dollars does.
 
 OpenAI calls it its most efficient model, for focused, high-volume tasks and fast, narrowly scoped agents doing clear, repeatable work. In OpenAI's chart its factual error rate is about twice Astra's.
 

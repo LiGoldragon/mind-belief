@@ -4,7 +4,7 @@ disable-model-invocation: true
 dependencies: []
 ---
 
-Astra is OpenAI's GPT-6 Astra, `gpt-6-astra`, run in Codex: 10 and 50 dollars, five times Sol, the dearest model of the system.
+Astra is OpenAI's GPT-6 Astra, `gpt-6-astra`, run in Codex: the dearest model of the system. On the subscription it draws about three to three and a half times Sol (inference from OpenAI's estimated message ranges), somewhat less than its API price of 10 and 50 dollars, five times Sol.
 
 OpenAI calls it its best model across the board, for the most demanding work.
 

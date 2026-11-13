@@ -4,7 +4,7 @@ disable-model-invocation: true
 dependencies: []
 ---
 
-Sol is OpenAI's GPT-6.1 Sol, `gpt-6.1-sol`, run in Codex: 2 and 10 dollars, a fifth of Astra (the Flow configuration also lists the earlier `gpt-6-sol`; which one a flow runs is not confirmed).
+Sol is OpenAI's GPT-6.1 Sol, `gpt-6.1-sol`, run in Codex. On the subscription it draws about a third of Astra (inference from OpenAI's estimated message ranges); its API price, 2 and 10 dollars, is a fifth of Astra's (the Flow configuration also lists the earlier `gpt-6-sol`; which one a flow runs is not confirmed).
 
 OpenAI places it near Astra for complex work at lower cost, and names it for most tasks: ambiguous, multi-step work needing planning, tool use, validation and follow-through.
 

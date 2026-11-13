@@ -4,7 +4,7 @@ disable-model-invocation: true
 dependencies: []
 ---
 
-Sonnet is Anthropic's Claude Sonnet 5.5, `claude-sonnet-5-5`: 2 and 10 dollars, half Opus; fast.
+Sonnet is Anthropic's Claude Sonnet 5.5, `claude-sonnet-5-5`: fast. On the subscription it draws the weekly limit shared across the Claude models; Anthropic publishes no figure for its draw, and its API price, 2 and 10 dollars, is half Opus's (inference: it draws less than Opus).
 
 It is recognised for the best balance of speed and intelligence; for the hardest long-horizon work Anthropic names Opus instead.
 
