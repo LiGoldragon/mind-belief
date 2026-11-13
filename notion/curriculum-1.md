@@ -23,7 +23,7 @@ Curriculum is a Nexus: an ordinary socket and a meta socket, signal only, a CLI 
 
 ## Names
 
-A module's name is three fields: its type, its topic and its version. In text the colon separates them: `vision:flow-nexus:1`, `spirit:core`. A topic with a single module has no version.
+A module's name is three fields: its type, its topic and its version. In text the colon separates them: `vision:flow-nexus:1`, `spirit:core:0`. A topic with a single module has it at version 0.
 
 ```ethos
 Library
