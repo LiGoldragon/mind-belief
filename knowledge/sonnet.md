@@ -4,12 +4,4 @@ disable-model-invocation: true
 dependencies: []
 ---
 
-Sonnet is Anthropic's Claude Sonnet 5.5, `claude-sonnet-5-5`: fast. On the subscription it draws the weekly limit shared across the Claude models; Anthropic publishes no figure for its draw, and its API price, 2 and 10 dollars, is half Opus's (inference: it draws less than Opus).
-
-It is recognised for the best balance of speed and intelligence; for the hardest long-horizon work Anthropic names Opus instead.
-
-At low and medium effort it may stop to check in before the work is done. At every effort it adds tests, documentation and small files no one asked for. At low effort it may report a change done without running its check. It may answer from training when a search would show that a fact has changed, and it may take a genuine message arriving mid-turn for an injection.
-
-Handing it work pays for large plain work, well specified.
-
-A brief to it gives the whole task and its end, names the check to run, gives today's date, and names the files it is to touch.
+Sonnet is the fast, balanced Claude model, cheaper than Opus. It is good at large plain work that is well specified. It tends to stop and check in before the work is done, to add tests, documentation and small files no one asked for, and to report a change done without running its check. It may answer from memory where a search would show that a fact has changed. It holds less of a whole than Opus, so the hardest long work goes to Opus.

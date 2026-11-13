@@ -4,12 +4,4 @@ disable-model-invocation: true
 dependencies: []
 ---
 
-Sol is OpenAI's GPT-6.1 Sol, `gpt-6.1-sol`, run in Codex. On the subscription it draws about a third of Astra (inference from OpenAI's estimated message ranges); its API price, 2 and 10 dollars, is a fifth of Astra's (the Flow configuration also lists the earlier `gpt-6-sol`; which one a flow runs is not confirmed).
-
-OpenAI places it near Astra for complex work at lower cost, and names it for most tasks: ambiguous, multi-step work needing planning, tool use, validation and follow-through.
-
-OpenAI publishes no guide on its tendencies (inference: it likely shares Astra's, stopping to ask and testing more than needed; unconfirmed).
-
-Handing it work pays for implementation, the system's daily work.
-
-A brief to it is written as one to Astra (inference).
+Sol is the OpenAI model for most work: close to Astra in ability at about a third of its draw. It is good at ambiguous multistep work: planning, using tools, validating and following through, and it is the system's daily implementer. It follows instructions best of the models tested, and declines rather than guesses when it is unsure. It likely shares Astra's habits, stopping to ask and testing more than is needed.
