@@ -36,4 +36,13 @@
   { { Role worker-description Single.0 } «role/worker-description/0.md» }
   { { Role write-demanding-description Single.0 } «role/write-demanding-description/0.md» }
   { { Role write-ordinary-description Single.0 } «role/write-ordinary-description/0.md» }
-  { { Role write-trivial-description Single.0 } «role/write-trivial-description/0.md» } ]
+  { { Role write-trivial-description Single.0 } «role/write-trivial-description/0.md» }
+  { { Notion all-text-is-datom Single.0 } «notion/all-text-is-datom/0.md» }
+  { { Notion capsule-nexus Single.0 } «notion/capsule-nexus/0.md» }
+  { { Notion circulation Single.0 } «notion/circulation/0.md» }
+  { { Notion curriculum Single.1 } «notion/curriculum/1.md» }
+  { { Notion harness-nexus Single.0 } «notion/harness-nexus/0.md» }
+  { { Notion permaflows Single.0 } «notion/permaflows/0.md» }
+  { { Notion sema Single.1 } «notion/sema/1.md» }
+  { { Notion source-nexus Single.0 } «notion/source-nexus/0.md» }
+  { { Notion subscription Single.0 } «notion/subscription/0.md» } ]
