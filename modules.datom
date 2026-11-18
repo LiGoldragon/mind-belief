@@ -12,6 +12,7 @@
   { { Knowledge model-descriptions Single.0 } «knowledge/model-descriptions/0.md» }
   { { Knowledge nix-rust-builds Single.0 } «knowledge/nix-rust-builds/0.md» }
   { { Knowledge notion Single.0 } «knowledge/notion/0.md» }
+  { { Knowledge handover Single.0 } «knowledge/handover/0.md» }
   { { Knowledge offload Single.0 } «knowledge/offload/0.md» }
   { { Knowledge opus Single.0 } «knowledge/opus/0.md» }
   { { Knowledge orchestrate Single.0 } «knowledge/orchestrate/0.md» }
