@@ -31,11 +31,14 @@
   { { Knowledge vocabulary Single.0 } «knowledge/vocabulary/0.md» }
   { { Role book-description Single.0 } «role/book-description/0.md» }
   { { Role book-page-description Single.0 } «role/book-page-description/0.md» }
+  { { Role builder Single.0 } «role/builder/0.md» }
   { { Role default-description Single.0 } «role/default-description/0.md» }
   { { Role explorer-description Single.0 } «role/explorer-description/0.md» }
+  { { Role log-reader Single.0 } «role/log-reader/0.md» }
   { { Role read-demanding-description Single.0 } «role/read-demanding-description/0.md» }
   { { Role read-ordinary-description Single.0 } «role/read-ordinary-description/0.md» }
   { { Role read-trivial-description Single.0 } «role/read-trivial-description/0.md» }
+  { { Role searcher Single.0 } «role/searcher/0.md» }
   { { Role tester-description Single.0 } «role/tester-description/0.md» }
   { { Role worker-description Single.0 } «role/worker-description/0.md» }
   { { Role write-demanding-description Single.0 } «role/write-demanding-description/0.md» }
