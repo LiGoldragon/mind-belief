@@ -44,6 +44,7 @@
   { { Role write-demanding-description Single.0 } «role/write-demanding-description/0.md» }
   { { Role write-ordinary-description Single.0 } «role/write-ordinary-description/0.md» }
   { { Role write-trivial-description Single.0 } «role/write-trivial-description/0.md» }
+  { { Notion quality-use Single.0 } «notion/quality-use/0.md» }
   { { Notion symbolist Single.0 } «notion/symbolist/0.md» }
   { { Notion visual-publisher Single.0 } «notion/visual-publisher/0.md» }
   { { Notion visualizer Single.0 } «notion/visualizer/0.md» } ]
