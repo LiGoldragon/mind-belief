@@ -48,6 +48,7 @@
   { { Role write-trivial-description Single.0 } «role/write-trivial-description/0.md» }
   { { Notion chart Single.0 } «notion/chart/0.md» }
   { { Notion described-object Single.0 } «notion/described-object/0.md» }
+  { { Notion designer-conduct Single.0 } «notion/designer-conduct/0.md» }
   { { Notion protos-picture Single.0 } «notion/protos-picture/0.md» }
   { { Notion ethos-picture Single.0 } «notion/ethos-picture/0.md» }
   { { Notion planetary-visuals Single.0 } «notion/planetary-visuals/0.md» }
