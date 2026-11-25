@@ -1,6 +1,7 @@
 [ { { Knowledge astra Single.0 } «knowledge/astra/0.md» }
   { { Knowledge book Single.0 } «knowledge/book/0.md» }
   { { Knowledge claude-harness-nexus Single.0 } «knowledge/claude-harness-nexus/0.md» }
+  { { Knowledge codex-flow-start Single.0 } «knowledge/codex-flow-start/0.md» }
   { { Knowledge codex-reset Single.0 } «knowledge/codex-reset/0.md» }
   { { Knowledge context-strata Single.0 } «knowledge/context-strata/0.md» }
   { { Knowledge criomos Single.0 } «knowledge/criomos/0.md» }
