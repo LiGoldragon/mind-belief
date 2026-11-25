@@ -1,10 +1,16 @@
 """Build a VisualPage bundle from its positional Datom. Publication is separate."""
 import argparse
+from dataclasses import dataclass
 import html
 import json
 from pathlib import Path
 import shutil
 from urllib.parse import quote
+
+
+@dataclass(frozen=True)
+class Archive:
+    source_path: str
 
 
 class Datom:
@@ -95,9 +101,13 @@ class Datom:
         self.require("{")
         module = self.atom(), self.text(), self.atom()
         self.require("}")
-        units = self.vector(self.unit)
+        if self.seek() == "[":
+            body = self.vector(self.unit)
+        else:
+            self.require("Archive.")
+            body = Archive(self.text())
         self.require("}")
-        return module, units
+        return module, body
 
     def page(self):
         self.require("{")
@@ -107,6 +117,18 @@ class Datom:
         if self.seek():
             raise ValueError(f"Unexpected text at character {self.at + 1}")
         return title, signature, sections
+
+
+def archived_source(root, module, name):
+    kind, topic, version = module
+    path = Path(name)
+    module_path = (kind.lower(), topic, f"{version}.md")
+    if path.is_absolute() or ".." in path.parts or path.parts[-3:] != module_path:
+        raise ValueError(f"Expected a relative path to the archived module: {name!r}")
+    source = (root / path).resolve(strict=True)
+    if not source.is_relative_to(root) or not source.is_file():
+        raise ValueError(f"Archived module is outside the page directory: {name!r}")
+    return source.read_bytes().decode("utf-8")
 
 
 def render(manifest, output):
@@ -129,17 +151,22 @@ def render(manifest, output):
         return f'<img class="{change}" src="{quote(key)}" alt="">'
 
     body = [f"<h1>{e(title)}</h1><p>{e(signature)}</p>"]
-    for module, units in sections:
+    for module, section_body in sections:
         body.append(f"<section><h2>{e('{ ' + ' '.join(module) + ' }')}</h2>")
-        for change, paths, words, code in units:
-            marks = ("removed", "added") if change == "Replaced" else (change.lower(),)
-            body.append('<article><div class="pictures">')
-            body.extend(picture(path, mark) for path, mark in zip(paths, marks, strict=True))
-            body.append(f"</div><small>{words} words</small>")
-            if code is not None:
-                language, text = code
-                body.append(f'<pre><code class="language-{e(language)}">{e(text)}</code></pre>')
-            body.append("</article>")
+        if isinstance(section_body, Archive):
+            source = archived_source(root, module, section_body.source_path)
+            body.append('<p class="archive-mark"><strong>Archive</strong></p>')
+            body.append(f'<pre class="archive-source removed"><code>{e(source)}</code></pre>')
+        else:
+            for change, paths, words, code in section_body:
+                marks = ("removed", "added") if change == "Replaced" else (change.lower(),)
+                body.append('<article><div class="pictures">')
+                body.extend(picture(path, mark) for path, mark in zip(paths, marks, strict=True))
+                body.append(f"</div><small>{words} words</small>")
+                if code is not None:
+                    language, text = code
+                    body.append(f'<pre><code class="language-{e(language)}">{e(text)}</code></pre>')
+                body.append("</article>")
         body.append("</section>")
 
     output.mkdir(parents=True, exist_ok=False)
