@@ -4,19 +4,49 @@ from dataclasses import dataclass
 import html
 import json
 from pathlib import Path
+import re
 import shutil
 from urllib.parse import quote
 
 
 @dataclass(frozen=True)
-class Archive:
-    source_path: str
+class SectionMark:
+    text: str
 
 
 @dataclass(frozen=True)
 class ReplaceModule:
-    source_path: str
     units: list
+
+
+def code_fences(text):
+    """Project exact complete Markdown fences from a pictured unit."""
+    lines = text.splitlines(keepends=True)
+    fences = []
+    at = 0
+    while at < len(lines):
+        if not lines[at].strip():
+            at += 1
+            continue
+        start = at
+        opening = re.fullmatch(r" {0,3}(`{3,}|~{3,})[ \t]*([^\r\n]*)", lines[at].rstrip("\r\n"))
+        if not opening:
+            raise ValueError("A pictured unit's code may contain complete fences only")
+        delimiter, info = opening.groups()
+        if delimiter.startswith("`") and "`" in info:
+            raise ValueError("Invalid backtick fence opening")
+        language = info.split(None, 1)[0] if info.strip() else None
+        close = re.compile(r" {0,3}" + re.escape(delimiter[0]) + "{" + str(len(delimiter)) + r",}[ \t]*")
+        at += 1
+        while at < len(lines) and not close.fullmatch(lines[at].rstrip("\r\n")):
+            at += 1
+        if at == len(lines):
+            raise ValueError("Unclosed code fence in pictured unit")
+        at += 1
+        fences.append((language, "".join(lines[start:at])))
+    if not fences:
+        raise ValueError("A pictured unit with code needs a complete fence")
+    return fences
 
 
 class Datom:
@@ -95,7 +125,8 @@ class Datom:
             code = None
         elif option == "Some":
             self.require(".{")
-            code = self.text(), self.text()
+            self.text()  # The unit kind; each fence carries its own language.
+            code = code_fences(self.text())
             self.require("}")
         else:
             raise ValueError(f"Unknown code option {option!r}")
@@ -111,17 +142,14 @@ class Datom:
             body = self.vector(self.unit)
         else:
             kind = self.atom()
-            self.require(".")
-            if kind == "Archive":
-                body = Archive(self.text())
+            if kind in {"Archive", "Removed"}:
+                body = SectionMark(kind)
             elif kind == "ReplaceModule":
-                self.require("{")
-                source_path = self.text()
+                self.require(".")
                 units = self.vector(self.unit)
                 if not units:
-                    raise ValueError("A module replacement needs incoming picture units")
-                self.require("}")
-                body = ReplaceModule(source_path, units)
+                    raise ValueError("A module replacement needs picture units")
+                body = ReplaceModule(units)
             else:
                 raise ValueError(f"Unknown section body {kind!r}")
         self.require("}")
@@ -137,20 +165,8 @@ class Datom:
         return title, signature, sections
 
 
-def removed_module_source(root, module, name):
-    kind, topic, version = module
-    path = Path(name)
-    module_path = (kind.lower(), topic, f"{version}.md")
-    if path.is_absolute() or ".." in path.parts or path.parts[-3:] != module_path:
-        raise ValueError(f"Expected a relative path to the removed module: {name!r}")
-    source = (root / path).resolve(strict=True)
-    if not source.is_relative_to(root) or not source.is_file():
-        raise ValueError(f"Removed module is outside the page directory: {name!r}")
-    return source.read_bytes().decode("utf-8")
-
-
 def render(manifest, output):
-    title, signature, sections = Datom(manifest.read_text(encoding="utf-8")).page()
+    title, signature, sections = Datom(manifest.read_bytes().decode("utf-8")).page()
     root = manifest.resolve().parent
     assets = {}
     e = html.escape
@@ -168,30 +184,28 @@ def render(manifest, output):
         assets[key] = source
         return f'<img class="{change}" src="{quote(key)}" alt="">'
 
-    def removed_source(module, name):
-        source = removed_module_source(root, module, name)
-        return f'<pre class="archive-source removed"><code>{e(source)}</code></pre>'
+    def section_mark(text):
+        return f'<p class="section-mark"><strong>{e(text)}</strong></p>'
 
     def picture_units(units):
-        for change, paths, words, code in units:
+        for change, paths, _words, fences in units:
             marks = ("removed", "added") if change == "Replaced" else (change.lower(),)
             yield '<article><div class="pictures">'
             yield from (picture(path, mark) for path, mark in zip(paths, marks, strict=True))
-            yield f"</div><small>{words} words</small>"
-            if code is not None:
-                language, text = code
-                yield f'<pre><code class="language-{e(language)}">{e(text)}</code></pre>'
+            yield "</div>"
+            for language, source in fences or ():
+                style = f' class="language-{e(language)}"' if language else ""
+                yield f'<pre><code{style}>{e(source)}</code></pre>'
             yield "</article>"
 
     body = [f"<h1>{e(title)}</h1><p>{e(signature)}</p>"]
     for module, section_body in sections:
         body.append(f"<section><h2>{e('{ ' + ' '.join(module) + ' }')}</h2>")
         match section_body:
-            case Archive(source_path):
-                body.append('<p class="archive-mark"><strong>Archive</strong></p>')
-                body.append(removed_source(module, source_path))
-            case ReplaceModule(source_path, units):
-                body.append(removed_source(module, source_path))
+            case SectionMark(mark):
+                body.append(section_mark(mark))
+            case ReplaceModule(units):
+                body.append(section_mark("Replacement"))
                 body.extend(picture_units(units))
             case units:
                 body.extend(picture_units(units))
