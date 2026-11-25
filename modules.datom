@@ -45,6 +45,7 @@
   { { Role write-ordinary-description Single.0 } «role/write-ordinary-description/0.md» }
   { { Role write-trivial-description Single.0 } «role/write-trivial-description/0.md» }
   { { Notion ethos-picture Single.0 } «notion/ethos-picture/0.md» }
+  { { Notion planetary-visuals Single.0 } «notion/planetary-visuals/0.md» }
   { { Notion picture-devices Single.0 } «notion/picture-devices/0.md» }
   { { Notion quantity-picture Single.0 } «notion/quantity-picture/0.md» }
   { { Notion quality-use Single.0 } «notion/quality-use/0.md» }
