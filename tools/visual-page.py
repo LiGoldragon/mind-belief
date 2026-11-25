@@ -13,6 +13,12 @@ class Archive:
     source_path: str
 
 
+@dataclass(frozen=True)
+class ReplaceModule:
+    source_path: str
+    units: list
+
+
 class Datom:
     def __init__(self, source):
         self.source = source
@@ -104,8 +110,20 @@ class Datom:
         if self.seek() == "[":
             body = self.vector(self.unit)
         else:
-            self.require("Archive.")
-            body = Archive(self.text())
+            kind = self.atom()
+            self.require(".")
+            if kind == "Archive":
+                body = Archive(self.text())
+            elif kind == "ReplaceModule":
+                self.require("{")
+                source_path = self.text()
+                units = self.vector(self.unit)
+                if not units:
+                    raise ValueError("A module replacement needs incoming picture units")
+                self.require("}")
+                body = ReplaceModule(source_path, units)
+            else:
+                raise ValueError(f"Unknown section body {kind!r}")
         self.require("}")
         return module, body
 
@@ -119,15 +137,15 @@ class Datom:
         return title, signature, sections
 
 
-def archived_source(root, module, name):
+def removed_module_source(root, module, name):
     kind, topic, version = module
     path = Path(name)
     module_path = (kind.lower(), topic, f"{version}.md")
     if path.is_absolute() or ".." in path.parts or path.parts[-3:] != module_path:
-        raise ValueError(f"Expected a relative path to the archived module: {name!r}")
+        raise ValueError(f"Expected a relative path to the removed module: {name!r}")
     source = (root / path).resolve(strict=True)
     if not source.is_relative_to(root) or not source.is_file():
-        raise ValueError(f"Archived module is outside the page directory: {name!r}")
+        raise ValueError(f"Removed module is outside the page directory: {name!r}")
     return source.read_bytes().decode("utf-8")
 
 
@@ -150,23 +168,33 @@ def render(manifest, output):
         assets[key] = source
         return f'<img class="{change}" src="{quote(key)}" alt="">'
 
+    def removed_source(module, name):
+        source = removed_module_source(root, module, name)
+        return f'<pre class="archive-source removed"><code>{e(source)}</code></pre>'
+
+    def picture_units(units):
+        for change, paths, words, code in units:
+            marks = ("removed", "added") if change == "Replaced" else (change.lower(),)
+            yield '<article><div class="pictures">'
+            yield from (picture(path, mark) for path, mark in zip(paths, marks, strict=True))
+            yield f"</div><small>{words} words</small>"
+            if code is not None:
+                language, text = code
+                yield f'<pre><code class="language-{e(language)}">{e(text)}</code></pre>'
+            yield "</article>"
+
     body = [f"<h1>{e(title)}</h1><p>{e(signature)}</p>"]
     for module, section_body in sections:
         body.append(f"<section><h2>{e('{ ' + ' '.join(module) + ' }')}</h2>")
-        if isinstance(section_body, Archive):
-            source = archived_source(root, module, section_body.source_path)
-            body.append('<p class="archive-mark"><strong>Archive</strong></p>')
-            body.append(f'<pre class="archive-source removed"><code>{e(source)}</code></pre>')
-        else:
-            for change, paths, words, code in section_body:
-                marks = ("removed", "added") if change == "Replaced" else (change.lower(),)
-                body.append('<article><div class="pictures">')
-                body.extend(picture(path, mark) for path, mark in zip(paths, marks, strict=True))
-                body.append(f"</div><small>{words} words</small>")
-                if code is not None:
-                    language, text = code
-                    body.append(f'<pre><code class="language-{e(language)}">{e(text)}</code></pre>')
-                body.append("</article>")
+        match section_body:
+            case Archive(source_path):
+                body.append('<p class="archive-mark"><strong>Archive</strong></p>')
+                body.append(removed_source(module, source_path))
+            case ReplaceModule(source_path, units):
+                body.append(removed_source(module, source_path))
+                body.extend(picture_units(units))
+            case units:
+                body.extend(picture_units(units))
         body.append("</section>")
 
     output.mkdir(parents=True, exist_ok=False)
