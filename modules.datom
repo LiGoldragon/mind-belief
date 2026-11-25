@@ -29,6 +29,7 @@
   { { Knowledge sonnet Single.0 } «knowledge/sonnet/0.md» }
   { { Knowledge terra Single.0 } «knowledge/terra/0.md» }
   { { Knowledge vocabulary Single.0 } «knowledge/vocabulary/0.md» }
+  { { Knowledge visualizer-tools Single.0 } «knowledge/visualizer-tools/0.md» }
   { { Role book-description Single.0 } «role/book-description/0.md» }
   { { Role book-page-description Single.0 } «role/book-page-description/0.md» }
   { { Role builder Single.0 } «role/builder/0.md» }
