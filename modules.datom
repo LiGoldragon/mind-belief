@@ -62,4 +62,12 @@
   { { Notion symbols Single.0 } «notion/symbols/0.md» }
   { { Notion visual-publisher Single.0 } «notion/visual-publisher/0.md» }
   { { Notion visual-source Single.0 } «notion/visual-source/0.md» }
-  { { Notion visualizer Single.0 } «notion/visualizer/0.md» } ]
+  { { Notion visualizer Single.0 } «notion/visualizer/0.md» }
+  { { Notion concept-operation Single.0 } «notion/concept-operation/0.md» }
+  { { Notion flow-nexus Single.1 } «notion/flow-nexus/1.md» }
+  { { Notion forcing Single.0 } «notion/forcing/0.md» }
+  { { Notion leading Single.0 } «notion/leading/0.md» }
+  { { Notion matrix-nexus Single.0 } «notion/matrix-nexus/0.md» }
+  { { Notion subagent-roles Single.0 } «notion/subagent-roles/0.md» }
+  { { Notion subscription Single.0 } «notion/subscription/0.md» }
+  { { Notion translator-first Single.0 } «notion/translator-first/0.md» } ]
