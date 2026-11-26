@@ -21,8 +21,10 @@ These section bodies contain no old module file path or source.
 A pictured unit's last field is `None` for a picture alone, or
 `Some.{ UnitKind «complete fenced text» }` for a picture followed by code.
 The text holds complete Markdown code fences; whitespace may separate them.
-Each fence is displayed exactly as supplied, including its opening and
-closing lines. Each fence supplies its own language label. The renderer
+Only the content between the opening and closing lines is displayed.
+Its characters, indentation and blank lines are preserved. Each fence
+supplies its own language label. A long code line scrolls inside the
+code block on a narrow screen. The renderer
 refuses text outside fences, an incomplete fence, a source-bearing legacy
 Archive or ReplaceModule body, and an empty replacement. The unit's word
 count remains manifest metadata.

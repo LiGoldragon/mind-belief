@@ -20,7 +20,7 @@ class ReplaceModule:
 
 
 def code_fences(text):
-    """Project exact complete Markdown fences from a pictured unit."""
+    """Read the language and exact interior of each complete Markdown fence."""
     lines = text.splitlines(keepends=True)
     fences = []
     at = 0
@@ -28,7 +28,6 @@ def code_fences(text):
         if not lines[at].strip():
             at += 1
             continue
-        start = at
         opening = re.fullmatch(r" {0,3}(`{3,}|~{3,})[ \t]*([^\r\n]*)", lines[at].rstrip("\r\n"))
         if not opening:
             raise ValueError("A pictured unit's code may contain complete fences only")
@@ -38,15 +37,45 @@ def code_fences(text):
         language = info.split(None, 1)[0] if info.strip() else None
         close = re.compile(r" {0,3}" + re.escape(delimiter[0]) + "{" + str(len(delimiter)) + r",}[ \t]*")
         at += 1
+        content_start = at
         while at < len(lines) and not close.fullmatch(lines[at].rstrip("\r\n")):
             at += 1
         if at == len(lines):
             raise ValueError("Unclosed code fence in pictured unit")
+        fences.append((language, "".join(lines[content_start:at])))
         at += 1
-        fences.append((language, "".join(lines[start:at])))
     if not fences:
         raise ValueError("A pictured unit with code needs a complete fence")
     return fences
+
+
+def picture_code(language, source):
+    """Keep code readable even when the publication supplies its own pre/code theme."""
+    language_class = f' class="language-{html.escape(language)}"' if language else ""
+    # Inline important rules belong to the component, even inside a publisher's styled wrapper.
+    block_style = (
+        "color-scheme:light dark!important;"
+        "color:#17212b!important;background:#f1f5f9!important;"
+        "color:light-dark(#17212b,#e2e8f0)!important;"
+        "background:light-dark(#f1f5f9,#141c28)!important;"
+        "box-sizing:border-box!important;display:block!important;"
+        "inline-size:100%!important;min-inline-size:0!important;max-inline-size:100%!important;"
+        "block-size:auto!important;max-block-size:none!important;"
+        "margin:0.5rem 0 0!important;padding:0.75rem!important;"
+        "overflow:auto!important;text-overflow:clip!important;"
+        "white-space:pre!important;font:0.875rem/1.5 monospace!important;"
+    )
+    code_style = (
+        "color:inherit!important;background:transparent!important;"
+        "display:inline!important;font:inherit!important;white-space:inherit!important;"
+        "overflow:visible!important;padding:0!important;"
+    )
+    # HTML's input preprocessor normalizes literal CR; a character reference preserves it.
+    escaped = html.escape(source).replace("\r", "&#13;")
+    return (
+        f'<pre tabindex="0" style="{block_style}">'
+        f'<code{language_class} style="{code_style}">{escaped}</code></pre>'
+    )
 
 
 class Datom:
@@ -194,8 +223,7 @@ def render(manifest, output):
             yield from (picture(path, mark) for path, mark in zip(paths, marks, strict=True))
             yield "</div>"
             for language, source in fences or ():
-                style = f' class="language-{e(language)}"' if language else ""
-                yield f'<pre><code{style}>{e(source)}</code></pre>'
+                yield picture_code(language, source)
             yield "</article>"
 
     body = [f"<h1>{e(title)}</h1><p>{e(signature)}</p>"]
@@ -220,7 +248,7 @@ def render(manifest, output):
 :root{color-scheme:light dark}body{max-width:65rem;margin:2rem auto;padding:0 1rem;font:1rem system-ui}
 article{margin:1rem 0 2rem}.pictures{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start}
 img{display:block;max-width:100%;height:auto;box-sizing:border-box}.added{border-inline-start:.4rem solid #38945e}
-.removed{border-inline-start:.4rem solid #bd4b57}pre{overflow:auto;padding:.6rem;background:color-mix(in srgb,CanvasText 8%,Canvas)}
+.removed{border-inline-start:.4rem solid #bd4b57}
 </style>"""
     (output / "index.html").write_text(
         f'<!doctype html><html lang="en"><meta charset="utf-8"><title>{e(title)}</title>'
