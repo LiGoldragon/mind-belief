@@ -47,6 +47,7 @@
   { { Role write-demanding-description Single.0 } «role/write-demanding-description/0.md» }
   { { Role write-ordinary-description Single.0 } «role/write-ordinary-description/0.md» }
   { { Role write-trivial-description Single.0 } «role/write-trivial-description/0.md» }
+  { { Notion asking Single.0 } «notion/asking/0.md» }
   { { Notion chart Single.0 } «notion/chart/0.md» }
   { { Notion described-object Single.0 } «notion/described-object/0.md» }
   { { Notion designer-conduct Single.0 } «notion/designer-conduct/0.md» }
