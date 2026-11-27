@@ -1,6 +1,6 @@
-# mind-belief
+# mind-pattern
 
-This repository holds the Mind aspect's authored belief modules in
+This repository holds the Mind aspect's authored pattern modules in
 `knowledge/`, with subject-only filenames. Stable logical
 IDs retain the `knowledge-` type prefix.
 
