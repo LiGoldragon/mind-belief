@@ -46,5 +46,4 @@
   { { Role worker-description Single.0 } «role/worker-description/0.md» }
   { { Role write-demanding-description Single.0 } «role/write-demanding-description/0.md» }
   { { Role write-ordinary-description Single.0 } «role/write-ordinary-description/0.md» }
-  { { Role write-trivial-description Single.0 } «role/write-trivial-description/0.md» }
-  { { Notion organism Single.0 } «notion/organism/0.md» } ]
+  { { Role write-trivial-description Single.0 } «role/write-trivial-description/0.md» } ]
